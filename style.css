@@ -1,0 +1,306 @@
+/* ================================================
+   Enhan Liu — Academic Personal Website
+   style.css
+   ================================================ */
+
+/* ---------- Reset & Root Variables ---------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --maroon:      #8B1A2E;
+    --maroon-soft: #b03048;
+    --dark:        #1a1a1a;
+    --gray:        #5a5a5a;
+    --light-gray:  #f7f7f7;
+    --border:      #ddd;
+    --max-width:   820px;
+    --font-main:   system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ---------- Base ---------- */
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--font-main);
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--dark);
+    background: #fff;
+}
+
+a {
+    color: var(--maroon);
+    text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.88em;
+    background: var(--light-gray);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+}
+
+/* ---------- Layout Wrapper ---------- */
+.wrapper {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* ---------- Header ---------- */
+header {
+    padding: 2.8rem 1.5rem 1.4rem;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    border-bottom: 2px solid var(--maroon);
+}
+
+header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--dark);
+}
+
+header .subtitle {
+    margin-top: 0.25rem;
+    color: var(--gray);
+    font-size: 1rem;
+    font-style: italic;
+}
+
+/* ---------- Navigation ---------- */
+nav {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2.2rem;
+    padding: 0.75rem 0;
+}
+
+nav a {
+    color: var(--gray);
+    font-size: 0.97rem;
+    letter-spacing: 0.04em;
+    transition: color 0.18s;
+    text-decoration: none;
+}
+
+nav a:hover,
+nav a.active {
+    color: var(--maroon);
+    text-decoration: none;
+}
+
+/* ---------- Main Content ---------- */
+main {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 2.2rem 1.5rem 4rem;
+}
+
+section {
+    margin-bottom: 2.8rem;
+}
+
+/* ---------- Section Headings ---------- */
+h2 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--maroon);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.3rem;
+    margin-bottom: 1.1rem;
+}
+
+/* ---------- About Page ---------- */
+#about p + p {
+    margin-top: 0.8rem;
+}
+
+.contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-top: 0.4rem;
+    font-size: 0.97rem;
+}
+
+.contact-row a,
+.contact-row span {
+    color: var(--gray);
+}
+
+.contact-row a:hover { color: var(--maroon); text-decoration: underline; }
+
+/* ---------- Research Projects ---------- */
+.project {
+    margin-bottom: 1.6rem;
+}
+
+.project-title {
+    font-style: italic;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.project-meta {
+    color: var(--gray);
+    font-size: 0.9rem;
+    margin-top: 0.1rem;
+}
+
+.project-desc {
+    margin-top: 0.4rem;
+    font-size: 0.97rem;
+}
+
+/* ---------- CV Page ---------- */
+.cv-download {
+    text-align: right;
+    margin-bottom: 2rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.38rem 1.1rem;
+    border: 1.5px solid var(--maroon);
+    color: var(--maroon);
+    font-family: var(--font-main);
+    font-size: 0.92rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: var(--maroon);
+    color: #fff;
+    text-decoration: none;
+}
+
+/* CV Entry */
+.cv-entry {
+    margin-bottom: 1.4rem;
+}
+
+.cv-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+
+.cv-row strong { font-weight: 600; }
+
+.cv-date {
+    color: var(--gray);
+    font-size: 0.9rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.cv-sub {
+    font-style: italic;
+    color: var(--gray);
+    font-size: 0.95rem;
+}
+
+.cv-list {
+    margin: 0.35rem 0 0 1.4rem;
+    font-size: 0.95rem;
+}
+
+.cv-list li {
+    margin-bottom: 0.2rem;
+}
+
+.cv-skills-grid {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: 0.4rem 1rem;
+    font-size: 0.97rem;
+}
+
+.cv-skills-grid dt {
+    font-weight: 600;
+    color: var(--gray);
+}
+
+/* ---------- Notes Page ---------- */
+.notes-intro {
+    color: var(--gray);
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    font-size: 0.97rem;
+}
+
+.note-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.note-entry:last-child { border-bottom: none; }
+
+.note-title { font-weight: 600; }
+.note-title a { color: var(--dark); }
+.note-title a:hover { color: var(--maroon); }
+
+.note-tag {
+    display: inline-block;
+    font-size: 0.8rem;
+    background: var(--light-gray);
+    color: var(--gray);
+    padding: 0.1em 0.5em;
+    border-radius: 10px;
+    margin-left: 0.5rem;
+}
+
+.note-date {
+    color: var(--gray);
+    font-size: 0.88rem;
+    white-space: nowrap;
+}
+
+/* ---------- Footer ---------- */
+footer {
+    text-align: center;
+    padding: 1.4rem 1.5rem;
+    color: #999;
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+}
+
+footer a { color: #999; }
+footer a:hover { color: var(--maroon); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+    body { font-size: 16px; }
+    header h1 { font-size: 1.9rem; }
+    nav ul { gap: 1.4rem; }
+    .cv-row { flex-direction: column; gap: 0; }
+    .cv-skills-grid { grid-template-columns: 1fr; }
+    .note-entry { flex-direction: column; gap: 0.2rem; }
+}
