@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Change a treatment effect and compare the Goodman-Bacon and dCDH decompositions of the same TWFE coefficient.">
+<title>DiD Lab · One coefficient, two decompositions</title>
+<style>
+:root{color-scheme:light;--paper:#f5f4ef;--surface:#fff;--ink:#20302f;--muted:#64706b;--line:#dce1d9;--teal:#216b60;--soft:#e9f2ed;--red:#ae4636;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit;color:inherit}button,select,summary{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #679bc6;outline-offset:3px}[hidden]{display:none!important}a{color:var(--teal);text-underline-offset:3px}h1,h2,h3,p{margin:0}sub{font-size:.72em}button{touch-action:manipulation}.wrap{max-width:1320px;margin:auto;padding:24px}.hero{margin-bottom:22px}.hero h1{font-size:30px;letter-spacing:-.8px}.hero p{margin-top:7px;color:var(--muted)}.embedded .hero{display:none}.embedded .wrap{padding:16px}.card{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:16px}.controls>.field,.effect-hint{min-width:0}.controls{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(0,1.6fr);gap:12px 24px;margin-bottom:14px}.field{display:block;font-size:12px;color:var(--muted)}.field>span:first-child{display:block;margin-bottom:6px}.scenario-row,.effect-row{display:flex;align-items:center;gap:10px}.scenario-row select{flex:1;min-width:0}.effect-row select{max-width:165px;min-width:100px}.effect-row input[type=range]{flex:1;min-width:65px;accent-color:var(--teal)}select,input[type=number]{min-height:36px;padding:6px 8px;border:1px solid var(--line);border-radius:5px;background:var(--paper)}input[type=number]{width:76px;font-family:var(--mono)}.btn{min-height:36px;border:1px solid var(--line);border-radius:5px;background:var(--surface);padding:5px 10px;font-size:12px;white-space:nowrap}.btn:hover{background:var(--soft)}.effect-hint{grid-column:1/-1;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:10px}.effect-hint strong{color:var(--ink)}.negative{color:var(--red)}.warning{background:#faece8;border-left:3px solid var(--red);padding:10px 14px;margin-bottom:14px}.data-card{margin-bottom:16px}.data-head{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:10px}.data-head h2{font-size:15px;font-weight:600}.tabs{display:flex;gap:3px;padding:3px;background:var(--paper);border-radius:6px;border:1px solid var(--line)}.tabs button{border:0;background:transparent;border-radius:4px;padding:5px 12px;min-height:30px;font-size:12px}.tabs button[aria-selected=true]{background:var(--surface);box-shadow:0 1px 3px #20302f15;font-weight:600}.data-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:3px;color:var(--muted);font-size:11px}.data-tools label{display:flex;align-items:center;gap:5px}.data-tools input{accent-color:var(--teal)}.small-select{font-size:12px;min-height:32px;padding:4px 6px;max-width:210px}.rawplot{display:block;width:100%;height:185px;overflow:visible}.rawplot text{font:11px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:var(--muted)}.rawplot .value-label{fill:var(--ink);font-family:var(--mono)}.rawplot .point{cursor:pointer}.legend{display:flex;flex-wrap:wrap;gap:5px 14px;color:var(--muted);font-size:11px;margin-top:3px}.legend span{display:flex;gap:5px;align-items:center}.swatch{display:inline-block;width:8px;height:8px;border-radius:2px}.table-scroll{overflow:auto;max-width:100%;overscroll-behavior-x:contain}.panel-table{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fixed}.panel-table th{font-size:11px;color:var(--muted);font-weight:400;text-align:center}.panel-table th:first-child{width:78px;text-align:left}.group-name{font:600 12px var(--mono);color:var(--ink)}.adoption{display:block;font-size:10px;margin-top:2px}.panel-table td{padding:0}.cell{position:relative;display:block;width:100%;min-height:34px;border:1px solid transparent;border-radius:4px;font:12px var(--mono);text-align:center;padding:6px 1px;background:#f0f2ed;white-space:nowrap}.cell[aria-pressed=true]{outline:2px solid var(--ink);outline-offset:0}.cell.pre-window{border-bottom:3px solid #8ba2b5}.cell.post-window{border-bottom:3px solid #aa7e36}.cell.outside{opacity:.3}.neg-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--red)}.cell .neg-dot{position:absolute;top:3px;right:3px}.panel-caption{color:var(--muted);font-size:11px;margin-top:8px}.compare-head{display:flex;justify-content:space-between;gap:15px;align-items:baseline;margin:0 0 9px}.compare-head h2{font-size:15px;font-weight:600}.compare-head p{font-size:12px;color:var(--muted)}.decomp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.decomp-head{display:flex;justify-content:space-between;gap:12px;align-items:start}.decomp-head h3{font-size:19px;line-height:1.3;font-family:Georgia,"Times New Roman",serif;font-weight:400}.decomp-head p{font-size:12px;color:var(--muted);margin-top:4px}.total{font:25px/1.2 var(--mono);letter-spacing:-.7px;white-space:nowrap}.total .symbol{font:15px Georgia,"Times New Roman",serif;margin-right:5px}.terms{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;margin-top:12px}.terms col:first-child{width:38%}.terms col:nth-child(2){width:37%}.terms col:last-child{width:25%}.terms th{font-size:11px;font-weight:400;color:var(--muted);text-align:left;padding:6px 3px}.terms th:last-child,.terms td:last-child{text-align:right}.terms td{padding:8px 3px;border-top:1px solid #e9ede5;vertical-align:middle}.terms .selected{background:var(--soft)}.term-button{display:block;border:0;background:none;padding:2px 0;text-align:left;width:100%;font-size:12px}.term-button strong{font-weight:600}.term-button small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.product,.contribution{font-family:var(--mono);font-size:12px}.product .factor{white-space:nowrap}.contribution{display:flex;justify-content:end;align-items:center;gap:6px}.mini-bar{position:relative;display:inline-block;width:40px;height:14px;flex:none;background:linear-gradient(to right,transparent 49%,#d7ddd4 49%,#d7ddd4 51%,transparent 51%)}.mini-bar i{position:absolute;height:7px;top:3px;background:var(--teal);border-radius:1px}.mini-bar i.neg{background:var(--red)}.remainder{color:var(--muted);font-size:11px}.remainder td{border-top:1px dashed var(--line)}.list-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:9px;margin-top:5px;font-size:11px;color:var(--muted)}.text-button{border:0;background:none;color:var(--teal);font-size:12px;padding:4px 0;text-decoration:underline;text-underline-offset:3px}.term-scroll.expanded{max-height:260px;overflow:auto}.filter{margin-top:10px}.empty{color:var(--muted);font-size:12px;padding:14px 0}.disclosure{margin-top:14px;border:1px solid var(--line);border-radius:7px;background:var(--surface);padding:11px 14px}.disclosure>summary{font-size:12px;font-weight:550}.disclosure[open]>summary{margin-bottom:14px}.trace-context{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.trace-context p{font-size:12px;color:var(--muted);margin-top:4px}.weight-badge{background:var(--soft);border-radius:5px;padding:6px 10px;font:13px var(--mono);white-space:nowrap}.trace-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}.block-table,.detail-table{border-collapse:collapse;width:100%;font-size:12px}.block-table th,.block-table td,.detail-table th,.detail-table td{padding:7px;border-bottom:1px solid var(--line);text-align:right}.block-table th:first-child,.block-table td:first-child,.detail-table th:first-child,.detail-table td:first-child{text-align:left}.block-table th,.detail-table th{font-size:11px;color:var(--muted);font-weight:400}.block-table td{font-family:var(--mono)}.block-table .pre{background:#edf1f5}.block-table .post{background:#f6f0e3}.block-sign{float:left;color:var(--muted);font-size:11px}.formula{font:17px/1.65 Georgia,"Times New Roman",serif;margin-top:10px;overflow-wrap:anywhere}.trace-copy{font-size:12px;color:var(--muted);margin-top:8px}.coefficient-details{margin-top:12px;font-size:12px}.coefficient-details summary{color:var(--teal)}.bounded{max-height:220px;overflow:auto;margin-top:8px}.detail-table button{font-family:inherit;font-size:11px;text-align:left}.support{font-size:11px;color:var(--muted);margin-top:12px}.extra-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:16px}.extra-grid h3,.advanced h3{font-size:13px;font-weight:600;margin-bottom:8px}.att-line{display:flex;gap:20px;flex-wrap:wrap;font:16px var(--mono)}.small-copy{font-size:12px;color:var(--muted);margin-top:7px}.design-fields{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:12px}.design-fields select{min-width:65px}.design-meta{color:var(--muted);font-size:11px;margin-top:8px}.editor-table{width:100%;min-width:720px;border-collapse:collapse;font-size:12px}.editor-table th{color:var(--muted);font-size:11px;font-weight:400;text-align:left;padding:7px}.editor-table td{padding:7px;border-top:1px solid var(--line)}.editor-table input,.editor-table select{width:100%;max-width:110px;min-width:65px;font-size:12px}.raw-rows{margin-top:18px;font-size:12px}.raw-rows summary{font-weight:550}.raw-toolbar{display:flex;justify-content:space-between;gap:15px;align-items:center;margin:10px 0}.raw-table{border-collapse:collapse;min-width:900px;width:100%;font:11px var(--mono)}.raw-table th,.raw-table td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right}.raw-table th:first-child,.raw-table td:first-child{text-align:left}.raw-table th{font-weight:400;color:var(--muted)}.weight-summary{font-size:12px;color:var(--muted);line-height:1.8}.footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:14px}.footer a{color:var(--muted)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:840px){.trace-grid{grid-template-columns:1fr}.compare-head p{font-size:11px}.extra-grid{grid-template-columns:1fr}.mini-bar{display:none}}
+@media(max-width:620px){.decomp-grid{grid-template-columns:1fr}.controls{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:550px){.wrap,.embedded .wrap{padding:12px}.card{padding:12px}.hero h1{font-size:25px}.controls{gap:12px}.effect-row{gap:7px}.effect-row select{max-width:115px;min-width:90px}.effect-row input[type=number]{width:64px}.effect-row input[type=range]{min-width:50px}.effect-hint{font-size:11px}.data-head{gap:8px}.tabs button{padding:4px 9px}.data-tools{align-items:start}.rawplot{height:180px}.panel-table .cell{min-height:40px;font-size:11px}.decomp-head h3{font-size:19px}.total{font-size:24px}.mini-bar{display:none}.terms col:first-child{width:36%}.terms col:nth-child(2){width:40%}.terms col:last-child{width:24%}.terms td{padding-block:9px}.terms .product,.terms .contribution{font-size:11px}.compare-head{display:block}.compare-head p{margin-top:3px}.trace-grid{gap:12px}.block-table td,.block-table th{padding:6px 4px}.disclosure{padding:10px 12px}.weight-badge{font-size:12px}.att-line{font-size:14px;gap:12px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+@media print{.controls,.tabs,.filter,.list-foot button,.advanced,.footer{display:none}.wrap{padding:0}.card{break-inside:avoid}.term-scroll.expanded{max-height:none}}
+</style>
+</head>
+<body>
+<main class="wrap" id="did-panel-lab">
+<header class="hero"><h1>One coefficient. Two decompositions.</h1><p>Change an effect, then compare the two weighted sums.</p></header>
+
+<section class="controls card" aria-label="Change an effect">
+  <label class="field"><span>Example</span><span class="scenario-row"><select id="scenario" aria-label="Scenario"><optgroup label="Panel sizes"><option value="classic">2 groups × 3 periods</option><option value="staggered">4 groups × 8 periods</option><option value="large">8 groups × 12 periods</option></optgroup><optgroup label="Other scenarios"><option value="constant">Identical effects</option><option value="no-never">Growing effects, no never-treated group</option><option value="unequal">Unequal group sizes</option></optgroup><option value="custom" disabled>Edited design</option></select><button id="reset-example" type="button" class="btn">Reset</button></span></label>
+  <div class="field"><span>Change one effect Δ</span><div class="effect-row"><select id="edit-cell" aria-label="Effect to edit"></select><input id="effect-number" type="number" min="-100" max="100" step="0.1" aria-label="Selected cell true effect"><input id="effect-slider" type="range" min="-5" max="15" step="0.1" aria-label="Adjust selected cell effect"></div></div>
+  <p id="effect-hint" class="effect-hint" aria-live="polite"></p>
+</section>
+<div id="invalid-design" class="warning" role="alert" hidden>Treatment has no variation after removing the fixed effects. Change the adoption dates or add an untreated comparison group under More options.</div>
+
+<section class="card data-card" aria-label="Data views">
+  <div class="data-head"><h2>Data</h2><div class="tabs" role="tablist" aria-label="Data view"><button id="tab-raw" type="button" role="tab" aria-controls="raw-view" aria-selected="true">Raw data</button><button id="tab-panel" type="button" role="tab" aria-controls="panel-view" aria-selected="false" tabindex="-1">Panel View</button></div></div>
+  <div id="raw-view" role="tabpanel" aria-labelledby="tab-raw"><div class="data-tools"><span>Observed group-period means</span><label><input id="show-counterfactual" type="checkbox">Outcomes without treatment</label></div><svg id="raw-plot" class="rawplot" role="img" aria-label="Observed outcome paths for each group"></svg><div id="group-legend" class="legend"></div></div>
+  <div id="panel-view" role="tabpanel" aria-labelledby="tab-panel" hidden><div class="data-tools"><span>Select a treated cell to edit its effect.</span><select id="panel-metric" class="small-select" aria-label="Panel cell metric"><optgroup label="Effects and weights"><option value="tau">Cell effect Δ</option><option value="w">dCDH weight W</option><option value="contribution">Contribution W × Δ</option></optgroup><optgroup label="Other cell data"><option value="d">Treatment D</option><option value="y">Outcome Y</option><option value="r">Treatment residual ε</option></optgroup></select></div><div id="panel-container" class="table-scroll"></div><p class="panel-caption"><i class="neg-dot"></i> Negative dCDH weight W · tᵢ = first treatment date; ∞ = never treated.</p></div>
+</section>
+
+<div class="compare-head"><h2>Two decompositions</h2><p>Two weighted sums. The same TWFE coefficient.</p></div>
+<div class="decomp-grid">
+  <section class="card decomp-card" aria-labelledby="bacon-title"><div class="decomp-head"><div><h3 id="bacon-title">Goodman-Bacon</h3><p>Weights on 2 × 2 comparisons</p></div><div class="total"><span class="symbol">β̂<sub>fe</sub> =</span><output id="bacon-total">—</output></div></div><div id="bacon-filter-box" class="filter" hidden><select id="comparison-filter" class="small-select" aria-label="Comparison type"><option value="all">All comparisons</option><option value="never">Never-treated controls</option><option value="early">Not-yet-treated controls</option><option value="late">Already-treated controls</option></select></div><div id="bacon-scroll" class="term-scroll"><table class="terms" aria-label="Goodman-Bacon weighted comparisons"><colgroup><col><col><col></colgroup><thead><tr><th>Comparison</th><th>Weight × DiD</th><th>Contribution</th></tr></thead><tbody id="bacon-rows"></tbody></table></div><div class="list-foot"><span id="bacon-count"></span><button id="bacon-expand" type="button" class="text-button" aria-expanded="false" hidden></button></div></section>
+  <section class="card decomp-card" aria-labelledby="dcdh-title"><div class="decomp-head"><div><h3 id="dcdh-title" title="de Chaisemartin–D’Haultfœuille">dCDH</h3><p>Weights on effects in treated cells</p></div><div class="total"><span class="symbol">β̂<sub>fe</sub> =</span><output id="dcdh-total">—</output></div></div><div id="cell-filter-box" class="filter" hidden><select id="cell-filter" class="small-select" aria-label="Cell weight filter"><option value="all">All treated cells</option><option value="negative">Negative weights only</option><option value="positive">Positive weights only</option></select></div><div id="cell-scroll" class="term-scroll"><table class="terms" aria-label="dCDH weighted cell effects"><colgroup><col><col><col></colgroup><thead><tr><th>Cell effect</th><th>Weight × effect</th><th>Contribution</th></tr></thead><tbody id="cell-rows"></tbody></table></div><div class="list-foot"><span id="cell-count"></span><button id="cell-expand" type="button" class="text-button" aria-expanded="false" hidden></button></div></section>
+</div>
+
+<details id="trace-details" class="disclosure"><summary id="trace-summary">Inspect a comparison or cell</summary><div id="trace-content"></div></details>
+
+<details id="more-options" class="disclosure advanced"><summary>More options: ATT, design &amp; data</summary>
+  <div class="extra-grid"><section><h3>Compare with the target ATT</h3><div class="att-line"><span>TWFE <output id="twfe">—</output></span><span>ATT <output id="att">—</output></span><span>Gap <output id="gap">—</output></span></div><p class="small-copy">ATT averages all treated observations across dates. Its weights can differ from TWFE's.</p></section><section><h3>Weight summary</h3><div id="weight-summary" class="weight-summary"></div></section></div>
+  <h3>Edit the full design</h3><div class="design-fields"><label class="field"><span>Groups</span><select id="group-count"></select></label><label class="field"><span>Periods</span><select id="period-count"></select></label><label class="field"><span>Untreated trend</span><input id="trend" type="number" min="-3" max="3" step="0.1"></label><button id="reset-cell" type="button" class="text-button">Use group rule for selected effect</button></div>
+  <div class="table-scroll"><table class="editor-table"><thead><tr><th>Group</th><th>Units</th><th>First treatment date tᵢ</th><th>Baseline</th><th>Initial effect</th><th>Effect change / period</th></tr></thead><tbody id="group-editor-body"></tbody></table></div><p class="small-copy">Effect after treatment = initial effect + change per period × time since treatment. Editing these values or the treatment date removes individual effect edits for that group.</p><p id="design-meta" class="design-meta"></p>
+  <details class="raw-rows"><summary>Raw data table <span id="row-count"></span></summary><div class="raw-toolbar"><span>One row per group-period mean.</span><a id="export-csv" class="btn" download="did-panel-data.csv">Download CSV</a></div><div class="bounded table-scroll"><table class="raw-table"><thead><tr><th>Group</th><th>t</th><th>N<sub>g,t</sub></th><th>tᵢ</th><th>D</th><th>Y(0)</th><th>Δ</th><th>Y</th><th>ε</th><th>W</th><th>W × Δ</th></tr></thead><tbody id="raw-table-body"></tbody></table></div></details>
+</details>
+<footer class="footer"><span>Simulated cell means · no sampling noise</span><span><a href="../../index.html" target="_top">Read the note</a> · <a href="../../details.html#sec-engine" target="_top">Assumptions &amp; formulas</a></span></footer>
+<span id="live-result" class="sr-only" role="status" aria-live="polite"></span><noscript>Enable JavaScript to run the interactive demonstration.</noscript>
+</main>
+<script id="did-engine">
+(function (root) {
+  'use strict';
+  const sum = xs => xs.reduce((a,b) => a+b,0);
+  const range = (lo,hi) => Array.from({length:Math.max(0,hi-lo+1)},(_,i)=>lo+i);
+  const copy = x => JSON.parse(JSON.stringify(x));
+  function makePreset(name) {
+    let T=8, trend=0.3;
+    let spec=[[2,100,0,1,1.2],[4,100,1,2,0.8],[6,100,2,3,0.4],[0,100,3,0,0]];
+    if(name==='constant') spec=spec.map(s=>[s[0],s[1],s[2],2,0]);
+    if(name==='no-never') spec=[[2,100,0,1,2],[3,100,1,1,2],[5,100,2,1,2],[7,100,3,1,2]];
+    if(name==='unequal') {T=10;spec=[[2,60,0,1,1.5],[4,180,1,3,0],[6,100,2,2,0.7],[8,260,3,4,-0.3],[0,160,4,0,0]];}
+    if(name==='large') {T=12;spec=[[2,80,0,1,1.2],[3,120,1,1.5,1],[4,100,2,2,.8],[5,90,3,2.5,.6],[7,140,4,3,.5],[9,70,5,2,.4],[11,110,6,2.5,.3],[0,130,7,0,0]];}
+    if(name==='classic') {T=3;trend=0;spec=[[2,100,0,1,4],[3,100,0,1,0]];}
+    return {T,trend,groups:spec.map((s,i)=>({id:'G'+(i+1),adopt:s[0],n:s[1],alpha:s[2],level:s[3],growth:s[4],overrides:{}}))};
+  }
+  function compute(config) {
+    const T=config.T,groups=config.groups,N=sum(groups.map(g=>g.n)),cells=[];
+    const groupD=groups.map(g=>g.adopt?(T-g.adopt+1)/T:0);
+    const timeD=range(1,T).map(t=>sum(groups.map(g=>g.n*(g.adopt>0&&t>=g.adopt?1:0)))/N);
+    const grand=sum(timeD)/T;
+    groups.forEach((g,gi)=>range(1,T).forEach(t=>{
+      const d=Number(g.adopt>0&&t>=g.adopt);
+      const manual=d&&Object.prototype.hasOwnProperty.call(g.overrides||{},t);
+      const tau=d?(manual?Number(g.overrides[t]):g.level+g.growth*(t-g.adopt)):0;
+      const y0=g.alpha+config.trend*(t-1);
+      cells.push({gi,gid:g.id,t,n:g.n,adopt:g.adopt,d,tau,y0,y:y0+d*tau,manual:!!manual,r:d-groupD[gi]-timeD[t-1]+grand,w:0});
+    }));
+    const Q=sum(cells.map(c=>c.n*c.r*c.r)),V=Q/(N*T),valid=Q>1e-10;
+    const treated=cells.filter(c=>c.d);
+    const treatedMass=sum(treated.map(c=>c.n));
+    const att=treatedMass?sum(treated.map(c=>c.n*c.tau))/treatedMass:null;
+    const beta=valid?sum(cells.map(c=>c.n*c.r*c.y))/Q:null;
+    cells.forEach(c=>{c.w=valid&&c.d?c.n*c.r/Q:0;c.contribution=c.w*c.tau;});
+    const cohortMap=new Map();
+    groups.forEach((g,gi)=>{
+      if(!cohortMap.has(g.adopt))cohortMap.set(g.adopt,{adopt:g.adopt,n:0,members:[]});
+      const co=cohortMap.get(g.adopt);co.n+=g.n;co.members.push(gi);
+    });
+    const cohorts=[...cohortMap.values()].sort((a,b)=>(a.adopt||Infinity)-(b.adopt||Infinity));
+    cohorts.forEach(co=>{
+      co.p=co.n/N;co.label=co.members.map(i=>groups[i].id).join(' + ');
+      co.y=range(1,T).map(t=>sum(co.members.map(i=>groups[i].n*cells[i*T+t-1].y))/co.n);
+      co.tau=range(1,T).map(t=>sum(co.members.map(i=>groups[i].n*cells[i*T+t-1].tau))/co.n);
+    });
+    const comparisons=[],baconCellWeights=Array(cells.length).fill(0);
+    function add(type,tr,ct,pre,post,weight) {
+      if(!pre.length||!post.length||weight<=0)return;
+      const avg=(co,ts,key)=>sum(ts.map(t=>co[key][t-1]))/ts.length;
+      const means={tp:avg(tr,pre,'y'),tq:avg(tr,post,'y'),cp:avg(ct,pre,'y'),cq:avg(ct,post,'y')};
+      const dd=(means.tq-means.tp)-(means.cq-means.cp);
+      const coeffs=new Map();
+      [[tr,post,1],[tr,pre,-1],[ct,post,-1],[ct,pre,1]].forEach(part=>{
+        const co=part[0],ts=part[1],sign=part[2];
+        co.members.forEach(gi=>ts.forEach(t=>{
+          const k=gi*T+t-1,c=cells[k];
+          if(c.d)coeffs.set(k,(coeffs.get(k)||0)+weight*sign*groups[gi].n/co.n/ts.length);
+        }));
+      });
+      const terms=[...coeffs.entries()].filter(e=>Math.abs(e[1])>1e-14).map(([k,w])=>{
+        baconCellWeights[k]+=w;
+        return {k,gi:cells[k].gi,t:cells[k].t,gid:cells[k].gid,w,tau:cells[k].tau,contribution:w*cells[k].tau};
+      }).sort((a,b)=>a.k-b.k);
+      const target=avg(tr,post,'tau');
+      const contamination=avg(ct,post,'tau')-avg(ct,pre,'tau');
+      comparisons.push({id:type+'-'+tr.adopt+'-'+ct.adopt,type,tr,ct,pre,post,weight,dd,contribution:weight*dd,means,terms,target,contamination});
+    }
+    if(valid)for(let i=0;i<cohorts.length;i++)for(let j=i+1;j<cohorts.length;j++){
+      const e=cohorts[i],l=cohorts[j];if(!e.adopt)continue;
+      const pre=range(1,e.adopt-1),factor=e.p*l.p/(T*T*V);
+      if(!l.adopt) {
+        const post=range(e.adopt,T);add('never',e,l,pre,post,factor*pre.length*post.length);
+      } else {
+        const middle=range(e.adopt,l.adopt-1),post=range(l.adopt,T);
+        add('early',e,l,pre,middle,factor*pre.length*middle.length);
+        add('late',l,e,middle,post,factor*middle.length*post.length);
+      }
+    }
+    const bacon=sum(comparisons.map(c=>c.contribution)),dcdh=sum(treated.map(c=>c.contribution));
+    const types=['never','early','late'].map(type=>({
+      type,weight:sum(comparisons.filter(c=>c.type===type).map(c=>c.weight)),
+      contribution:sum(comparisons.filter(c=>c.type===type).map(c=>c.contribution)),
+      count:comparisons.filter(c=>c.type===type).length
+    }));
+    return {config,T,N,cells,treated,cohorts,comparisons,types,Q,V,valid,att,beta,bacon:valid?bacon:null,dcdh:valid?dcdh:null,
+      gap:valid&&att!==null?beta-att:null,negativeMass:-sum(treated.filter(c=>c.w<0).map(c=>c.w)),
+      negativeCount:treated.filter(c=>c.w< -1e-12).length,baconCellWeights,
+      checks:{baconWeight:sum(comparisons.map(c=>c.weight)),cellWeight:sum(treated.map(c=>c.w)),
+        baconError:valid?Math.abs(bacon-beta):null,dcdhError:valid?Math.abs(dcdh-beta):null,
+        weightBridgeError:valid?Math.max(...cells.map((c,k)=>Math.abs(c.w-baconCellWeights[k]))):null}};
+  }
+  root.PanelDiD=Object.freeze({makePreset,compute,copy,range});
+})(typeof window==='undefined'?globalThis:window);
+
+</script>
+<script>
+(function () {
+  'use strict';
+  const $ = id => document.getElementById(id), engine = window.PanelDiD;
+  const storageKey = 'did-book-focused-lab-v1';
+  const presets = new Set(['classic', 'staggered', 'large', 'constant', 'no-never', 'unequal']);
+  const colors = ['#216b60', '#9c6d2d', '#427b9c', '#8869a4', '#7a8139', '#b15d46', '#5b8b83', '#8c6777'];
+  const typeNames = { never: 'Never-treated control', early: 'Not-yet-treated control', late: 'Already-treated control' };
+  let config = engine.makePreset('classic'), scenario = 'classic', basePreset = 'classic';
+  let view = 'raw', metric = 'tau', edit = { gi: 0, t: 3 }, selection = { kind: 'cell', gi: 0, t: 3 };
+  let result, allBacon = false, allCells = false, editOptionsKey = '', liveTimer;
+  const sum = xs => xs.reduce((a, b) => a + b, 0);
+  const esc = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  function num(value, digits = 3) {
+    if (value === null || !Number.isFinite(value)) return '—';
+    if (Math.abs(value) < 1e-10) value = 0;
+    const text = value && Math.abs(value) < .001 ? value.toExponential(1) : value.toFixed(digits).replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1');
+    return text.replace(/-/g, '−');
+  }
+  const weightText = value => (value > 1e-10 ? '+' : '') + num(value, 4);
+  const periods = ts => ts.length === 1 ? String(ts[0]) : ts[0] + '–' + ts[ts.length - 1];
+  const cellKey = c => c.gi * config.T + c.t - 1;
+  const editKey = () => edit.gi * config.T + edit.t - 1;
+  const editedCell = () => result.cells[editKey()];
+  const currentComparison = () => selection.kind === 'comparison' ? result.comparisons.find(c => c.id === selection.id) : null;
+  const currentCell = () => selection.kind === 'cell' ? result.cells[selection.gi * config.T + selection.t - 1] : editedCell();
+  function output(id, value) {
+    $(id).textContent = num(value);
+    $(id).dataset.value = value === null ? '' : String(value);
+  }
+  function remember() {
+    try { localStorage.setItem(storageKey, JSON.stringify({ config, scenario, basePreset, view, metric, edit })); } catch (error) {}
+  }
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey));
+    const c = saved && saved.config, finite = x => typeof x === 'number' && Number.isFinite(x);
+    if (c && Number.isInteger(c.T) && c.T >= 3 && c.T <= 12 && finite(c.trend) && Array.isArray(c.groups) && c.groups.length >= 2 && c.groups.length <= 8 && c.groups.every(g => Number.isInteger(g.n) && g.n >= 1 && g.n <= 500 && Number.isInteger(g.adopt) && g.adopt >= 0 && g.adopt !== 1 && g.adopt <= c.T && finite(g.alpha) && finite(g.level) && finite(g.growth) && (!g.overrides || Object.values(g.overrides).every(finite)))) {
+      config = c; config.groups.forEach((g, i) => { g.id = 'G' + (i + 1); g.overrides = g.overrides || {}; });
+      scenario = presets.has(saved.scenario) ? saved.scenario : 'custom';
+      basePreset = presets.has(saved.basePreset) ? saved.basePreset : 'classic';
+      view = saved.view === 'panel' ? 'panel' : 'raw';
+      metric = ['d', 'tau', 'y', 'r', 'w', 'contribution'].includes(saved.metric) ? saved.metric : 'tau';
+      if (saved.edit && Number.isInteger(saved.edit.gi) && Number.isInteger(saved.edit.t)) edit = saved.edit;
+      else edit = { gi: 0, t: config.T };
+      selection = { kind: 'cell', gi: edit.gi, t: edit.t };
+    }
+  } catch (error) {}
+  if (window.self !== window.top) document.body.classList.add('embedded');
+  $('group-count').innerHTML = engine.range(2, 8).map(n => '<option>' + n + '</option>').join('');
+  $('period-count').innerHTML = engine.range(3, 12).map(n => '<option>' + n + '</option>').join('');
+
+  function ensureSelections() {
+    const c = editedCell();
+    if (!c || !c.d) {
+      const next = result.treated.find(x => x.t === config.T) || result.treated[0];
+      edit = next ? { gi: next.gi, t: next.t } : { gi: 0, t: 1 };
+    }
+    if (selection.kind === 'comparison' && !currentComparison() || selection.kind === 'cell' && (!currentCell() || !currentCell().d)) selection = { kind: 'cell', gi: edit.gi, t: edit.t };
+  }
+  function renderControls(keepTypedEffect = false) {
+    $('scenario').value = scenario;
+    const key = result.treated.map(cellKey).join(',');
+    if (key !== editOptionsKey || !$('edit-cell').options.length) {
+      editOptionsKey = key;
+      $('edit-cell').innerHTML = result.treated.map(c => '<option value="' + cellKey(c) + '">' + c.gid + ' · t=' + c.t + '</option>').join('');
+    }
+    const c = editedCell(), enabled = !!c && !!c.d;
+    ['edit-cell', 'effect-number', 'effect-slider'].forEach(id => $(id).disabled = !enabled);
+    $('reset-cell').disabled = !enabled || !c.manual;
+    if (!enabled) {
+      $('effect-number').value = ''; $('effect-slider').value = '0';
+      $('effect-hint').textContent = 'No group is treated. Add treatment under More options.';
+      return;
+    }
+    $('edit-cell').value = String(cellKey(c));
+    const value = String(Math.round(c.tau * 10) / 10);
+    if (!keepTypedEffect) $('effect-number').value = value;
+    $('effect-slider').min = String(Math.min(-5, Math.floor(c.tau / 5) * 5));
+    $('effect-slider').max = String(Math.max(15, Math.ceil(c.tau / 5) * 5));
+    $('effect-slider').value = value;
+    const hint = result.valid ? 'This cell has dCDH weight W = <strong class="' + (c.w < 0 ? 'negative' : '') + '">' + num(c.w, 4) + '</strong>. Raising its effect by 1 changes TWFE by <strong>' + weightText(c.w) + '</strong>.' : 'This effect is editable; TWFE weights are unavailable in the current design.';
+    if ($('effect-hint').innerHTML !== hint) $('effect-hint').innerHTML = hint;
+  }
+  function setView(next, save = true) {
+    view = next;
+    ['raw', 'panel'].forEach(name => {
+      $('tab-' + name).setAttribute('aria-selected', String(name === view));
+      $('tab-' + name).tabIndex = name === view ? 0 : -1;
+      $(name + '-view').hidden = name !== view;
+    });
+    if (view === 'raw') renderPlot();
+    if (save) remember();
+  }
+  function renderPanel() {
+    const co = currentComparison();
+    const values = result.cells.filter(c => ['y', 'r'].includes(metric) || c.d).map(c => Math.abs(c[metric]));
+    const max = Math.max(.001, ...values);
+    let html = '<table class="panel-table" style="min-width:' + (78 + config.T * 58) + 'px" aria-label="Group by period panel showing ' + esc($('panel-metric').selectedOptions[0].textContent) + '"><thead><tr><th>Group</th>' + engine.range(1, config.T).map(t => '<th>t=' + t + '</th>').join('') + '</tr></thead><tbody>';
+    const classic = config.T === 3 && config.groups.length === 2 && config.groups[0].adopt === 2 && config.groups[1].adopt === 3;
+    config.groups.forEach((g, gi) => {
+      html += '<tr><th scope="row"><span class="group-name">' + g.id + (classic ? (gi ? ' · ℓ' : ' · k') : '') + '</span><span class="adoption">tᵢ=' + (g.adopt || '∞') + '</span></th>';
+      engine.range(1, config.T).forEach(t => {
+        const c = result.cells[gi * config.T + t - 1], v = c[metric];
+        const missing = !c.d && ['tau', 'w', 'contribution'].includes(metric) || !result.valid && ['w', 'contribution'].includes(metric);
+        const text = missing ? '—' : metric === 'd' ? String(c.d) : num(v, ['w', 'r', 'contribution'].includes(metric) ? 4 : metric === 'y' ? 2 : 1);
+        let color = c.d ? '#e4efe8' : '#f0f2ed', cls = 'cell';
+        if (!missing && metric !== 'd') color = v < 0 ? 'rgba(174,70,54,' + (.05 + .25 * Math.abs(v) / max) + ')' : 'rgba(33,107,96,' + (.04 + .23 * Math.abs(v) / max) + ')';
+        if (co) {
+          const included = co.tr.members.includes(gi) || co.ct.members.includes(gi);
+          cls += included && co.pre.includes(t) ? ' pre-window' : included && co.post.includes(t) ? ' post-window' : ' outside';
+        }
+        const label = c.gid + ', period ' + t + ', ' + (c.d ? 'effect ' + num(c.tau, 2) + ', weight ' + (result.valid ? num(c.w, 5) : 'undefined') : 'untreated') + ', outcome ' + num(c.y, 2);
+        const dot = c.d && result.valid && c.w < -1e-12 ? '<i class="neg-dot" aria-hidden="true"></i>' : '';
+        html += '<td>' + (c.d ? '<button type="button" class="' + cls + '" style="background:' + color + '" data-edit-cell="' + cellKey(c) + '" aria-label="' + esc(label) + '" aria-pressed="' + (edit.gi === gi && edit.t === t) + '">' + text + dot + '</button>' : '<span class="' + cls + '" style="background:' + color + '" title="' + esc(label) + '">' + text + '</span>') + '</td>';
+      });
+      html += '</tr>';
+    });
+    $('panel-container').innerHTML = html + '</tbody></table>';
+  }
+  function svgEl(tag, attrs, text) {
+    const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    Object.entries(attrs || {}).forEach(([key, value]) => e.setAttribute(key, value));
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+  function renderPlot() {
+    if (!result || $('raw-view').hidden) return;
+    const svg = $('raw-plot'), width = Math.max(240, svg.getBoundingClientRect().width), height = svg.getBoundingClientRect().height || 185;
+    const margin = { left: 43, right: 18, top: 23, bottom: 35 }, iw = width - margin.left - margin.right, ih = height - margin.top - margin.bottom;
+    const show = $('show-counterfactual').checked, values = result.cells.flatMap(c => show ? [c.y, c.y0] : [c.y]), min = Math.min(0, ...values), max = Math.max(0, ...values);
+    const span = Math.max(1, max - min), rawStep = span / 4, base = Math.pow(10, Math.floor(Math.log10(rawStep))), step = ([1, 2, 5, 10].find(n => n * base >= rawStep) || 10) * base;
+    const lo = Math.floor((min - span * .08) / step) * step, hi = Math.ceil((max + span * .08) / step) * step;
+    const x = t => margin.left + (t - 1) / (config.T - 1) * iw, y = v => margin.top + (hi - v) / (hi - lo) * ih;
+    svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height); svg.replaceChildren();
+    svg.append(svgEl('title', {}, 'Observed group-period means'));
+    svg.append(svgEl('desc', {}, config.groups.length + ' groups over ' + config.T + ' periods. Exact values are available in the data table.'));
+    const co = currentComparison();
+    if (co) [[co.pre, '#edf1f5'], [co.post, '#f6f0e3']].forEach(([ts, fill]) => {
+      const dx = iw / (config.T - 1), left = Math.max(margin.left, x(ts[0]) - dx * .4), right = Math.min(width - margin.right, x(ts[ts.length - 1]) + dx * .4);
+      svg.append(svgEl('rect', { x: left, y: margin.top, width: right - left, height: ih, fill, rx: 2 }));
+    });
+    svg.append(svgEl('text', { x: margin.left, y: 12 }, 'Outcome Y'));
+    for (let v = lo; v <= hi + step * .1; v += step) {
+      svg.append(svgEl('line', { x1: margin.left, y1: y(v), x2: width - margin.right, y2: y(v), stroke: '#e6ebe3' }));
+      svg.append(svgEl('text', { x: margin.left - 8, y: y(v) + 4, 'text-anchor': 'end' }, num(v, step < 1 ? 1 : 0)));
+    }
+    const every = width < 400 ? Math.ceil(config.T / 4) : 1;
+    engine.range(1, config.T).forEach(t => { if ((t - 1) % every === 0 || t === config.T) svg.append(svgEl('text', { x: x(t), y: height - 18, 'text-anchor': 'middle' }, String(t))); });
+    svg.append(svgEl('text', { x: margin.left + iw / 2, y: height - 2, 'text-anchor': 'middle' }, 'Calendar period t'));
+    config.groups.forEach((g, gi) => {
+      const cells = result.cells.slice(gi * config.T, (gi + 1) * config.T), active = !co || co.tr.members.includes(gi) || co.ct.members.includes(gi);
+      const group = svgEl('g', { opacity: active ? 1 : .2 });
+      if (show) group.append(svgEl('polyline', { points: cells.map(c => x(c.t) + ',' + y(c.y0)).join(' '), fill: 'none', stroke: colors[gi], 'stroke-width': 1.2, 'stroke-dasharray': '4 4', opacity: .65 }));
+      group.append(svgEl('polyline', { points: cells.map(c => x(c.t) + ',' + y(c.y)).join(' '), fill: 'none', stroke: colors[gi], 'stroke-width': 2 }));
+      cells.forEach(c => {
+        const selected = c.d && c.gi === edit.gi && c.t === edit.t;
+        if (selected) group.append(svgEl('circle', { cx: x(c.t), cy: y(c.y), r: 7, fill: 'none', stroke: colors[gi], 'stroke-width': 1.5 }));
+        const point = svgEl('circle', { cx: x(c.t), cy: y(c.y), r: selected ? 4 : 2.8, fill: colors[gi], stroke: '#fff', 'stroke-width': 1, class: c.d ? 'point' : '', ...(c.d ? { 'data-edit-cell': cellKey(c) } : {}) });
+        point.append(svgEl('title', {}, c.gid + ', t=' + c.t + ': Y=' + num(c.y, 2) + (c.d ? ', effect=' + num(c.tau, 2) : ', untreated'))); group.append(point);
+      });
+      svg.append(group);
+    });
+    const c = editedCell();
+    if (c && c.d) svg.append(svgEl('text', { x: x(c.t) + (c.t > config.T * .65 ? -9 : 9), y: y(c.y) - 11, 'text-anchor': c.t > config.T * .65 ? 'end' : 'start', class: 'value-label' }, c.gid + ' · t=' + c.t + ' · ' + num(c.y, 2)));
+    const classic = config.T === 3 && config.groups.length === 2 && config.groups[0].adopt === 2 && config.groups[1].adopt === 3;
+    $('group-legend').innerHTML = config.groups.map((g, i) => '<span><i class="swatch" style="background:' + colors[i] + '"></i>' + g.id + (classic ? (i ? ' · late ℓ' : ' · early k') : ' · tᵢ=' + (g.adopt || '∞')) + '</span>').join('');
+  }
+
+  function contribution(value, scale) {
+    const n = Math.min(50, Math.abs(value) / scale * 50);
+    return '<span class="contribution" data-value="' + value + '"><span class="mini-bar" aria-hidden="true"><i class="' + (value < 0 ? 'neg' : '') + '" style="left:' + (value < 0 ? 50 - n : 50) + '%;width:' + n + '%"></i></span>' + num(value) + '</span>';
+  }
+  function previewTerms(all, filtered, expanded, selected) {
+    let shown = expanded ? filtered : filtered.slice(0, 5);
+    if (!expanded && selected && filtered.includes(selected) && !shown.includes(selected)) shown = filtered.slice(0, 4).concat(selected);
+    const other = all.filter(c => !shown.includes(c));
+    return { shown, other };
+  }
+  function renderTerms() {
+    output('bacon-total', result.bacon); output('dcdh-total', result.dcdh);
+    const scale = Math.max(.001, ...result.comparisons.map(c => Math.abs(c.contribution)), ...result.treated.map(c => Math.abs(c.contribution)));
+    const comparisons = result.comparisons.slice().sort((a, b) => b.weight - a.weight);
+    const cf = $('comparison-filter').value;
+    const filtered = comparisons.filter(c => cf === 'all' || c.type === cf);
+    const coPreview = previewTerms(comparisons, filtered, allBacon, currentComparison());
+    let baconRows = coPreview.shown.map(c => '<tr class="' + (selection.kind === 'comparison' && selection.id === c.id ? 'selected' : '') + '"><td><button type="button" class="term-button" data-comparison="' + c.id + '" aria-label="Inspect ' + esc(c.tr.label + ' vs. ' + c.ct.label) + ' comparison"><strong>' + esc(c.tr.label + ' vs. ' + c.ct.label) + '</strong><small>' + typeNames[c.type].replace(' control', '') + '</small></button></td><td class="product"><span class="factor">' + weightText(c.weight) + '</span> × <span class="factor">(' + num(c.dd) + ')</span></td><td>' + contribution(c.contribution, scale) + '</td></tr>').join('');
+    if (coPreview.other.length) baconRows += '<tr class="remainder"><td colspan="2">Other ' + coPreview.other.length + ' comparisons</td><td><span class="contribution" data-value="' + sum(coPreview.other.map(c => c.contribution)) + '">' + num(sum(coPreview.other.map(c => c.contribution))) + '</span></td></tr>';
+    $('bacon-rows').innerHTML = baconRows || '<tr><td colspan="3" class="empty">No identified comparisons.</td></tr>';
+    $('bacon-count').textContent = !result.valid ? 'Not identified' : coPreview.other.length ? coPreview.shown.length + ' of ' + comparisons.length + ' shown; others grouped' : comparisons.length + ' comparisons';
+    $('bacon-expand').hidden = comparisons.length <= 5 && !allBacon;
+    $('bacon-expand').textContent = allBacon ? 'Collapse' : 'Show all ' + comparisons.length;
+    $('bacon-expand').setAttribute('aria-expanded', String(allBacon));
+    $('bacon-filter-box').hidden = !allBacon;
+    $('bacon-scroll').classList.toggle('expanded', allBacon);
+
+    const cells = result.valid ? result.treated.slice().sort((a, b) => {
+      const difference = Math.abs(b.w) - Math.abs(a.w);
+      return Math.abs(difference) > 1e-10 ? difference : cellKey(a) - cellKey(b);
+    }) : [];
+    const wf = $('cell-filter').value, filteredCells = cells.filter(c => wf === 'all' || (wf === 'negative' ? c.w < -1e-12 : c.w > 1e-12));
+    const cellPreview = previewTerms(cells, filteredCells, allCells, editedCell());
+    let cellRows = cellPreview.shown.map(c => '<tr class="' + (cellKey(c) === editKey() ? 'selected' : '') + '"><td><button type="button" class="term-button" data-inspect-cell="' + cellKey(c) + '" aria-label="Inspect ' + c.gid + ', period ' + c.t + ' effect"><strong>' + c.gid + ' · t=' + c.t + '</strong></button></td><td class="product"><span class="factor ' + (c.w < 0 ? 'negative' : '') + '">' + weightText(c.w) + '</span> × <span class="factor">(' + num(c.tau, 2) + ')</span></td><td>' + contribution(c.contribution, scale) + '</td></tr>').join('');
+    if (cellPreview.other.length) cellRows += '<tr class="remainder"><td colspan="2">Other ' + cellPreview.other.length + ' cell effects</td><td><span class="contribution" data-value="' + sum(cellPreview.other.map(c => c.contribution)) + '">' + num(sum(cellPreview.other.map(c => c.contribution))) + '</span></td></tr>';
+    $('cell-rows').innerHTML = cellRows || '<tr><td colspan="3" class="empty">No identified effect weights.</td></tr>';
+    $('cell-count').textContent = !result.valid ? 'Not identified' : cellPreview.other.length ? cellPreview.shown.length + ' of ' + cells.length + ' shown; others grouped' : cells.length + ' treated cells';
+    $('cell-expand').hidden = cells.length <= 5 && !allCells;
+    $('cell-expand').textContent = allCells ? 'Collapse' : 'Show all ' + cells.length;
+    $('cell-expand').setAttribute('aria-expanded', String(allCells));
+    $('cell-filter-box').hidden = !allCells;
+    $('cell-scroll').classList.toggle('expanded', allCells);
+  }
+  function comparisonWeightSymbol(co) {
+    if (co.type === 'never') return '<i>s</i><sub>kU</sub>';
+    return '<i>s</i><sup>' + (co.type === 'early' ? 'k' : 'ℓ') + '</sup><sub>kℓ</sub>';
+  }
+  function renderTrace() {
+    if (!$('trace-details').open) return;
+    if (!result.valid) { $('trace-content').innerHTML = '<p class="trace-copy">Treatment does not vary after removing the fixed effects. Its coefficient and weights are undefined.</p>'; return; }
+    const co = currentComparison();
+    if (co) {
+      const coefficientsOpen = !!$('trace-content').querySelector('.coefficient-details[open]');
+      const m = co.means;
+      const pre = co.type === 'late' ? 'MID(k, ℓ)' : 'PRE(k)';
+      const post = co.type === 'early' ? 'MID(k, ℓ)' : co.type === 'late' ? 'POST(ℓ)' : 'POST(k)';
+      const tr = co.type === 'late' ? 'ℓ' : 'k';
+      const ct = co.type === 'never' ? 'U' : co.type === 'early' ? 'ℓ' : 'k';
+      $('trace-summary').textContent = 'Inspect comparison: ' + co.tr.label + ' vs. ' + co.ct.label;
+      const rows = co.terms.map(t => '<tr><td><button class="text-button" type="button" data-inspect-cell="' + t.k + '">' + t.gid + ' · t=' + t.t + '</button></td><td class="' + (t.w < 0 ? 'negative' : '') + '">' + num(t.w, 5) + '</td><td>' + num(t.tau, 2) + '</td><td>' + num(t.contribution, 4) + '</td></tr>').join('');
+      $('trace-content').innerHTML = '<div class="trace-context"><div><strong>' + esc(co.tr.label + ' vs. ' + co.ct.label) + '</strong><p>' + typeNames[co.type] + ' · ' + pre + ': ' + periods(co.pre) + ' → ' + post + ': ' + periods(co.post) + '</p></div><span class="weight-badge">Comparison weight ' + comparisonWeightSymbol(co) + ' = ' + num(co.weight, 4) + '</span></div><div class="trace-grid"><table class="block-table" aria-label="Selected two by two comparison of observed means"><thead><tr><th>Observed means</th><th>' + pre + '<br>t=' + periods(co.pre) + '</th><th>' + post + '<br>t=' + periods(co.post) + '</th></tr></thead><tbody><tr><td>' + esc(co.tr.label) + ' (' + tr + ')</td><td class="pre"><span class="block-sign">−</span>' + num(m.tp, 2) + '</td><td class="post"><span class="block-sign">+</span>' + num(m.tq, 2) + '</td></tr><tr><td>' + esc(co.ct.label) + ' (' + ct + ')</td><td class="pre"><span class="block-sign">+</span>' + num(m.cp, 2) + '</td><td class="post"><span class="block-sign">−</span>' + num(m.cq, 2) + '</td></tr></tbody></table><div><div class="formula">DiD = ' + num(m.tq - m.tp, 2) + ' − (' + num(m.cq - m.cp, 2) + ') = ' + num(co.dd) + '<br>Weight × DiD = ' + num(co.contribution, 4) + '</div><p class="trace-copy">Average effect in the treatment group\'s post window: ' + num(co.target) + '. Control group\'s effect change: ' + num(co.contamination) + '. The DiD subtracts the latter from the former.</p></div></div><p class="trace-copy">The comparison weight applies to all four means together. The signs show how the means are combined.</p><details class="coefficient-details"><summary>Expand this weighted comparison into cell effects</summary><p class="trace-copy">Each coefficient includes this comparison\'s weight. Add a cell\'s coefficients over all comparisons to obtain its dCDH weight W.</p><div class="bounded table-scroll"><table class="detail-table"><thead><tr><th>Cell</th><th>Coefficient on effect</th><th>Δ</th><th>Contribution</th></tr></thead><tbody>' + rows + '</tbody></table></div></details>';
+      $('trace-content').querySelector('.coefficient-details').open = coefficientsOpen;
+      return;
+    }
+    const c = currentCell();
+    if (!c || !c.d) { $('trace-content').textContent = 'Select a treated cell to inspect its weight.'; return; }
+    const links = result.comparisons.map(co => ({ co, term: co.terms.find(t => t.k === cellKey(c)) })).filter(x => x.term);
+    $('trace-summary').textContent = 'Inspect cell: ' + c.gid + ' · t=' + c.t;
+    $('trace-content').innerHTML = '<div class="trace-context"><strong>' + c.gid + ' · t=' + c.t + '</strong><span class="weight-badge">dCDH weight W<sub>g,t</sub> = ' + num(c.w, 5) + '</span></div><p class="trace-copy">Sum of coefficients below = ' + num(sum(links.map(x => x.term.w)), 5) + '. With effect Δ = ' + num(c.tau, 2) + ', this cell contributes ' + num(c.contribution, 4) + ' to TWFE.</p><div class="bounded table-scroll"><table class="detail-table"><thead><tr><th>Comparison</th><th>Comparison weight</th><th>Coefficient on this effect</th></tr></thead><tbody>' + links.map(x => '<tr><td><button type="button" class="text-button" data-comparison="' + x.co.id + '">' + esc(x.co.tr.label + ' vs. ' + x.co.ct.label) + '</button></td><td>' + num(x.co.weight, 4) + '</td><td class="' + (x.term.w < 0 ? 'negative' : '') + '">' + num(x.term.w, 5) + '</td></tr>').join('') + '</tbody></table></div><p class="support">' + (!config.groups.some(g => !g.adopt || g.adopt > c.t) ? 'Everyone is treated at this date. The simulation sets this effect. Common trends and no anticipation alone cannot identify its level without further restrictions.' : 'Untreated units are available at this date. A causal interpretation also requires common trends and no anticipation.') + '</p>';
+  }
+  function renderEditor() {
+    $('group-editor-body').innerHTML = config.groups.map((g, gi) => {
+      const input = (field, min, max, step, label) => '<input type="number" data-group="' + gi + '" data-field="' + field + '" min="' + min + '" max="' + max + '" step="' + step + '" value="' + g[field] + '" aria-label="' + g.id + ' ' + label + '"' + (!g.adopt && ['level', 'growth'].includes(field) ? ' disabled' : '') + '>';
+      return '<tr><td>' + g.id + '</td><td>' + input('n', 1, 500, 1, 'unit count') + '</td><td><select data-group="' + gi + '" data-field="adopt" aria-label="' + g.id + ' adoption period"><option value="0"' + (!g.adopt ? ' selected' : '') + '>Never</option>' + engine.range(2, config.T).map(t => '<option value="' + t + '"' + (g.adopt === t ? ' selected' : '') + '>' + t + '</option>').join('') + '</select></td><td>' + input('alpha', -10, 15, .1, 'baseline') + '</td><td>' + input('level', -10, 15, .1, 'initial effect') + '</td><td>' + input('growth', -3, 5, .1, 'effect growth') + '</td></tr>';
+    }).join('');
+  }
+  function renderExtras(forceFields = false) {
+    output('twfe', result.beta); output('att', result.att); output('gap', result.gap);
+    $('weight-summary').textContent = result.valid ? 'Bacon: ' + result.types.map(t => ({ never: 'never-treated', early: 'not-yet-treated', late: 'already-treated' }[t.type]) + ' ' + num(t.weight * 100, 1) + '%').join(' · ') + '. dCDH: ' + result.negativeCount + '/' + result.treated.length + ' negative weights; sum of negative W ' + num(-result.negativeMass) + '.' : 'Weights are undefined in this design.';
+    $('group-count').value = String(config.groups.length); $('period-count').value = String(config.T);
+    if (forceFields || document.activeElement !== $('trend')) $('trend').value = config.trend;
+    $('design-meta').textContent = config.groups.length + ' groups × ' + config.T + ' periods · ' + result.N + ' units · ' + result.cohorts.length + ' timing groups';
+    $('row-count').textContent = '(' + result.cells.length + ' rows)';
+    const header = ['group', 'period', 'N_g_t', 't_i', 'D', 'Y0', 'Delta', 'Y', 'epsilon', 'W', 'W_Delta'];
+    const rows = result.cells.map(c => [c.gid, c.t, c.n, c.adopt || 'never', c.d, c.y0, c.d ? c.tau : '', c.y, c.r, c.d && result.valid ? c.w : '', c.d && result.valid ? c.contribution : '']);
+    $('export-csv').href = 'data:text/csv;charset=utf-8,' + encodeURIComponent([header].concat(rows).map(row => row.join(',')).join('\r\n'));
+    $('raw-table-body').innerHTML = result.cells.map(c => '<tr><td>' + c.gid + '</td><td>' + c.t + '</td><td>' + c.n + '</td><td>' + (c.adopt || '∞') + '</td><td>' + c.d + '</td><td>' + num(c.y0, 2) + '</td><td>' + (c.d ? num(c.tau, 2) : '—') + '</td><td>' + num(c.y, 2) + '</td><td>' + num(c.r, 4) + '</td><td>' + (c.d && result.valid ? num(c.w, 5) : '—') + '</td><td>' + (c.d && result.valid ? num(c.contribution, 4) : '—') + '</td></tr>').join('');
+  }
+  function render(rebuildEditor = false, keepTypedEffect = false) {
+    result = engine.compute(config); ensureSelections();
+    $('invalid-design').hidden = result.valid; $('panel-metric').value = metric;
+    renderControls(keepTypedEffect); renderPanel(); setView(view, false); renderTerms(); renderTrace(); renderExtras(rebuildEditor);
+    if (rebuildEditor) renderEditor();
+    remember();
+  }
+  function announce() {
+    clearTimeout(liveTimer);
+    liveTimer = setTimeout(() => { $('live-result').textContent = result.valid ? 'Both decompositions equal TWFE ' + num(result.beta) + '.' : 'TWFE is not identified in this design.'; }, 200);
+  }
+  function selectCell(k, inspect) {
+    const c = result.cells[Number(k)]; if (!c || !c.d) return;
+    edit = { gi: c.gi, t: c.t }; selection = { kind: 'cell', gi: c.gi, t: c.t };
+    if (inspect) $('trace-details').open = true;
+    render();
+  }
+  function selectComparison(id) {
+    const co = result.comparisons.find(c => c.id === id); if (!co) return;
+    if (!co.terms.some(t => t.k === editKey())) {
+      const term = co.terms.find(t => t.w < 0) || co.terms[0];
+      if (term) edit = { gi: term.gi, t: term.t };
+    }
+    selection = { kind: 'comparison', id }; $('trace-details').open = true; render();
+  }
+  function changeEffect(event) {
+    const c = editedCell(), el = event.target;
+    if (!c || !c.d) return;
+    if (el.value === '' || !Number.isFinite(Number(el.value))) { if (event.type === 'change') el.value = String(c.tau); return; }
+    const value = Math.round(Math.max(-100, Math.min(100, Number(el.value))) * 10) / 10;
+    config.groups[c.gi].overrides[c.t] = value; scenario = 'custom';
+    if (event.type === 'change' || Number(el.value) !== value) el.value = String(value);
+    render(false, event.type === 'input' && el.id === 'effect-number'); announce();
+  }
+  function loadPreset(name) {
+    basePreset = name; scenario = name; config = engine.makePreset(name);
+    edit = { gi: 0, t: config.T }; selection = { kind: 'cell', gi: 0, t: config.T };
+    allBacon = allCells = false; $('comparison-filter').value = $('cell-filter').value = 'all';
+    $('trace-details').open = false; $('trace-summary').textContent = 'Inspect a comparison or cell';
+    $('trace-content').replaceChildren();
+    render(true); announce();
+  }
+  document.addEventListener('click', event => {
+    const button = event.target.closest('[data-edit-cell],[data-inspect-cell],[data-comparison]');
+    if (!button) return;
+    if (button.hasAttribute('data-comparison')) selectComparison(button.dataset.comparison);
+    else selectCell(button.dataset.inspectCell || button.dataset.editCell, button.hasAttribute('data-inspect-cell'));
+  });
+  $('scenario').addEventListener('change', event => { if (presets.has(event.target.value)) loadPreset(event.target.value); });
+  $('reset-example').addEventListener('click', () => loadPreset(basePreset));
+  $('edit-cell').addEventListener('change', event => selectCell(event.target.value, false));
+  ['effect-number', 'effect-slider'].forEach(id => { $(id).addEventListener('input', changeEffect); $(id).addEventListener('change', changeEffect); });
+  ['raw', 'panel'].forEach(name => $('tab-' + name).addEventListener('click', () => setView(name)));
+  document.querySelector('.tabs').addEventListener('keydown', event => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault(); const next = event.key === 'Home' ? 'raw' : event.key === 'End' ? 'panel' : view === 'raw' ? 'panel' : 'raw';
+    setView(next); $('tab-' + next).focus();
+  });
+  $('panel-metric').addEventListener('change', event => { metric = event.target.value; renderPanel(); remember(); });
+  $('show-counterfactual').addEventListener('change', renderPlot);
+  $('bacon-expand').addEventListener('click', () => { allBacon = !allBacon; if (!allBacon) $('comparison-filter').value = 'all'; renderTerms(); });
+  $('cell-expand').addEventListener('click', () => { allCells = !allCells; if (!allCells) $('cell-filter').value = 'all'; renderTerms(); });
+  $('comparison-filter').addEventListener('change', renderTerms); $('cell-filter').addEventListener('change', renderTerms);
+  $('trace-details').addEventListener('toggle', () => {
+    if ($('trace-details').open) renderTrace();
+    else $('trace-summary').textContent = 'Inspect a comparison or cell';
+  });
+  function changeGroup(event) {
+    const el = event.target, field = el.dataset.field, g = config.groups[Number(el.dataset.group)];
+    if (!g || !field || el.tagName === 'SELECT' && event.type === 'input') return;
+    if (el.value === '' || !Number.isFinite(Number(el.value))) { if (event.type === 'change') el.value = String(g[field]); return; }
+    const value = Number(el.value);
+    g[field] = field === 'adopt' ? value : field === 'n' ? Math.round(Math.max(Number(el.min), Math.min(Number(el.max), value))) : Math.round(Math.max(Number(el.min), Math.min(Number(el.max), value)) * 10) / 10;
+    if (event.type === 'change') el.value = String(g[field]);
+    if (['adopt', 'level', 'growth'].includes(field)) g.overrides = {};
+    scenario = 'custom'; render(field === 'adopt'); announce();
+  }
+  $('group-editor-body').addEventListener('input', changeGroup); $('group-editor-body').addEventListener('change', changeGroup);
+  $('group-count').addEventListener('change', event => {
+    const count = Number(event.target.value);
+    while (config.groups.length < count) { const i = config.groups.length; config.groups.push({ id: 'G' + (i + 1), adopt: 0, n: 100, alpha: i, level: 2, growth: .5, overrides: {} }); }
+    config.groups = config.groups.slice(0, count); scenario = 'custom'; render(true); announce();
+  });
+  $('period-count').addEventListener('change', event => {
+    config.T = Number(event.target.value);
+    config.groups.forEach(g => { if (g.adopt > config.T) { g.adopt = config.T; g.overrides = {}; } Object.keys(g.overrides).forEach(t => { if (Number(t) > config.T) delete g.overrides[t]; }); });
+    scenario = 'custom'; render(true); announce();
+  });
+  function changeTrend(event) {
+    const el = event.target;
+    if (el.value === '' || !Number.isFinite(Number(el.value))) { if (event.type === 'change') el.value = String(config.trend); return; }
+    config.trend = Math.round(Math.max(-3, Math.min(3, Number(el.value))) * 10) / 10;
+    if (event.type === 'change') el.value = String(config.trend);
+    scenario = 'custom'; render(); announce();
+  }
+  $('trend').addEventListener('input', changeTrend); $('trend').addEventListener('change', changeTrend);
+  $('reset-cell').addEventListener('click', () => { const c = editedCell(); if (!c || !c.d) return; delete config.groups[c.gi].overrides[c.t]; scenario = 'custom'; render(); announce(); });
+  new ResizeObserver(renderPlot).observe($('raw-plot'));
+  window.DiDLabPanel = Object.freeze({ getState: () => engine.copy(config), getResult: () => result });
+  render(true);
+})();
+
+</script>
+</body>
+</html>
