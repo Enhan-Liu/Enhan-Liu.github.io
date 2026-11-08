@@ -174,88 +174,10 @@ h2 {
     font-size: 0.97rem;
 }
 
-/* ---------- CV Page ---------- */
-.cv-download {
-    text-align: right;
-    margin-bottom: 2rem;
-}
-
-.btn {
-    display: inline-block;
-    padding: 0.38rem 1.1rem;
-    border: 1.5px solid var(--maroon);
-    color: var(--maroon);
-    font-family: var(--font-sans);
-    font-size: 0.92rem;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background 0.18s, color 0.18s;
-    text-decoration: none;
-}
-
-.btn:hover {
-    background: var(--maroon);
-    color: #fff;
-    text-decoration: none;
-}
-
-/* CV Entry */
-.cv-entry {
-    margin-bottom: 1.4rem;
-}
-
-.cv-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 0.3rem;
-}
-
-.cv-row strong { font-weight: 600; }
-
-.cv-date {
-    color: var(--gray);
-    font-family: var(--font-sans);
-    font-size: 0.78rem;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.cv-sub {
-    color: var(--gray);
-    font-family: var(--font-sans);
-    font-size: 0.78rem;
-    letter-spacing: 0.01em;
-    margin-top: 0.1rem;
-}
-
-.cv-list {
-    margin: 0.35rem 0 0 1.4rem;
-    font-size: 0.95rem;
-}
-
-.cv-list li {
-    margin-bottom: 0.2rem;
-}
-
-.cv-skills-grid {
-    display: grid;
-    grid-template-columns: 9rem 1fr;
-    gap: 0.4rem 1rem;
-    font-size: 0.97rem;
-}
-
-.cv-skills-grid dt {
-    font-weight: 600;
-    color: var(--gray);
-}
-
 /* ---------- Notes Page ---------- */
 .notes-intro {
     color: var(--gray);
     margin-bottom: 1.5rem;
-    font-size: 0.97rem;
 }
 
 .note-entry {
@@ -333,7 +255,5 @@ footer a:hover { color: var(--maroon); }
     body { font-size: 17px; }
     header h1 { font-size: 1.9rem; }
     nav ul { gap: 1.4rem; }
-    .cv-row { flex-direction: column; gap: 0; }
-    .cv-skills-grid { grid-template-columns: 1fr; }
     .note-entry { flex-direction: column; gap: 0.2rem; }
 }

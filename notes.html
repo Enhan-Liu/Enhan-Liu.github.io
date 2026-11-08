@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Notes &middot; Enhan Liu</title>
+    <title>Software &amp; Notes &middot; Enhan Liu</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap">
@@ -11,7 +11,7 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- Bump ?v= whenever style.css changes, so browsers fetch the new version -->
-    <link rel="stylesheet" href="style.css?v=20261107">
+    <link rel="stylesheet" href="style.css?v=20261107c">
 </head>
 <body>
 
@@ -23,31 +23,46 @@
 <nav>
     <ul>
         <li><a href="index.html">About</a></li>
-        <li><a href="cv.html">CV</a></li>
-        <li><a href="notes.html" class="active">Study Notes</a></li>
+        <li><a href="notes.html" class="active">Software &amp; Notes</a></li>
     </ul>
 </nav>
 
 <main>
 
-    <!-- ── Page intro ─────────────────────────────────────────
-         Write 1 sentence describing what this page contains.
-         Example: "Notes and reading memos from coursework and self-study."
+    <!-- ── Page intro: one sentence about what this page contains ── -->
+    <p class="notes-intro">Software I have helped build, and notes and tutorials from working through new methods.</p>
+
+    <!-- ── Sections, in order: Software, Notes, Tutorials ─────────
+         Each .note-entry is one item, newest first. Fields:
+           - note-title: the title (a link, or plain text when the
+             links go in note-links below)
+           - note-tag: short label (optional)
+           - note-desc: one-line description (optional)
+           - note-links: several links, e.g. CRAN + tutorial, or two versions (optional)
+           - note-date: year
+         Put single files in files/; put Quarto websites in notes/<name>/.
     ─────────────────────────────────────────────────────────── -->
     <section>
-        <!-- <h2>Study Notes</h2>
-        <p class="notes-intro">[Short description of this page.]</p> -->
+        <h2>Software</h2>
 
-        <!-- ── Notes ─────────────────────────────────────────
-             Each .note-entry is one note, newest first. Fields:
-               - note-title: the title (a link, or plain text when the
-                 links go in note-links below)
-               - note-tag: short label (optional)
-               - note-desc: one-line description (optional)
-               - note-links: several links, e.g. different versions (optional)
-               - note-date: year
-             Put single files in files/; put Quarto websites in notes/<name>/.
-        ─────────────────────────────────────────────────────── -->
+        <div class="note-entry">
+            <div>
+                <span class="note-title">
+                    fdid: Factorial Difference-in-Differences
+                    <span class="note-tag">R package</span>
+                </span>
+                <p class="note-desc">Implements factorial difference-in-differences for panel data where all units experience the same event but differ in a baseline factor.</p>
+                <p class="note-links">
+                    <a href="https://cran.r-project.org/package=fdid" target="_blank">CRAN</a>
+                    <a href="https://yiqingxu.org/packages/fdid/" target="_blank">Tutorial</a>
+                </p>
+            </div>
+            <span class="note-date">2026</span>
+        </div>
+
+    </section>
+
+    <section>
         <h2>Notes</h2>
 
         <!-- Quarto book: copy the whole _book folder into notes/negative-weights-did/ when updating -->
