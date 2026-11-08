@@ -14,8 +14,20 @@
   }
   window.addEventListener('hashchange', revealLinkedDetail);
   revealLinkedDetail();
+  // Links such as lab-panel.html#step=3 open the embedded lab at that step.
+  function labState() {
+    const match = window.location.hash.match(/^#(step=[0-7]|free)$/);
+    return match ? match[1] : '';
+  }
   document.querySelectorAll('iframe[data-lab-frame]').forEach(function (frame) {
     let observer, pending = false, previous = 0;
+    const base = frame.getAttribute('src').split('#')[0];
+    function syncState() {
+      const state = labState();
+      if (state && frame.getAttribute('src') !== base + '#' + state) frame.setAttribute('src', base + '#' + state);
+    }
+    syncState();
+    window.addEventListener('hashchange', syncState);
     function fit() {
       pending = false;
       try {

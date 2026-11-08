@@ -3,45 +3,137 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Change a treatment effect and compare the Goodman-Bacon and dCDH decompositions of the same TWFE coefficient.">
+<meta name="description" content="Follow the note step by step, or explore any design: compare the Goodman-Bacon and dCDH decompositions of the same TWFE coefficient.">
 <title>DiD Lab · One coefficient, two decompositions</title>
 <style>
-:root{color-scheme:light;--paper:#f5f4ef;--surface:#fff;--ink:#20302f;--muted:#64706b;--line:#dce1d9;--teal:#216b60;--soft:#e9f2ed;--red:#ae4636;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit;color:inherit}button,select,summary{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #679bc6;outline-offset:3px}[hidden]{display:none!important}a{color:var(--teal);text-underline-offset:3px}h1,h2,h3,p{margin:0}sub{font-size:.72em}button{touch-action:manipulation}.wrap{max-width:1320px;margin:auto;padding:24px}.hero{margin-bottom:22px}.hero h1{font-size:30px;letter-spacing:-.8px}.hero p{margin-top:7px;color:var(--muted)}.embedded .hero{display:none}.embedded .wrap{padding:16px}.card{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:16px}.controls>.field,.effect-hint{min-width:0}.controls{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(0,1.6fr);gap:12px 24px;margin-bottom:14px}.field{display:block;font-size:12px;color:var(--muted)}.field>span:first-child{display:block;margin-bottom:6px}.scenario-row,.effect-row{display:flex;align-items:center;gap:10px}.scenario-row select{flex:1;min-width:0}.effect-row select{max-width:165px;min-width:100px}.effect-row input[type=range]{flex:1;min-width:65px;accent-color:var(--teal)}select,input[type=number]{min-height:36px;padding:6px 8px;border:1px solid var(--line);border-radius:5px;background:var(--paper)}input[type=number]{width:76px;font-family:var(--mono)}.btn{min-height:36px;border:1px solid var(--line);border-radius:5px;background:var(--surface);padding:5px 10px;font-size:12px;white-space:nowrap}.btn:hover{background:var(--soft)}.effect-hint{grid-column:1/-1;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:10px}.effect-hint strong{color:var(--ink)}.negative{color:var(--red)}.warning{background:#faece8;border-left:3px solid var(--red);padding:10px 14px;margin-bottom:14px}.data-card{margin-bottom:16px}.data-head{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:10px}.data-head h2{font-size:15px;font-weight:600}.tabs{display:flex;gap:3px;padding:3px;background:var(--paper);border-radius:6px;border:1px solid var(--line)}.tabs button{border:0;background:transparent;border-radius:4px;padding:5px 12px;min-height:30px;font-size:12px}.tabs button[aria-selected=true]{background:var(--surface);box-shadow:0 1px 3px #20302f15;font-weight:600}.data-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:3px;color:var(--muted);font-size:11px}.data-tools label{display:flex;align-items:center;gap:5px}.data-tools input{accent-color:var(--teal)}.small-select{font-size:12px;min-height:32px;padding:4px 6px;max-width:210px}.rawplot{display:block;width:100%;height:185px;overflow:visible}.rawplot text{font:11px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:var(--muted)}.rawplot .value-label{fill:var(--ink);font-family:var(--mono)}.rawplot .point{cursor:pointer}.legend{display:flex;flex-wrap:wrap;gap:5px 14px;color:var(--muted);font-size:11px;margin-top:3px}.legend span{display:flex;gap:5px;align-items:center}.swatch{display:inline-block;width:8px;height:8px;border-radius:2px}.table-scroll{overflow:auto;max-width:100%;overscroll-behavior-x:contain}.panel-table{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fixed}.panel-table th{font-size:11px;color:var(--muted);font-weight:400;text-align:center}.panel-table th:first-child{width:78px;text-align:left}.group-name{font:600 12px var(--mono);color:var(--ink)}.adoption{display:block;font-size:10px;margin-top:2px}.panel-table td{padding:0}.cell{position:relative;display:block;width:100%;min-height:34px;border:1px solid transparent;border-radius:4px;font:12px var(--mono);text-align:center;padding:6px 1px;background:#f0f2ed;white-space:nowrap}.cell[aria-pressed=true]{outline:2px solid var(--ink);outline-offset:0}.cell.pre-window{border-bottom:3px solid #8ba2b5}.cell.post-window{border-bottom:3px solid #aa7e36}.cell.outside{opacity:.3}.neg-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--red)}.cell .neg-dot{position:absolute;top:3px;right:3px}.panel-caption{color:var(--muted);font-size:11px;margin-top:8px}.compare-head{display:flex;justify-content:space-between;gap:15px;align-items:baseline;margin:0 0 9px}.compare-head h2{font-size:15px;font-weight:600}.compare-head p{font-size:12px;color:var(--muted)}.decomp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.decomp-head{display:flex;justify-content:space-between;gap:12px;align-items:start}.decomp-head h3{font-size:19px;line-height:1.3;font-family:Georgia,"Times New Roman",serif;font-weight:400}.decomp-head p{font-size:12px;color:var(--muted);margin-top:4px}.total{font:25px/1.2 var(--mono);letter-spacing:-.7px;white-space:nowrap}.total .symbol{font:15px Georgia,"Times New Roman",serif;margin-right:5px}.terms{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;margin-top:12px}.terms col:first-child{width:38%}.terms col:nth-child(2){width:37%}.terms col:last-child{width:25%}.terms th{font-size:11px;font-weight:400;color:var(--muted);text-align:left;padding:6px 3px}.terms th:last-child,.terms td:last-child{text-align:right}.terms td{padding:8px 3px;border-top:1px solid #e9ede5;vertical-align:middle}.terms .selected{background:var(--soft)}.term-button{display:block;border:0;background:none;padding:2px 0;text-align:left;width:100%;font-size:12px}.term-button strong{font-weight:600}.term-button small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.product,.contribution{font-family:var(--mono);font-size:12px}.product .factor{white-space:nowrap}.contribution{display:flex;justify-content:end;align-items:center;gap:6px}.mini-bar{position:relative;display:inline-block;width:40px;height:14px;flex:none;background:linear-gradient(to right,transparent 49%,#d7ddd4 49%,#d7ddd4 51%,transparent 51%)}.mini-bar i{position:absolute;height:7px;top:3px;background:var(--teal);border-radius:1px}.mini-bar i.neg{background:var(--red)}.remainder{color:var(--muted);font-size:11px}.remainder td{border-top:1px dashed var(--line)}.list-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:9px;margin-top:5px;font-size:11px;color:var(--muted)}.text-button{border:0;background:none;color:var(--teal);font-size:12px;padding:4px 0;text-decoration:underline;text-underline-offset:3px}.term-scroll.expanded{max-height:260px;overflow:auto}.filter{margin-top:10px}.empty{color:var(--muted);font-size:12px;padding:14px 0}.disclosure{margin-top:14px;border:1px solid var(--line);border-radius:7px;background:var(--surface);padding:11px 14px}.disclosure>summary{font-size:12px;font-weight:550}.disclosure[open]>summary{margin-bottom:14px}.trace-context{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.trace-context p{font-size:12px;color:var(--muted);margin-top:4px}.weight-badge{background:var(--soft);border-radius:5px;padding:6px 10px;font:13px var(--mono);white-space:nowrap}.trace-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}.block-table,.detail-table{border-collapse:collapse;width:100%;font-size:12px}.block-table th,.block-table td,.detail-table th,.detail-table td{padding:7px;border-bottom:1px solid var(--line);text-align:right}.block-table th:first-child,.block-table td:first-child,.detail-table th:first-child,.detail-table td:first-child{text-align:left}.block-table th,.detail-table th{font-size:11px;color:var(--muted);font-weight:400}.block-table td{font-family:var(--mono)}.block-table .pre{background:#edf1f5}.block-table .post{background:#f6f0e3}.block-sign{float:left;color:var(--muted);font-size:11px}.formula{font:17px/1.65 Georgia,"Times New Roman",serif;margin-top:10px;overflow-wrap:anywhere}.trace-copy{font-size:12px;color:var(--muted);margin-top:8px}.coefficient-details{margin-top:12px;font-size:12px}.coefficient-details summary{color:var(--teal)}.bounded{max-height:220px;overflow:auto;margin-top:8px}.detail-table button{font-family:inherit;font-size:11px;text-align:left}.support{font-size:11px;color:var(--muted);margin-top:12px}.extra-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:16px}.extra-grid h3,.advanced h3{font-size:13px;font-weight:600;margin-bottom:8px}.att-line{display:flex;gap:20px;flex-wrap:wrap;font:16px var(--mono)}.small-copy{font-size:12px;color:var(--muted);margin-top:7px}.design-fields{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:12px}.design-fields select{min-width:65px}.design-meta{color:var(--muted);font-size:11px;margin-top:8px}.editor-table{width:100%;min-width:720px;border-collapse:collapse;font-size:12px}.editor-table th{color:var(--muted);font-size:11px;font-weight:400;text-align:left;padding:7px}.editor-table td{padding:7px;border-top:1px solid var(--line)}.editor-table input,.editor-table select{width:100%;max-width:110px;min-width:65px;font-size:12px}.raw-rows{margin-top:18px;font-size:12px}.raw-rows summary{font-weight:550}.raw-toolbar{display:flex;justify-content:space-between;gap:15px;align-items:center;margin:10px 0}.raw-table{border-collapse:collapse;min-width:900px;width:100%;font:11px var(--mono)}.raw-table th,.raw-table td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right}.raw-table th:first-child,.raw-table td:first-child{text-align:left}.raw-table th{font-weight:400;color:var(--muted)}.weight-summary{font-size:12px;color:var(--muted);line-height:1.8}.footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:14px}.footer a{color:var(--muted)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@media(max-width:840px){.trace-grid{grid-template-columns:1fr}.compare-head p{font-size:11px}.extra-grid{grid-template-columns:1fr}.mini-bar{display:none}}
-@media(max-width:620px){.decomp-grid{grid-template-columns:1fr}.controls{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:550px){.wrap,.embedded .wrap{padding:12px}.card{padding:12px}.hero h1{font-size:25px}.controls{gap:12px}.effect-row{gap:7px}.effect-row select{max-width:115px;min-width:90px}.effect-row input[type=number]{width:64px}.effect-row input[type=range]{min-width:50px}.effect-hint{font-size:11px}.data-head{gap:8px}.tabs button{padding:4px 9px}.data-tools{align-items:start}.rawplot{height:180px}.panel-table .cell{min-height:40px;font-size:11px}.decomp-head h3{font-size:19px}.total{font-size:24px}.mini-bar{display:none}.terms col:first-child{width:36%}.terms col:nth-child(2){width:40%}.terms col:last-child{width:24%}.terms td{padding-block:9px}.terms .product,.terms .contribution{font-size:11px}.compare-head{display:block}.compare-head p{margin-top:3px}.trace-grid{gap:12px}.block-table td,.block-table th{padding:6px 4px}.disclosure{padding:10px 12px}.weight-badge{font-size:12px}.att-line{font-size:14px;gap:12px}}
+:root{color-scheme:light;--paper:#f5f4ef;--surface:#fff;--ink:#20302f;--muted:#64706b;--line:#dce1d9;--hair:#edf0ea;--teal:#216b60;--soft:#e9f2ed;--red:#ae4636;--amber:#8a5a16;--amber-line:#c08a2e;--amber-soft:#f6ead2;--amber-paper:#fbf4e6;--serif:Georgia,"Times New Roman",serif;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit;color:inherit}button,select,summary{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #679bc6;outline-offset:3px}[hidden]{display:none!important}a{color:var(--teal);text-underline-offset:3px}h1,h2,h3,h4,p{margin:0}sub,sup{font-size:.72em}button{touch-action:manipulation}
+.wrap{max-width:1320px;margin:auto;padding:24px}.hero{margin-bottom:18px}.hero h1{font-size:30px;letter-spacing:-.8px}.hero p{margin-top:7px;color:var(--muted)}.embedded .hero{display:none}.embedded .wrap{padding:16px}
+.card{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:16px}
+.btn{min-height:34px;border:1px solid var(--line);border-radius:5px;background:var(--surface);padding:5px 11px;font-size:12px;white-space:nowrap}.btn:hover{background:var(--soft)}.btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}.btn.primary:hover{background:#1b5a51}
+.text-button{border:0;background:none;color:var(--teal);font-size:12px;padding:4px 0;text-decoration:underline;text-underline-offset:3px}
+.negative{color:var(--red)}
+.tabs{display:inline-flex;gap:3px;padding:3px;background:var(--paper);border-radius:6px;border:1px solid var(--line)}.tabs button{border:0;background:transparent;border-radius:4px;padding:5px 12px;min-height:30px;font-size:12px}.tabs button[aria-selected=true]{background:var(--surface);box-shadow:0 1px 3px #20302f15;font-weight:600}
+.mode-bar{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap;margin-bottom:12px}.mode-bar .tabs{background:var(--surface)}.mode-bar .tabs button[aria-selected=true]{background:var(--soft);box-shadow:none;color:var(--teal)}.mode-copy{font-size:12px;color:var(--muted)}
+.step-card{margin-bottom:14px}.steps{list-style:none;margin:0 0 14px;padding:0 0 12px;display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid var(--hair)}
+.step-chip{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:3px 11px 3px 3px;font-size:12px;min-height:30px}.step-chip:hover{border-color:#b9c6bd}
+.step-n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--surface);border:1px solid var(--line);font:11px var(--mono)}
+.step-chip[aria-current=step]{background:var(--soft);border-color:var(--teal);color:var(--teal);font-weight:600}.step-chip[aria-current=step] .step-n{background:var(--teal);border-color:var(--teal);color:#fff}
+.step-kicker{font:11px var(--mono);color:var(--teal);letter-spacing:.06em}.step-card h2{font:400 21px/1.3 var(--serif);margin-top:3px}.step-question{font-size:15px;margin-top:6px}
+.look{margin-top:11px;background:var(--paper);border-radius:6px;padding:9px 13px;font-size:13px;line-height:1.6}.look summary{font-size:12px;font-weight:600;color:var(--teal)}.look[open] summary{margin-bottom:5px}
+.step-actions{display:flex;justify-content:space-between;align-items:center;gap:10px 16px;flex-wrap:wrap;margin-top:12px;font-size:12px}.step-links{display:flex;gap:6px 16px;flex-wrap:wrap;align-items:center}.step-nav{display:flex;gap:8px;align-items:center}
+.controls{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:14px}.field{display:block;font-size:12px;color:var(--muted)}.field>span:first-child{display:block;margin-bottom:6px}.scenario-row{display:flex;align-items:center;gap:10px}
+select,input[type=number]{min-height:34px;padding:6px 8px;border:1px solid var(--line);border-radius:5px;background:var(--paper)}input[type=number]{width:76px;font-family:var(--mono)}#scenario{min-width:260px;max-width:100%}
+.effects-card{margin-bottom:14px}.card-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px}.card-head h2,.card-head h3{font-size:15px;font-weight:600}.card-head p{font-size:12px;color:var(--muted)}
+.slider-row{display:grid;grid-template-columns:minmax(150px,1.1fr) minmax(90px,2fr) 76px 92px;gap:12px;align-items:center;padding:7px 8px;border-radius:6px}.slider-row+.slider-row{border-top:1px solid var(--hair)}.slider-row.selected{background:var(--soft)}
+.slider-row label{display:flex;flex-direction:column}.cell-name{font:17px/1.2 var(--serif)}.slider-row small{color:var(--muted);font-size:11px}.slider-row input[type=range]{width:100%;accent-color:var(--teal)}.w-badge{font:12px var(--mono);text-align:right;white-space:nowrap}
+.effect-row{display:flex;align-items:center;gap:10px}.effect-row select{max-width:165px;min-width:100px}.effect-row input[type=range]{flex:1;min-width:65px;accent-color:var(--teal)}
+.effect-hint{color:var(--muted);font-size:12px;border-top:1px solid var(--hair);padding-top:9px;margin-top:9px}.effect-hint strong{color:var(--ink)}
+.warning{background:#faece8;border-left:3px solid var(--red);padding:10px 14px;margin-bottom:14px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:10px}.stat{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:11px 14px}.stat>span{display:block;font-size:12px;color:var(--muted)}.stat output{display:block;font:25px/1.25 var(--mono);letter-spacing:-.6px;margin-top:2px}.stat small{display:block;font-size:11px;color:var(--muted)}
+.support-note{border-left:3px solid var(--amber-line);background:var(--amber-paper);padding:8px 12px;font-size:12px;margin-bottom:14px}
+.data-card{margin-bottom:16px}.data-head{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:10px}.data-head h2{font-size:15px;font-weight:600}
+.data-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:3px;color:var(--muted);font-size:11px}.data-tools label{display:flex;align-items:center;gap:5px}.data-tools input{accent-color:var(--teal)}.small-select{font-size:12px;min-height:32px;padding:4px 6px;max-width:210px}
+.rawplot{display:block;width:100%;height:190px;overflow:visible}.rawplot text{font:11px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:var(--muted)}.rawplot .value-label{fill:var(--ink);font-family:var(--mono)}.rawplot .band-label{fill:var(--amber)}.rawplot .point{cursor:pointer}
+.legend{display:flex;flex-wrap:wrap;gap:5px 14px;color:var(--muted);font-size:11px;margin-top:3px}.legend span{display:flex;gap:5px;align-items:center}.swatch{display:inline-block;width:8px;height:8px;border-radius:2px}.pt{display:inline-block;width:8px;height:8px;border-radius:50%;border:1.5px solid var(--muted)}.pt.filled{background:var(--muted)}
+.table-scroll{overflow:auto;max-width:100%;overscroll-behavior-x:contain}.panel-table{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fixed}.panel-table th{font-size:11px;color:var(--muted);font-weight:400;text-align:center}.panel-table th:first-child{width:72px;text-align:left}.panel-table th.nosupport{background:var(--amber-soft);color:var(--amber);border-radius:3px}
+.group-name{font:600 12px var(--mono);color:var(--ink)}.adoption{display:block;font-size:10px;margin-top:2px}.panel-table td{padding:0}
+.cell{position:relative;display:block;width:100%;min-height:34px;border:1px solid transparent;border-radius:4px;font:12px var(--mono);text-align:center;padding:6px 1px;background:#f0f2ed;white-space:nowrap}.panel-table.compact .cell{font-size:11px;padding:6px 0;min-height:30px}
+.cell[aria-pressed=true]{outline:2px solid var(--ink);outline-offset:0}.cell.pre-window{border-bottom:3px solid #8ba2b5}.cell.post-window{border-bottom:3px solid #aa7e36}.cell.outside{opacity:.3}
+.neg-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--red)}.cell .neg-dot{position:absolute;top:3px;right:3px}.panel-caption{color:var(--muted);font-size:11px;margin-top:8px}.cap-swatch{display:inline-block;width:10px;height:8px;background:var(--amber-soft);border-radius:2px;margin-right:3px}
+.compare-head{display:flex;justify-content:space-between;gap:15px;align-items:baseline;margin:0 0 9px}.compare-head h2{font-size:15px;font-weight:600}.compare-head p{font-size:12px;color:var(--muted)}
+.decomp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.decomp-head{display:flex;justify-content:space-between;gap:12px;align-items:start}.decomp-head h3{font:400 19px/1.3 var(--serif)}.decomp-head p{font-size:12px;color:var(--muted);margin-top:4px}
+.total{font:25px/1.2 var(--mono);letter-spacing:-.7px;white-space:nowrap}.total .symbol{font:15px var(--serif);margin-right:5px}
+.terms{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;margin-top:12px}.terms col:first-child{width:42%}.terms col:nth-child(2){width:34%}.terms col:last-child{width:24%}.terms th{font-size:11px;font-weight:400;color:var(--muted);text-align:left;padding:6px 3px}.terms th:last-child,.terms td:last-child{text-align:right}.terms td{padding:8px 3px;border-top:1px solid var(--hair);vertical-align:middle}.terms .selected{background:var(--soft)}
+.term-button{display:block;border:0;background:none;padding:2px 0;text-align:left;width:100%;font-size:12px}.term-button strong{font-weight:600}.term-button .cell-name{font-size:15px}.term-button small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.tag-forbidden{display:inline-block;font:600 10px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--amber);background:var(--amber-soft);border-radius:3px;padding:0 5px;margin-left:5px;letter-spacing:.02em;vertical-align:1px}
+.product,.contribution{font-family:var(--mono);font-size:12px}.product .factor{white-space:nowrap}.contribution{display:flex;justify-content:end;align-items:center;gap:6px}
+.mini-bar{position:relative;display:inline-block;width:40px;height:14px;flex:none;background:linear-gradient(to right,transparent 49%,#d7ddd4 49%,#d7ddd4 51%,transparent 51%)}.mini-bar i{position:absolute;height:7px;top:3px;background:var(--teal);border-radius:1px}.mini-bar i.neg{background:var(--red)}
+.remainder{color:var(--muted);font-size:11px}.remainder td{border-top:1px dashed var(--line)}.list-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:9px;margin-top:5px;font-size:11px;color:var(--muted)}.term-scroll.expanded{max-height:260px;overflow:auto}.filter{margin-top:10px}.empty{color:var(--muted);font-size:12px;padding:14px 0}
+.bridge,.diag{margin-top:14px}.bridge-grid{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 22px;margin-top:6px;font:17px/1.55 var(--serif);overflow-x:auto}.bridge-grid .num{font:13px/1.55 var(--mono);color:var(--muted);align-self:center}.bridge-copy{font-size:12px;color:var(--muted);margin-top:10px}
+.diag-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px;margin-top:4px}.diag h4{font-size:12px;font-weight:600;margin:0 0 4px}
+.diag-row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(40px,1fr) 112px;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--hair);font-size:12px}.diag-row small,.diag-num small{display:block;color:var(--muted);font-size:11px}.diag-num small{white-space:nowrap}
+.diag-bar{height:8px;background:var(--hair);border-radius:2px;position:relative}.diag-bar i{position:absolute;left:0;top:0;bottom:0;background:var(--teal);border-radius:2px}.diag-bar i.late{background:var(--amber-line)}.diag-num{font:12px var(--mono);text-align:right}.forbidden-name{color:var(--amber);font-weight:600}
+.diag-stat{font-size:12px;padding:7px 0;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:10px}.diag-stat strong{font:13px var(--mono)}.diag-copy{font-size:12px;color:var(--muted);margin-top:10px}
+.disclosure{margin-top:14px;border:1px solid var(--line);border-radius:7px;background:var(--surface);padding:11px 14px}.disclosure>summary{font-size:12px;font-weight:550}.disclosure[open]>summary{margin-bottom:14px}
+.trace-context{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.trace-context p{font-size:12px;color:var(--muted);margin-top:4px}.weight-badge{background:var(--soft);border-radius:5px;padding:6px 10px;font:13px var(--mono);white-space:nowrap}
+.wsym{font:16px var(--serif);white-space:nowrap}.ss{display:inline-flex;flex-direction:column;vertical-align:middle;line-height:1;font-size:.7em;margin-left:1px}
+.trace-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}.block-table,.detail-table{border-collapse:collapse;width:100%;font-size:12px}.block-table th,.block-table td,.detail-table th,.detail-table td{padding:7px;border-bottom:1px solid var(--line);text-align:right}.block-table th:first-child,.block-table td:first-child,.detail-table th:first-child,.detail-table td:first-child{text-align:left}.block-table th,.detail-table th{font-size:11px;color:var(--muted);font-weight:400}.block-table td{font-family:var(--mono)}.block-table .pre{background:#edf1f5}.block-table .post{background:#f6f0e3}.block-sign{float:left;color:var(--muted);font-size:11px}
+.formula{font:17px/1.65 var(--serif);margin-top:10px;overflow-wrap:anywhere}.trace-copy{font-size:12px;color:var(--muted);margin-top:8px}.trace-copy strong{color:var(--amber)}.coefficient-details{margin-top:12px;font-size:12px}.coefficient-details summary{color:var(--teal)}.bounded{max-height:220px;overflow:auto;margin-top:8px}.detail-table button{font-family:inherit;font-size:11px;text-align:left}.support{font-size:11px;color:var(--muted);margin-top:12px}
+.advanced h3{font-size:13px;font-weight:600;margin-bottom:8px}.small-copy{font-size:12px;color:var(--muted);margin-top:7px}.design-fields{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:12px}.design-fields select{min-width:65px}.design-meta{color:var(--muted);font-size:11px;margin-top:8px}
+.editor-table{width:100%;min-width:720px;border-collapse:collapse;font-size:12px}.editor-table th{color:var(--muted);font-size:11px;font-weight:400;text-align:left;padding:7px}.editor-table td{padding:7px;border-top:1px solid var(--line)}.editor-table input,.editor-table select{width:100%;max-width:110px;min-width:65px;font-size:12px}
+.raw-rows{margin-top:18px;font-size:12px}.raw-rows summary{font-weight:550}.raw-toolbar{display:flex;justify-content:space-between;gap:15px;align-items:center;margin:10px 0}.raw-table{border-collapse:collapse;min-width:900px;width:100%;font:11px var(--mono)}.raw-table th,.raw-table td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right}.raw-table th:first-child,.raw-table td:first-child{text-align:left}.raw-table th{font-weight:400;color:var(--muted)}
+.footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:14px}.footer a{color:var(--muted)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:840px){.trace-grid{grid-template-columns:1fr}.compare-head p{font-size:11px}.diag-grid{grid-template-columns:1fr;gap:12px}.mini-bar{display:none}}
+@media(max-width:620px){.decomp-grid{grid-template-columns:1fr}.slider-row{grid-template-columns:minmax(0,1fr) 62px 70px;gap:6px 8px}.slider-row input[type=number]{width:62px}.diag-row{grid-template-columns:minmax(0,1fr) 104px;gap:4px 10px}.diag-bar{grid-column:1/-1;grid-row:2}.card-head{display:block}.card-head p{margin-top:2px}.slider-row input[type=range]{grid-column:1/-1;grid-row:2}.stat output{font-size:20px}.stat small{display:none}#scenario{min-width:0;width:100%}.controls .field{flex:1}}
+@media(max-width:550px){.wrap,.embedded .wrap{padding:12px}.card{padding:12px}.hero h1{font-size:25px}.stats{gap:8px}.stat{padding:9px 10px}.step-chip{font-size:11px;padding-right:9px}.effect-row{gap:7px}.effect-row select{max-width:115px;min-width:90px}.effect-row input[type=number]{width:64px}.effect-row input[type=range]{min-width:50px}.data-head{gap:8px}.tabs button{padding:4px 9px}.data-tools{align-items:start}.rawplot{height:180px}.panel-table .cell{min-height:40px;font-size:11px}.total{font-size:23px}.terms col:first-child{width:40%}.terms col:nth-child(2){width:36%}.terms col:last-child{width:24%}.terms td{padding-block:9px}.terms .product,.terms .contribution{font-size:11px}.compare-head{display:block}.compare-head p{margin-top:3px}.bridge-grid{grid-template-columns:1fr;gap:2px}.bridge-grid .num{margin-bottom:6px}.trace-grid{gap:12px}.block-table td,.block-table th{padding:6px 4px}.disclosure{padding:10px 12px}.weight-badge{font-size:12px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
-@media print{.controls,.tabs,.filter,.list-foot button,.advanced,.footer{display:none}.wrap{padding:0}.card{break-inside:avoid}.term-scroll.expanded{max-height:none}}
+@media print{.mode-bar,.steps,.step-actions,.controls,.tabs,.filter,.list-foot button,.advanced,.footer{display:none}.wrap{padding:0}.card{break-inside:avoid}.term-scroll.expanded{max-height:none}}
 </style>
 </head>
 <body>
 <main class="wrap" id="did-panel-lab">
-<header class="hero"><h1>One coefficient. Two decompositions.</h1><p>Change an effect, then compare the two weighted sums.</p></header>
+<header class="hero"><h1>One coefficient. Two decompositions.</h1><p>Follow the note step by step, or explore any design.</p></header>
 
-<section class="controls card" aria-label="Change an effect">
-  <label class="field"><span>Example</span><span class="scenario-row"><select id="scenario" aria-label="Scenario"><optgroup label="Panel sizes"><option value="classic">2 groups × 3 periods</option><option value="staggered">4 groups × 8 periods</option><option value="large">8 groups × 12 periods</option></optgroup><optgroup label="Other scenarios"><option value="constant">Identical effects</option><option value="no-never">Growing effects, no never-treated group</option><option value="unequal">Unequal group sizes</option></optgroup><option value="custom" disabled>Edited design</option></select><button id="reset-example" type="button" class="btn">Reset</button></span></label>
-  <div class="field"><span>Change one effect Δ</span><div class="effect-row"><select id="edit-cell" aria-label="Effect to edit"></select><input id="effect-number" type="number" min="-100" max="100" step="0.1" aria-label="Selected cell true effect"><input id="effect-slider" type="range" min="-5" max="15" step="0.1" aria-label="Adjust selected cell effect"></div></div>
+<div class="mode-bar">
+  <div class="tabs" role="tablist" aria-label="Lab mode"><button id="mode-guided" type="button" role="tab" aria-controls="guide" aria-selected="true">Guided tour</button><button id="mode-free" type="button" role="tab" aria-controls="free-controls" aria-selected="false" tabindex="-1">Free exploration</button></div>
+  <span id="mode-copy" class="mode-copy"></span>
+</div>
+
+<section id="guide" class="card step-card" aria-labelledby="step-title">
+  <ol id="step-list" class="steps" aria-label="Steps"></ol>
+  <p id="step-kicker" class="step-kicker"></p>
+  <h2 id="step-title"></h2>
+  <p id="step-question" class="step-question"></p>
+  <details id="step-look" class="look" open><summary>What to look for</summary><div id="step-look-body"></div></details>
+  <div class="step-actions">
+    <span class="step-links"><a id="step-note" target="_top"></a><button id="step-free" type="button" class="text-button">Explore this design freely</button></span>
+    <span class="step-nav"><button id="step-reset" type="button" class="btn">Reset step</button><button id="step-prev" type="button" class="btn">← Previous</button><button id="step-next" type="button" class="btn primary">Next →</button></span>
+  </div>
+</section>
+
+<section id="free-controls" class="card controls" aria-label="Choose a design" hidden>
+  <label class="field"><span>Design</span><span class="scenario-row"><select id="scenario" aria-label="Design"></select><button id="reset-example" type="button" class="btn">Reset</button></span></label>
+</section>
+
+<section class="card effects-card" aria-labelledby="effects-title">
+  <div class="card-head"><h2 id="effects-title">Treatment effects</h2><p>You set the true effects; the design fixes the weights.</p></div>
+  <div id="effects-sliders"></div>
+  <div id="effects-single" hidden><div class="effect-row"><select id="edit-cell" aria-label="Effect to edit"></select><input id="effect-number" type="number" min="-100" max="100" step="0.1" aria-label="Selected cell true effect"><input id="effect-slider" type="range" min="-5" max="15" step="0.1" aria-label="Adjust selected cell effect"></div></div>
   <p id="effect-hint" class="effect-hint" aria-live="polite"></p>
 </section>
-<div id="invalid-design" class="warning" role="alert" hidden>Treatment has no variation after removing the fixed effects. Change the adoption dates or add an untreated comparison group under More options.</div>
+<div id="invalid-design" class="warning" role="alert" hidden>Treatment has no variation after removing the fixed effects. Change the treatment dates or add an untreated comparison group under More options.</div>
+
+<section class="stats" aria-label="Key numbers">
+  <div class="stat"><span>TWFE β̂<sub>fe</sub></span><output id="twfe">—</output><small>Both decompositions sum to this</small></div>
+  <div class="stat"><span>ATT</span><output id="att">—</output><small>Effects weighted by N<sub>g,t</sub>/N<sub>1</sub></small></div>
+  <div class="stat"><span>TWFE − ATT</span><output id="gap">—</output><small id="gap-copy"></small></div>
+</section>
+<p id="support-note" class="support-note" hidden></p>
 
 <section class="card data-card" aria-label="Data views">
   <div class="data-head"><h2>Data</h2><div class="tabs" role="tablist" aria-label="Data view"><button id="tab-raw" type="button" role="tab" aria-controls="raw-view" aria-selected="true">Raw data</button><button id="tab-panel" type="button" role="tab" aria-controls="panel-view" aria-selected="false" tabindex="-1">Panel View</button></div></div>
   <div id="raw-view" role="tabpanel" aria-labelledby="tab-raw"><div class="data-tools"><span>Observed group-period means</span><label><input id="show-counterfactual" type="checkbox">Outcomes without treatment</label></div><svg id="raw-plot" class="rawplot" role="img" aria-label="Observed outcome paths for each group"></svg><div id="group-legend" class="legend"></div></div>
-  <div id="panel-view" role="tabpanel" aria-labelledby="tab-panel" hidden><div class="data-tools"><span>Select a treated cell to edit its effect.</span><select id="panel-metric" class="small-select" aria-label="Panel cell metric"><optgroup label="Effects and weights"><option value="tau">Cell effect Δ</option><option value="w">dCDH weight W</option><option value="contribution">Contribution W × Δ</option></optgroup><optgroup label="Other cell data"><option value="d">Treatment D</option><option value="y">Outcome Y</option><option value="r">Treatment residual ε</option></optgroup></select></div><div id="panel-container" class="table-scroll"></div><p class="panel-caption"><i class="neg-dot"></i> Negative dCDH weight W · tᵢ = first treatment date; ∞ = never treated.</p></div>
+  <div id="panel-view" role="tabpanel" aria-labelledby="tab-panel" hidden><div class="data-tools"><span>Select a treated cell to highlight it.</span><select id="panel-metric" class="small-select" aria-label="Panel cell metric"><optgroup label="Effects and weights"><option value="tau">Cell effect Δ</option><option value="w">dCDH weight W</option><option value="contribution">Contribution W × Δ</option></optgroup><optgroup label="Other cell data"><option value="d">Treatment D</option><option value="y">Outcome Y</option><option value="r">Treatment residual ε</option></optgroup></select></div><div id="panel-container" class="table-scroll"></div><p id="panel-caption" class="panel-caption"></p></div>
 </section>
 
 <div class="compare-head"><h2>Two decompositions</h2><p>Two weighted sums. The same TWFE coefficient.</p></div>
 <div class="decomp-grid">
-  <section class="card decomp-card" aria-labelledby="bacon-title"><div class="decomp-head"><div><h3 id="bacon-title">Goodman-Bacon</h3><p>Weights on 2 × 2 comparisons</p></div><div class="total"><span class="symbol">β̂<sub>fe</sub> =</span><output id="bacon-total">—</output></div></div><div id="bacon-filter-box" class="filter" hidden><select id="comparison-filter" class="small-select" aria-label="Comparison type"><option value="all">All comparisons</option><option value="never">Never-treated controls</option><option value="early">Not-yet-treated controls</option><option value="late">Already-treated controls</option></select></div><div id="bacon-scroll" class="term-scroll"><table class="terms" aria-label="Goodman-Bacon weighted comparisons"><colgroup><col><col><col></colgroup><thead><tr><th>Comparison</th><th>Weight × DiD</th><th>Contribution</th></tr></thead><tbody id="bacon-rows"></tbody></table></div><div class="list-foot"><span id="bacon-count"></span><button id="bacon-expand" type="button" class="text-button" aria-expanded="false" hidden></button></div></section>
+  <section class="card decomp-card" aria-labelledby="bacon-title"><div class="decomp-head"><div><h3 id="bacon-title">Goodman-Bacon</h3><p>Weights on 2 × 2 DiDs</p></div><div class="total"><span class="symbol">β̂<sub>fe</sub> =</span><output id="bacon-total">—</output></div></div><div id="bacon-filter-box" class="filter" hidden><select id="comparison-filter" class="small-select" aria-label="Comparison type"><option value="all">All comparisons</option><option value="never">Never-treated controls</option><option value="early">Not-yet-treated controls</option><option value="late">Forbidden comparisons</option></select></div><div id="bacon-scroll" class="term-scroll"><table class="terms" aria-label="Goodman-Bacon weighted comparisons"><colgroup><col><col><col></colgroup><thead><tr><th>Comparison</th><th>Weight × DiD</th><th>Contribution</th></tr></thead><tbody id="bacon-rows"></tbody></table></div><div class="list-foot"><span id="bacon-count"></span><button id="bacon-expand" type="button" class="text-button" aria-expanded="false" hidden></button></div></section>
   <section class="card decomp-card" aria-labelledby="dcdh-title"><div class="decomp-head"><div><h3 id="dcdh-title" title="de Chaisemartin–D’Haultfœuille">dCDH</h3><p>Weights on effects in treated cells</p></div><div class="total"><span class="symbol">β̂<sub>fe</sub> =</span><output id="dcdh-total">—</output></div></div><div id="cell-filter-box" class="filter" hidden><select id="cell-filter" class="small-select" aria-label="Cell weight filter"><option value="all">All treated cells</option><option value="negative">Negative weights only</option><option value="positive">Positive weights only</option></select></div><div id="cell-scroll" class="term-scroll"><table class="terms" aria-label="dCDH weighted cell effects"><colgroup><col><col><col></colgroup><thead><tr><th>Cell effect</th><th>Weight × effect</th><th>Contribution</th></tr></thead><tbody id="cell-rows"></tbody></table></div><div class="list-foot"><span id="cell-count"></span><button id="cell-expand" type="button" class="text-button" aria-expanded="false" hidden></button></div></section>
 </div>
 
+<section id="bridge" class="card bridge" aria-labelledby="bridge-title" hidden><div class="card-head"><h3 id="bridge-title"></h3></div><div id="bridge-body" class="bridge-grid"></div><p id="bridge-copy" class="bridge-copy"></p></section>
+
+<section id="diagnostics" class="card diag" aria-labelledby="diag-title">
+  <div class="card-head"><h3 id="diag-title">Diagnostics</h3><p>Summaries like those of <code>bacondecomp</code> and <code>twowayfeweights</code></p></div>
+  <div class="diag-grid"><div><h4>Goodman-Bacon weight by comparison type</h4><div id="diag-bacon"></div></div><div><h4>dCDH cell weights</h4><div id="diag-dcdh"></div></div></div>
+  <p class="diag-copy">These numbers show how exposed TWFE is to changing effects. Neither proves bias. <a href="../../index.html#sec-note-practice" target="_top">What to do in practice →</a></p>
+</section>
+
 <details id="trace-details" class="disclosure"><summary id="trace-summary">Inspect a comparison or cell</summary><div id="trace-content"></div></details>
 
-<details id="more-options" class="disclosure advanced"><summary>More options: ATT, design &amp; data</summary>
-  <div class="extra-grid"><section><h3>Compare with the target ATT</h3><div class="att-line"><span>TWFE <output id="twfe">—</output></span><span>ATT <output id="att">—</output></span><span>Gap <output id="gap">—</output></span></div><p class="small-copy">ATT averages all treated observations across dates. Its weights can differ from TWFE's.</p></section><section><h3>Weight summary</h3><div id="weight-summary" class="weight-summary"></div></section></div>
+<details id="more-options" class="disclosure advanced" hidden><summary>More options: edit the design and export data</summary>
   <h3>Edit the full design</h3><div class="design-fields"><label class="field"><span>Groups</span><select id="group-count"></select></label><label class="field"><span>Periods</span><select id="period-count"></select></label><label class="field"><span>Untreated trend</span><input id="trend" type="number" min="-3" max="3" step="0.1"></label><button id="reset-cell" type="button" class="text-button">Use group rule for selected effect</button></div>
   <div class="table-scroll"><table class="editor-table"><thead><tr><th>Group</th><th>Units</th><th>First treatment date tᵢ</th><th>Baseline</th><th>Initial effect</th><th>Effect change / period</th></tr></thead><tbody id="group-editor-body"></tbody></table></div><p class="small-copy">Effect after treatment = initial effect + change per period × time since treatment. Editing these values or the treatment date removes individual effect edits for that group.</p><p id="design-meta" class="design-meta"></p>
   <details class="raw-rows"><summary>Raw data table <span id="row-count"></span></summary><div class="raw-toolbar"><span>One row per group-period mean.</span><a id="export-csv" class="btn" download="did-panel-data.csv">Download CSV</a></div><div class="bounded table-scroll"><table class="raw-table"><thead><tr><th>Group</th><th>t</th><th>N<sub>g,t</sub></th><th>tᵢ</th><th>D</th><th>Y(0)</th><th>Δ</th><th>Y</th><th>ε</th><th>W</th><th>W × Δ</th></tr></thead><tbody id="raw-table-body"></tbody></table></div></details>
@@ -148,13 +240,11 @@
 (function () {
   'use strict';
   const $ = id => document.getElementById(id), engine = window.PanelDiD;
-  const storageKey = 'did-book-focused-lab-v1';
-  const presets = new Set(['classic', 'staggered', 'large', 'constant', 'no-never', 'unequal']);
+  const storageKey = 'did-book-guided-lab-v1', NOTE = '../../index.html';
   const colors = ['#216b60', '#9c6d2d', '#427b9c', '#8869a4', '#7a8139', '#b15d46', '#5b8b83', '#8c6777'];
   const typeNames = { never: 'Never-treated control', early: 'Not-yet-treated control', late: 'Already-treated control' };
-  let config = engine.makePreset('classic'), scenario = 'classic', basePreset = 'classic';
-  let view = 'raw', metric = 'tau', edit = { gi: 0, t: 3 }, selection = { kind: 'cell', gi: 0, t: 3 };
-  let result, allBacon = false, allCells = false, editOptionsKey = '', liveTimer;
+  const typeRows = { never: 'Never-treated controls', early: 'Not-yet-treated controls', late: 'Forbidden comparisons' };
+  const rLabels = { never: 'Treated vs Untreated', early: 'Earlier vs Later Treated', late: 'Later vs Earlier Treated' };
   const sum = xs => xs.reduce((a, b) => a + b, 0);
   const esc = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   function num(value, digits = 3) {
@@ -163,37 +253,174 @@
     const text = value && Math.abs(value) < .001 ? value.toExponential(1) : value.toFixed(digits).replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1');
     return text.replace(/-/g, '−');
   }
+  const numP = (value, digits) => value < -1e-10 ? '(' + num(value, digits) + ')' : num(value, digits);
   const weightText = value => (value > 1e-10 ? '+' : '') + num(value, 4);
   const periods = ts => ts.length === 1 ? String(ts[0]) : ts[0] + '–' + ts[ts.length - 1];
+  const unicodeFractions = { '1/2': '½', '1/3': '⅓', '2/3': '⅔', '1/4': '¼', '3/4': '¾', '1/6': '⅙', '5/6': '⅚' };
+  function fractionText(x, denominators, unicode) {
+    for (const d of denominators) {
+      const n = Math.round(x * d);
+      if (Math.abs(n / d - x) < 1e-9) {
+        if (d === 1) return num(n);
+        const key = Math.abs(n) + '/' + d;
+        return (n < 0 ? '−' : '') + (unicode && unicodeFractions[key] || key);
+      }
+    }
+    return null;
+  }
+  const fracW = (x, unicode) => x === null || !Number.isFinite(x) ? '—' : Math.abs(x) < 1e-10 ? '0' : fractionText(x, [1, 2, 3, 4, 5, 6, 8, 9, 10, 12], unicode) || num(x, 4);
+  const fracU = x => fracW(x, true);
+  const avgFmt = x => x === null || !Number.isFinite(x) ? '—' : Math.abs(x * 4 - Math.round(x * 4)) < 1e-9 ? num(x) : fractionText(x, [3, 6, 9, 12]) || num(x);
+  const D = (g, t) => 'Δ<sub>' + g + ',' + t + '</sub>';
+
+  function classicCase(a, b, c) {
+    const cfg = engine.makePreset('classic');
+    cfg.groups[0].level = a; cfg.groups[0].growth = Math.round((b - a) * 10) / 10;
+    cfg.groups[1].level = c; cfg.groups[1].growth = 0;
+    return cfg;
+  }
+  function twoByTwo() {
+    return { T: 2, trend: 0.5, groups: [
+      { id: 'G1', adopt: 2, n: 100, alpha: 1, level: 2, growth: 0, overrides: {} },
+      { id: 'G2', adopt: 0, n: 100, alpha: 0, level: 0, growth: 0, overrides: {} }] };
+  }
+  const designs = {
+    'two-by-two': { label: '2 × 2 starting point', group: 'note', make: twoByTwo },
+    classic: { label: '2 × 3 example · effects (1, 5, 1)', group: 'note', make: () => classicCase(1, 5, 1) },
+    same: { label: 'Same effect in every cell · (2, 2, 2)', group: 'note', make: () => classicCase(2, 2, 2) },
+    within: { label: 'Constant within groups · (1, 1, 3)', group: 'note', make: () => classicCase(1, 1, 3) },
+    coincidence: { label: 'Equal by coincidence · (1, 2, 6)', group: 'note', make: () => classicCase(1, 2, 6) },
+    staggered: { label: '4 groups × 8 periods', group: 'panel', make: () => engine.makePreset('staggered') },
+    large: { label: '8 groups × 12 periods', group: 'panel', make: () => engine.makePreset('large') },
+    constant: { label: 'Identical effects · 4 × 8', group: 'panel', make: () => engine.makePreset('constant') },
+    'no-never': { label: 'No never-treated group · 4 × 8', group: 'panel', make: () => engine.makePreset('no-never') },
+    unequal: { label: 'Unequal group sizes · 5 × 10', group: 'panel', make: () => engine.makePreset('unequal') }
+  };
+  const steps = [
+    { chip: '2 × 2 start', title: 'The 2 × 2 starting point', design: 'two-by-two', view: 'raw', metric: 'tau', cf: true,
+      question: 'One treated group, one comparison group, two periods. What does TWFE estimate?',
+      look: 'There is one DiD, with weight 1, and one treated cell, with W = 1. The groups start at different levels and share a common trend; the dashed lines show outcomes without treatment. Group and period fixed effects remove both, so TWFE equals the DiD, which equals ' + D('T', 2) + '. Move the slider: TWFE moves one for one.',
+      note: '#sec-note-canonical', noteLabel: 'The 2×2 starting point' },
+    { chip: 'Forbidden comparison', title: 'A forbidden comparison', design: 'classic', view: 'raw', metric: 'tau',
+      question: 'Every effect is positive. Why is TWFE negative?',
+      look: 'DID<sub>1</sub> = 1 uses the not-yet-treated late group as its control. DID<sub>2</sub> uses the already-treated early group, so it subtracts that group’s effect change: 1 − (5 − 1) = −3. Both DiDs get weight ½, so TWFE = −1, while the ATT is 7/3. The expansion below shows how −½ lands on ' + D('k', 3) + '. Raise ' + D('k', 3) + ': only DID<sub>2</sub> changes.',
+      note: '#sec-example-brief', noteLabel: 'A two-group, three-period example' },
+    { chip: 'Same effect', title: 'The same effect in every cell', design: 'same', view: 'raw', metric: 'tau',
+      question: 'One cell weight is negative. Does that make TWFE biased?',
+      look: 'All three effects equal 2. TWFE and the ATT both equal 2, because the weights sum to one. The weight on ' + D('k', 3) + ' is still −½: negative weights alone do not prove bias.',
+      note: '#sec-note-constant', noteLabel: 'Constant effects remove the subtraction' },
+    { chip: 'Constant within groups', title: 'Constant effects, different groups', design: 'within', view: 'raw', metric: 'tau',
+      question: 'No effect changes over time. Does TWFE equal the ATT?',
+      look: 'The early effect does not change, so DID<sub>2</sub> subtracts nothing: DID<sub>1</sub> = 1 and DID<sub>2</sub> = 3. TWFE gives each group weight ½ and equals 2, which is VWATT. The ATT gives the early group ⅔ because it has two treated periods, and equals 5/3. The early group’s cell weights, 1 and −½, combine to ½.',
+      note: '#sec-note-constant', noteLabel: 'Constant effects remove the subtraction, not the weighting' },
+    { chip: 'Equal by coincidence', title: 'Equal by coincidence', design: 'coincidence', view: 'raw', metric: 'tau',
+      question: 'The early effect grows, yet TWFE equals the ATT. Is TWFE safe here?',
+      look: 'DID<sub>2</sub> = 6 − (2 − 1) = 5 still subtracts a change. TWFE and the ATT both equal 3 only because of these values. Move any slider by one step and the equality breaks.',
+      note: '#sec-note-only-when', noteLabel: '“Only when” is too strong' },
+    { chip: 'Larger panel', title: 'Where negative weights appear', design: 'large', view: 'panel', metric: 'w',
+      question: 'In a panel with 8 groups and 12 periods, which cells get negative weights?',
+      look: 'Panel View shows each treated cell’s W; red dots mark negative weights. All 14 sit in early groups’ later periods: those groups are treated in many periods, and late periods contain many treated units. Switch the metric to W × Δ to see contributions. Click a forbidden comparison in the Goodman-Bacon list to see what it subtracts.',
+      note: '#sec-note-general', noteLabel: 'From the example to a larger panel' },
+    { chip: 'No untreated group', title: 'When every group is treated', design: 'no-never', view: 'raw', metric: 'tau', cf: true,
+      question: 'Without a never-treated group, which effects lack an untreated comparison?',
+      look: 'In periods 7 and 8 every group is treated (shaded). The dashed untreated outcomes there are never observed for any group, so common trends and no anticipation alone cannot identify those effects; the lab shows them only because it sets them. Forbidden comparisons now carry about 62% of the Goodman-Bacon weight, and TWFE is negative although every effect is positive.',
+      note: '#sec-note-support', noteLabel: 'When every group is treated' },
+    { chip: 'Diagnose', title: 'Diagnose the design', design: 'staggered', view: 'panel', metric: 'w',
+      question: 'What would the standard diagnostics report for this design?',
+      look: 'Diagnostics summarizes the Goodman-Bacon weight by comparison type, as <code>bacondecomp</code> does, and counts the negative cell weights, as <code>twowayfeweights</code> does. Here forbidden comparisons carry about 36% of the weight, and 3 of 15 cell weights are negative. These numbers show exposure to changing effects, not bias. Effects grow after treatment here, and TWFE (about 2.06) is far from the ATT (about 4.03).',
+      note: '#sec-note-practice', noteLabel: 'What to do in practice' }
+  ];
+
+  let mode = 'guided', step = 0, scenario = 'two-by-two', basePreset = 'two-by-two', config = twoByTwo();
+  let view = 'raw', metric = 'tau', showCf = true, edit = { gi: 0, t: 2 }, selection = { kind: 'cell', gi: 0, t: 2 };
+  let result, kind = 'two', allBacon = false, allCells = false, sliderKey = '', editOptionsKey = '', liveTimer;
   const cellKey = c => c.gi * config.T + c.t - 1;
   const editKey = () => edit.gi * config.T + edit.t - 1;
   const editedCell = () => result.cells[editKey()];
   const currentComparison = () => selection.kind === 'comparison' ? result.comparisons.find(c => c.id === selection.id) : null;
   const currentCell = () => selection.kind === 'cell' ? result.cells[selection.gi * config.T + selection.t - 1] : editedCell();
-  function output(id, value) {
-    $(id).textContent = num(value);
-    $(id).dataset.value = value === null ? '' : String(value);
+  const noSupport = () => engine.range(1, config.T).filter(t => !config.groups.some(g => !g.adopt || g.adopt > t));
+
+  function designKind(cfg) {
+    const g = cfg.groups;
+    if (cfg.T === 3 && g.length === 2 && g[0].adopt === 2 && g[1].adopt === 3 && g[0].n === g[1].n) return 'example';
+    if (cfg.T === 2 && g.length === 2 && g.some(x => x.adopt === 2) && g.some(x => !x.adopt)) return 'two';
+    return 'panel';
+  }
+  function tag(gi) {
+    if (kind === 'example') return gi ? 'ℓ' : 'k';
+    if (kind === 'two') return config.groups[gi].adopt ? 'T' : 'C';
+    return '';
+  }
+  const cellName = c => kind === 'panel' ? esc(c.gid + ' · t=' + c.t) : '<span class="cell-name">' + D(tag(c.gi), c.t) + '</span>';
+  const cellText = c => kind === 'panel' ? c.gid + ' · t=' + c.t : 'Δ' + tag(c.gi) + ',' + c.t;
+  const cellDesc = c => kind === 'example' ? (c.gi ? 'late group ℓ' : 'early group k') + ', t = ' + c.t : kind === 'two' ? 'treated group T, t = ' + c.t : '';
+  const groupName = gi => config.groups[gi].id + (tag(gi) ? ' · ' + tag(gi) : '');
+  function comparisonName(co) {
+    if (kind === 'example') return co.type === 'early' ? 'DID<sub>1</sub> · early vs. late' : 'DID<sub>2</sub> · late vs. early';
+    if (kind === 'two') return 'DID · T vs. C';
+    return esc(co.tr.label + ' vs. ' + co.ct.label);
+  }
+  const plain = html => html.replace(/<[^>]+>/g, '');
+  const forbiddenTag = co => co.type === 'late' ? '<span class="tag-forbidden">forbidden</span>' : '';
+  const wFmt = x => kind === 'panel' ? weightText(x) : fracW(x);
+  const sumFmt = x => kind === 'panel' ? num(x, 4) : fracW(x);
+  const aFmt = x => kind === 'panel' ? num(x) : avgFmt(x);
+
+  function validConfig(c) {
+    const finite = x => typeof x === 'number' && Number.isFinite(x);
+    return !!c && Number.isInteger(c.T) && c.T >= 2 && c.T <= 12 && finite(c.trend) && Array.isArray(c.groups) && c.groups.length >= 2 && c.groups.length <= 8 && c.groups.every(g => g && Number.isInteger(g.n) && g.n >= 1 && g.n <= 500 && Number.isInteger(g.adopt) && g.adopt >= 0 && g.adopt !== 1 && g.adopt <= c.T && finite(g.alpha) && finite(g.level) && finite(g.growth) && (!g.overrides || Object.values(g.overrides).every(finite)));
   }
   function remember() {
-    try { localStorage.setItem(storageKey, JSON.stringify({ config, scenario, basePreset, view, metric, edit })); } catch (error) {}
+    try { localStorage.setItem(storageKey, JSON.stringify({ mode, step, scenario, basePreset, config, view, metric, showCf, edit })); } catch (error) {}
   }
+  function writeHash() {
+    try { history.replaceState(null, '', location.pathname + location.search + (mode === 'guided' ? '#step=' + step : '#free')); } catch (error) {}
+  }
+  function parseHash() {
+    const m = location.hash.match(/^#(?:step=([0-7])|(free))$/);
+    return m ? (m[1] !== undefined ? { step: Number(m[1]) } : { free: true }) : null;
+  }
+  function loadDesign(name) {
+    scenario = basePreset = name; config = designs[name].make();
+    edit = { gi: 0, t: config.T }; selection = { kind: 'cell', gi: 0, t: config.T };
+    allBacon = allCells = false; $('comparison-filter').value = $('cell-filter').value = 'all';
+    $('trace-details').open = false; $('trace-summary').textContent = 'Inspect a comparison or cell'; $('trace-content').replaceChildren();
+    sliderKey = editOptionsKey = '';
+  }
+  function loadStep(i) {
+    step = Math.max(0, Math.min(steps.length - 1, i));
+    const s = steps[step];
+    loadDesign(s.design); view = s.view; metric = s.metric; showCf = !!s.cf;
+  }
+
+  let restored = false;
   try {
     const saved = JSON.parse(localStorage.getItem(storageKey));
-    const c = saved && saved.config, finite = x => typeof x === 'number' && Number.isFinite(x);
-    if (c && Number.isInteger(c.T) && c.T >= 3 && c.T <= 12 && finite(c.trend) && Array.isArray(c.groups) && c.groups.length >= 2 && c.groups.length <= 8 && c.groups.every(g => Number.isInteger(g.n) && g.n >= 1 && g.n <= 500 && Number.isInteger(g.adopt) && g.adopt >= 0 && g.adopt !== 1 && g.adopt <= c.T && finite(g.alpha) && finite(g.level) && finite(g.growth) && (!g.overrides || Object.values(g.overrides).every(finite)))) {
-      config = c; config.groups.forEach((g, i) => { g.id = 'G' + (i + 1); g.overrides = g.overrides || {}; });
-      scenario = presets.has(saved.scenario) ? saved.scenario : 'custom';
-      basePreset = presets.has(saved.basePreset) ? saved.basePreset : 'classic';
+    if (saved && validConfig(saved.config)) {
+      config = saved.config; config.groups.forEach((g, i) => { g.id = 'G' + (i + 1); g.overrides = g.overrides || {}; });
+      mode = saved.mode === 'free' ? 'free' : 'guided';
+      step = Number.isInteger(saved.step) && saved.step >= 0 && saved.step < steps.length ? saved.step : 0;
+      scenario = designs[saved.scenario] ? saved.scenario : 'custom';
+      basePreset = designs[saved.basePreset] ? saved.basePreset : steps[step].design;
       view = saved.view === 'panel' ? 'panel' : 'raw';
       metric = ['d', 'tau', 'y', 'r', 'w', 'contribution'].includes(saved.metric) ? saved.metric : 'tau';
+      showCf = !!saved.showCf;
       if (saved.edit && Number.isInteger(saved.edit.gi) && Number.isInteger(saved.edit.t)) edit = saved.edit;
-      else edit = { gi: 0, t: config.T };
       selection = { kind: 'cell', gi: edit.gi, t: edit.t };
+      restored = true;
     }
   } catch (error) {}
+  const initialHash = parseHash();
+  if (initialHash && initialHash.step !== undefined) { mode = 'guided'; loadStep(initialHash.step); }
+  else if (initialHash && initialHash.free) { mode = 'free'; if (!restored) loadDesign('classic'); }
+  else if (!restored) { mode = 'guided'; loadStep(0); }
+
   if (window.self !== window.top) document.body.classList.add('embedded');
   $('group-count').innerHTML = engine.range(2, 8).map(n => '<option>' + n + '</option>').join('');
-  $('period-count').innerHTML = engine.range(3, 12).map(n => '<option>' + n + '</option>').join('');
+  $('period-count').innerHTML = engine.range(2, 12).map(n => '<option>' + n + '</option>').join('');
+  $('scenario').innerHTML = [['note', 'From the note'], ['panel', 'Larger panels']].map(([g, label]) => '<optgroup label="' + label + '">' + Object.entries(designs).filter(([, d]) => d.group === g).map(([key, d]) => '<option value="' + key + '">' + esc(d.label) + '</option>').join('') + '</optgroup>').join('') + '<option value="custom" disabled>Edited design</option>';
+  $('step-list').innerHTML = steps.map((s, i) => '<li><button type="button" class="step-chip" data-step="' + i + '"><span class="step-n">' + i + '</span>' + esc(s.chip) + '</button></li>').join('');
 
   function ensureSelections() {
     const c = editedCell();
@@ -203,16 +430,61 @@
     }
     if (selection.kind === 'comparison' && !currentComparison() || selection.kind === 'cell' && (!currentCell() || !currentCell().d)) selection = { kind: 'cell', gi: edit.gi, t: edit.t };
   }
-  function renderControls(keepTypedEffect = false) {
-    $('scenario').value = scenario;
+  function renderMode() {
+    ['guided', 'free'].forEach(m => { const b = $('mode-' + m); b.setAttribute('aria-selected', String(m === mode)); b.tabIndex = m === mode ? 0 : -1; });
+    $('guide').hidden = mode !== 'guided'; $('free-controls').hidden = mode !== 'free'; $('more-options').hidden = mode !== 'free';
+    $('mode-copy').textContent = mode === 'guided' ? 'Eight steps that follow the note.' : 'Choose any design, then edit effects, dates, and sizes.';
+    if (mode === 'free') $('scenario').value = scenario;
+  }
+  function renderGuide() {
+    if (mode !== 'guided') return;
+    const s = steps[step];
+    document.querySelectorAll('.step-chip').forEach(b => { if (Number(b.dataset.step) === step) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+    $('step-kicker').textContent = 'STEP ' + step;
+    $('step-title').textContent = s.title;
+    $('step-question').textContent = s.question;
+    $('step-look-body').innerHTML = s.look;
+    $('step-note').href = NOTE + s.note;
+    $('step-note').textContent = 'Read in the note: ' + s.noteLabel + ' →';
+    $('step-prev').hidden = step === 0;
+    $('step-next').hidden = step === steps.length - 1;
+  }
+  function renderEffects() {
+    const sliders = kind !== 'panel';
+    $('effects-sliders').hidden = !sliders; $('effects-single').hidden = sliders;
+    $('effects-title').textContent = sliders ? 'Treatment effects' : 'Change one effect Δ';
+    if (sliders) renderSliders(); else renderSingle();
+  }
+  function renderSliders() {
+    const key = kind + ':' + result.treated.map(cellKey).join(',');
+    if (key !== sliderKey) {
+      sliderKey = key;
+      $('effects-sliders').innerHTML = result.treated.map(c => {
+        const k = cellKey(c), label = esc(cellText(c));
+        return '<div class="slider-row" data-cell="' + k + '"><label for="effect-range-' + k + '">' + cellName(c) + '<small>' + esc(cellDesc(c)) + '</small></label><input id="effect-range-' + k + '" type="range" min="-5" max="15" step="0.5" data-effect="' + k + '" aria-label="' + label + '"><input type="number" min="-100" max="100" step="0.1" data-effect="' + k + '" aria-label="' + label + ' value"><span class="w-badge"></span></div>';
+      }).join('');
+    }
+    result.treated.forEach(c => {
+      const row = $('effects-sliders').querySelector('[data-cell="' + cellKey(c) + '"]');
+      if (!row) return;
+      const inputs = row.querySelectorAll('input'), range = inputs[0], box = inputs[1], value = String(Math.round(c.tau * 10) / 10);
+      if (document.activeElement !== box) box.value = value;
+      range.min = String(Math.min(-5, Math.floor(c.tau))); range.max = String(Math.max(15, Math.ceil(c.tau)));
+      if (document.activeElement !== range) range.value = value;
+      row.querySelector('.w-badge').innerHTML = result.valid ? 'W = <strong class="' + (c.w < -1e-12 ? 'negative' : '') + '">' + fracW(c.w) + '</strong>' : 'W undefined';
+      row.classList.toggle('selected', cellKey(c) === editKey());
+    });
+    const hint = result.valid ? 'Each W is how much TWFE moves when that effect rises by 1. Moving a slider changes the effects, not the weights.' : 'These effects are editable; TWFE weights are unavailable in the current design.';
+    if ($('effect-hint').innerHTML !== hint) $('effect-hint').innerHTML = hint;
+  }
+  function renderSingle() {
     const key = result.treated.map(cellKey).join(',');
     if (key !== editOptionsKey || !$('edit-cell').options.length) {
       editOptionsKey = key;
-      $('edit-cell').innerHTML = result.treated.map(c => '<option value="' + cellKey(c) + '">' + c.gid + ' · t=' + c.t + '</option>').join('');
+      $('edit-cell').innerHTML = result.treated.map(c => '<option value="' + cellKey(c) + '">' + esc(cellText(c)) + '</option>').join('');
     }
     const c = editedCell(), enabled = !!c && !!c.d;
     ['edit-cell', 'effect-number', 'effect-slider'].forEach(id => $(id).disabled = !enabled);
-    $('reset-cell').disabled = !enabled || !c.manual;
     if (!enabled) {
       $('effect-number').value = ''; $('effect-slider').value = '0';
       $('effect-hint').textContent = 'No group is treated. Add treatment under More options.';
@@ -220,12 +492,22 @@
     }
     $('edit-cell').value = String(cellKey(c));
     const value = String(Math.round(c.tau * 10) / 10);
-    if (!keepTypedEffect) $('effect-number').value = value;
+    if (document.activeElement !== $('effect-number')) $('effect-number').value = value;
     $('effect-slider').min = String(Math.min(-5, Math.floor(c.tau / 5) * 5));
     $('effect-slider').max = String(Math.max(15, Math.ceil(c.tau / 5) * 5));
-    $('effect-slider').value = value;
-    const hint = result.valid ? 'This cell has dCDH weight W = <strong class="' + (c.w < 0 ? 'negative' : '') + '">' + num(c.w, 4) + '</strong>. Raising its effect by 1 changes TWFE by <strong>' + weightText(c.w) + '</strong>.' : 'This effect is editable; TWFE weights are unavailable in the current design.';
+    if (document.activeElement !== $('effect-slider')) $('effect-slider').value = value;
+    const hint = result.valid ? 'This cell has dCDH weight W = <strong class="' + (c.w < 0 ? 'negative' : '') + '">' + num(c.w, 4) + '</strong>. Raising its effect by 1 changes TWFE by <strong>' + weightText(c.w) + '</strong>. Select other cells in Panel View or the dCDH list.' : 'This effect is editable; TWFE weights are unavailable in the current design.';
     if ($('effect-hint').innerHTML !== hint) $('effect-hint').innerHTML = hint;
+  }
+  function setStat(id, value) { $(id).textContent = aFmt(value); $(id).dataset.value = value === null ? '' : String(value); }
+  function renderStats() {
+    setStat('twfe', result.beta); setStat('att', result.att); setStat('gap', result.gap);
+    $('gap-copy').textContent = result.gap === null ? 'Undefined in this design' : Math.abs(result.gap) < 1e-9 ? 'Equal for these effects' : 'Same effects, different weights';
+  }
+  function renderSupport() {
+    const ts = noSupport(), el = $('support-note');
+    el.hidden = !ts.length || !result.treated.length;
+    if (!el.hidden) el.innerHTML = 'No untreated group in period' + (ts.length > 1 ? 's ' : ' ') + periods(ts) + '. The lab sets the effects there; common trends and no anticipation alone cannot identify them. <a href="' + NOTE + '#sec-note-support" target="_top">When every group is treated →</a>';
   }
   function setView(next, save = true) {
     view = next;
@@ -238,17 +520,16 @@
     if (save) remember();
   }
   function renderPanel() {
-    const co = currentComparison();
+    const co = currentComparison(), missingSupport = noSupport(), compact = config.T > 8;
     const values = result.cells.filter(c => ['y', 'r'].includes(metric) || c.d).map(c => Math.abs(c[metric]));
     const max = Math.max(.001, ...values);
-    let html = '<table class="panel-table" style="min-width:' + (78 + config.T * 58) + 'px" aria-label="Group by period panel showing ' + esc($('panel-metric').selectedOptions[0].textContent) + '"><thead><tr><th>Group</th>' + engine.range(1, config.T).map(t => '<th>t=' + t + '</th>').join('') + '</tr></thead><tbody>';
-    const classic = config.T === 3 && config.groups.length === 2 && config.groups[0].adopt === 2 && config.groups[1].adopt === 3;
+    let html = '<table class="panel-table' + (compact ? ' compact' : '') + '" style="min-width:' + (72 + config.T * (compact ? 46 : 58)) + 'px" aria-label="Group by period panel showing ' + esc($('panel-metric').selectedOptions[0].textContent) + '"><thead><tr><th>Group</th>' + engine.range(1, config.T).map(t => '<th' + (missingSupport.includes(t) ? ' class="nosupport" title="No untreated group in this period"' : '') + '>t=' + t + '</th>').join('') + '</tr></thead><tbody>';
     config.groups.forEach((g, gi) => {
-      html += '<tr><th scope="row"><span class="group-name">' + g.id + (classic ? (gi ? ' · ℓ' : ' · k') : '') + '</span><span class="adoption">tᵢ=' + (g.adopt || '∞') + '</span></th>';
+      html += '<tr><th scope="row"><span class="group-name">' + esc(groupName(gi)) + '</span><span class="adoption">tᵢ=' + (g.adopt || '∞') + '</span></th>';
       engine.range(1, config.T).forEach(t => {
         const c = result.cells[gi * config.T + t - 1], v = c[metric];
         const missing = !c.d && ['tau', 'w', 'contribution'].includes(metric) || !result.valid && ['w', 'contribution'].includes(metric);
-        const text = missing ? '—' : metric === 'd' ? String(c.d) : num(v, ['w', 'r', 'contribution'].includes(metric) ? 4 : metric === 'y' ? 2 : 1);
+        const text = missing ? '—' : metric === 'd' ? String(c.d) : num(v, ['w', 'r', 'contribution'].includes(metric) ? (compact ? 3 : 4) : metric === 'y' ? 2 : 1);
         let color = c.d ? '#e4efe8' : '#f0f2ed', cls = 'cell';
         if (!missing && metric !== 'd') color = v < 0 ? 'rgba(174,70,54,' + (.05 + .25 * Math.abs(v) / max) + ')' : 'rgba(33,107,96,' + (.04 + .23 * Math.abs(v) / max) + ')';
         if (co) {
@@ -262,6 +543,7 @@
       html += '</tr>';
     });
     $('panel-container').innerHTML = html + '</tbody></table>';
+    $('panel-caption').innerHTML = '<i class="neg-dot"></i> Negative dCDH weight W' + (missingSupport.length ? ' · <span class="cap-swatch"></span>period with no untreated group' : '') + ' · tᵢ = first treatment date; ∞ = never treated.';
   }
   function svgEl(tag, attrs, text) {
     const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
@@ -271,24 +553,31 @@
   }
   function renderPlot() {
     if (!result || $('raw-view').hidden) return;
-    const svg = $('raw-plot'), width = Math.max(240, svg.getBoundingClientRect().width), height = svg.getBoundingClientRect().height || 185;
+    const svg = $('raw-plot'), width = Math.max(240, svg.getBoundingClientRect().width), height = svg.getBoundingClientRect().height || 190;
     const margin = { left: 43, right: 18, top: 23, bottom: 35 }, iw = width - margin.left - margin.right, ih = height - margin.top - margin.bottom;
     const show = $('show-counterfactual').checked, values = result.cells.flatMap(c => show ? [c.y, c.y0] : [c.y]), min = Math.min(0, ...values), max = Math.max(0, ...values);
-    const span = Math.max(1, max - min), rawStep = span / 4, base = Math.pow(10, Math.floor(Math.log10(rawStep))), step = ([1, 2, 5, 10].find(n => n * base >= rawStep) || 10) * base;
-    const lo = Math.floor((min - span * .08) / step) * step, hi = Math.ceil((max + span * .08) / step) * step;
-    const x = t => margin.left + (t - 1) / (config.T - 1) * iw, y = v => margin.top + (hi - v) / (hi - lo) * ih;
+    const span = Math.max(1, max - min), rawStep = span / 4, base = Math.pow(10, Math.floor(Math.log10(rawStep))), stepSize = ([1, 2, 5, 10].find(n => n * base >= rawStep) || 10) * base;
+    const lo = Math.floor((min - span * .08) / stepSize) * stepSize, hi = Math.ceil((max + span * .08) / stepSize) * stepSize;
+    const x = t => margin.left + (t - 1) / (config.T - 1) * iw, y = v => margin.top + (hi - v) / (hi - lo) * ih, dx = iw / (config.T - 1);
+    const band = ts => { const left = Math.max(margin.left, x(ts[0]) - dx * .4), right = Math.min(width - margin.right, x(ts[ts.length - 1]) + dx * .4); return { left, right }; };
     svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height); svg.replaceChildren();
     svg.append(svgEl('title', {}, 'Observed group-period means'));
-    svg.append(svgEl('desc', {}, config.groups.length + ' groups over ' + config.T + ' periods. Exact values are available in the data table.'));
+    svg.append(svgEl('desc', {}, config.groups.length + ' groups over ' + config.T + ' periods. Filled points are treated cells; hollow points are untreated.'));
+    const missing = noSupport();
+    if (missing.length && result.treated.length) {
+      const b = band(missing);
+      svg.append(svgEl('rect', { x: b.left, y: margin.top, width: b.right - b.left, height: ih, fill: '#f6ead2', rx: 2 }));
+      svg.append(svgEl('text', { x: b.right - 4, y: margin.top + ih - 6, 'text-anchor': 'end', class: 'band-label' }, b.right - b.left > 90 ? 'no untreated group' : 'none untreated'));
+    }
     const co = currentComparison();
     if (co) [[co.pre, '#edf1f5'], [co.post, '#f6f0e3']].forEach(([ts, fill]) => {
-      const dx = iw / (config.T - 1), left = Math.max(margin.left, x(ts[0]) - dx * .4), right = Math.min(width - margin.right, x(ts[ts.length - 1]) + dx * .4);
-      svg.append(svgEl('rect', { x: left, y: margin.top, width: right - left, height: ih, fill, rx: 2 }));
+      const b = band(ts);
+      svg.append(svgEl('rect', { x: b.left, y: margin.top, width: b.right - b.left, height: ih, fill, rx: 2, opacity: .85 }));
     });
     svg.append(svgEl('text', { x: margin.left, y: 12 }, 'Outcome Y'));
-    for (let v = lo; v <= hi + step * .1; v += step) {
+    for (let v = lo; v <= hi + stepSize * .1; v += stepSize) {
       svg.append(svgEl('line', { x1: margin.left, y1: y(v), x2: width - margin.right, y2: y(v), stroke: '#e6ebe3' }));
-      svg.append(svgEl('text', { x: margin.left - 8, y: y(v) + 4, 'text-anchor': 'end' }, num(v, step < 1 ? 1 : 0)));
+      svg.append(svgEl('text', { x: margin.left - 8, y: y(v) + 4, 'text-anchor': 'end' }, num(v, stepSize < 1 ? 1 : 0)));
     }
     const every = width < 400 ? Math.ceil(config.T / 4) : 1;
     engine.range(1, config.T).forEach(t => { if ((t - 1) % every === 0 || t === config.T) svg.append(svgEl('text', { x: x(t), y: height - 18, 'text-anchor': 'middle' }, String(t))); });
@@ -301,17 +590,16 @@
       cells.forEach(c => {
         const selected = c.d && c.gi === edit.gi && c.t === edit.t;
         if (selected) group.append(svgEl('circle', { cx: x(c.t), cy: y(c.y), r: 7, fill: 'none', stroke: colors[gi], 'stroke-width': 1.5 }));
-        const point = svgEl('circle', { cx: x(c.t), cy: y(c.y), r: selected ? 4 : 2.8, fill: colors[gi], stroke: '#fff', 'stroke-width': 1, class: c.d ? 'point' : '', ...(c.d ? { 'data-edit-cell': cellKey(c) } : {}) });
-        point.append(svgEl('title', {}, c.gid + ', t=' + c.t + ': Y=' + num(c.y, 2) + (c.d ? ', effect=' + num(c.tau, 2) : ', untreated'))); group.append(point);
+        const point = svgEl('circle', { cx: x(c.t), cy: y(c.y), r: selected ? 4 : 3.2, fill: c.d ? colors[gi] : '#fff', stroke: c.d ? '#fff' : colors[gi], 'stroke-width': c.d ? 1 : 1.6, class: c.d ? 'point' : '', ...(c.d ? { 'data-edit-cell': cellKey(c) } : {}) });
+        point.append(svgEl('title', {}, groupName(c.gi) + ', t=' + c.t + ': Y=' + num(c.y, 2) + (c.d ? ', effect=' + num(c.tau, 2) : ', untreated'))); group.append(point);
       });
       svg.append(group);
     });
     const c = editedCell();
-    if (c && c.d) svg.append(svgEl('text', { x: x(c.t) + (c.t > config.T * .65 ? -9 : 9), y: y(c.y) - 11, 'text-anchor': c.t > config.T * .65 ? 'end' : 'start', class: 'value-label' }, c.gid + ' · t=' + c.t + ' · ' + num(c.y, 2)));
-    const classic = config.T === 3 && config.groups.length === 2 && config.groups[0].adopt === 2 && config.groups[1].adopt === 3;
-    $('group-legend').innerHTML = config.groups.map((g, i) => '<span><i class="swatch" style="background:' + colors[i] + '"></i>' + g.id + (classic ? (i ? ' · late ℓ' : ' · early k') : ' · tᵢ=' + (g.adopt || '∞')) + '</span>').join('');
+    if (c && c.d) svg.append(svgEl('text', { x: x(c.t) + (c.t > config.T * .65 ? -9 : 9), y: y(c.y) - 11, 'text-anchor': c.t > config.T * .65 ? 'end' : 'start', class: 'value-label' }, plain(cellText(c)) + ' · Y=' + num(c.y, 2)));
+    const names = kind === 'example' ? ['early k', 'late ℓ'] : null;
+    $('group-legend').innerHTML = config.groups.map((g, i) => '<span><i class="swatch" style="background:' + colors[i] + '"></i>' + g.id + ' · ' + (names ? names[i] : kind === 'two' ? (g.adopt ? 'treated T' : 'comparison C') : 'tᵢ=' + (g.adopt || '∞')) + '</span>').join('') + '<span><i class="pt filled"></i>treated</span><span><i class="pt"></i>untreated</span>';
   }
-
   function contribution(value, scale) {
     const n = Math.min(50, Math.abs(value) / scale * 50);
     return '<span class="contribution" data-value="' + value + '"><span class="mini-bar" aria-hidden="true"><i class="' + (value < 0 ? 'neg' : '') + '" style="left:' + (value < 0 ? 50 - n : 50) + '%;width:' + n + '%"></i></span>' + num(value) + '</span>';
@@ -319,45 +607,80 @@
   function previewTerms(all, filtered, expanded, selected) {
     let shown = expanded ? filtered : filtered.slice(0, 5);
     if (!expanded && selected && filtered.includes(selected) && !shown.includes(selected)) shown = filtered.slice(0, 4).concat(selected);
-    const other = all.filter(c => !shown.includes(c));
-    return { shown, other };
+    return { shown, other: all.filter(c => !shown.includes(c)) };
   }
   function renderTerms() {
-    output('bacon-total', result.bacon); output('dcdh-total', result.dcdh);
+    setStat('bacon-total', result.bacon); setStat('dcdh-total', result.dcdh);
     const scale = Math.max(.001, ...result.comparisons.map(c => Math.abs(c.contribution)), ...result.treated.map(c => Math.abs(c.contribution)));
-    const comparisons = result.comparisons.slice().sort((a, b) => b.weight - a.weight);
-    const cf = $('comparison-filter').value;
-    const filtered = comparisons.filter(c => cf === 'all' || c.type === cf);
+    const comparisons = kind === 'panel' ? result.comparisons.slice().sort((a, b) => b.weight - a.weight) : result.comparisons.slice().sort((a, b) => (a.type === 'late') - (b.type === 'late'));
+    const cf = $('comparison-filter').value, filtered = comparisons.filter(c => cf === 'all' || c.type === cf);
     const coPreview = previewTerms(comparisons, filtered, allBacon, currentComparison());
-    let baconRows = coPreview.shown.map(c => '<tr class="' + (selection.kind === 'comparison' && selection.id === c.id ? 'selected' : '') + '"><td><button type="button" class="term-button" data-comparison="' + c.id + '" aria-label="Inspect ' + esc(c.tr.label + ' vs. ' + c.ct.label) + ' comparison"><strong>' + esc(c.tr.label + ' vs. ' + c.ct.label) + '</strong><small>' + typeNames[c.type].replace(' control', '') + '</small></button></td><td class="product"><span class="factor">' + weightText(c.weight) + '</span> × <span class="factor">(' + num(c.dd) + ')</span></td><td>' + contribution(c.contribution, scale) + '</td></tr>').join('');
+    let baconRows = coPreview.shown.map(c => '<tr class="' + (selection.kind === 'comparison' && selection.id === c.id ? 'selected' : '') + '"><td><button type="button" class="term-button" data-comparison="' + c.id + '" aria-label="Inspect ' + esc(plain(comparisonName(c))) + ' comparison"><strong>' + comparisonName(c) + '</strong><small>' + typeNames[c.type].replace(' control', '') + forbiddenTag(c) + '</small></button></td><td class="product"><span class="factor">' + wFmt(c.weight) + '</span> × <span class="factor">(' + num(c.dd) + ')</span></td><td>' + contribution(c.contribution, scale) + '</td></tr>').join('');
     if (coPreview.other.length) baconRows += '<tr class="remainder"><td colspan="2">Other ' + coPreview.other.length + ' comparisons</td><td><span class="contribution" data-value="' + sum(coPreview.other.map(c => c.contribution)) + '">' + num(sum(coPreview.other.map(c => c.contribution))) + '</span></td></tr>';
     $('bacon-rows').innerHTML = baconRows || '<tr><td colspan="3" class="empty">No identified comparisons.</td></tr>';
-    $('bacon-count').textContent = !result.valid ? 'Not identified' : coPreview.other.length ? coPreview.shown.length + ' of ' + comparisons.length + ' shown; others grouped' : comparisons.length + ' comparisons';
+    $('bacon-count').textContent = !result.valid ? 'Not identified' : coPreview.other.length ? coPreview.shown.length + ' of ' + comparisons.length + ' shown; others grouped' : comparisons.length + (comparisons.length === 1 ? ' comparison' : ' comparisons');
     $('bacon-expand').hidden = comparisons.length <= 5 && !allBacon;
     $('bacon-expand').textContent = allBacon ? 'Collapse' : 'Show all ' + comparisons.length;
     $('bacon-expand').setAttribute('aria-expanded', String(allBacon));
     $('bacon-filter-box').hidden = !allBacon;
     $('bacon-scroll').classList.toggle('expanded', allBacon);
 
-    const cells = result.valid ? result.treated.slice().sort((a, b) => {
+    const cells = !result.valid ? [] : kind === 'panel' ? result.treated.slice().sort((a, b) => {
       const difference = Math.abs(b.w) - Math.abs(a.w);
       return Math.abs(difference) > 1e-10 ? difference : cellKey(a) - cellKey(b);
-    }) : [];
+    }) : result.treated.slice();
     const wf = $('cell-filter').value, filteredCells = cells.filter(c => wf === 'all' || (wf === 'negative' ? c.w < -1e-12 : c.w > 1e-12));
     const cellPreview = previewTerms(cells, filteredCells, allCells, editedCell());
-    let cellRows = cellPreview.shown.map(c => '<tr class="' + (cellKey(c) === editKey() ? 'selected' : '') + '"><td><button type="button" class="term-button" data-inspect-cell="' + cellKey(c) + '" aria-label="Inspect ' + c.gid + ', period ' + c.t + ' effect"><strong>' + c.gid + ' · t=' + c.t + '</strong></button></td><td class="product"><span class="factor ' + (c.w < 0 ? 'negative' : '') + '">' + weightText(c.w) + '</span> × <span class="factor">(' + num(c.tau, 2) + ')</span></td><td>' + contribution(c.contribution, scale) + '</td></tr>').join('');
+    let cellRows = cellPreview.shown.map(c => '<tr class="' + (cellKey(c) === editKey() ? 'selected' : '') + '"><td><button type="button" class="term-button" data-inspect-cell="' + cellKey(c) + '" aria-label="Inspect ' + esc(cellText(c)) + ' effect"><strong>' + cellName(c) + '</strong>' + (kind === 'panel' ? '' : '<small>' + esc(cellDesc(c)) + '</small>') + '</button></td><td class="product"><span class="factor ' + (c.w < 0 ? 'negative' : '') + '">' + wFmt(c.w) + '</span> × <span class="factor">(' + num(c.tau, 2) + ')</span></td><td>' + contribution(c.contribution, scale) + '</td></tr>').join('');
     if (cellPreview.other.length) cellRows += '<tr class="remainder"><td colspan="2">Other ' + cellPreview.other.length + ' cell effects</td><td><span class="contribution" data-value="' + sum(cellPreview.other.map(c => c.contribution)) + '">' + num(sum(cellPreview.other.map(c => c.contribution))) + '</span></td></tr>';
     $('cell-rows').innerHTML = cellRows || '<tr><td colspan="3" class="empty">No identified effect weights.</td></tr>';
-    $('cell-count').textContent = !result.valid ? 'Not identified' : cellPreview.other.length ? cellPreview.shown.length + ' of ' + cells.length + ' shown; others grouped' : cells.length + ' treated cells';
+    $('cell-count').textContent = !result.valid ? 'Not identified' : cellPreview.other.length ? cellPreview.shown.length + ' of ' + cells.length + ' shown; others grouped' : cells.length + (cells.length === 1 ? ' treated cell' : ' treated cells');
     $('cell-expand').hidden = cells.length <= 5 && !allCells;
     $('cell-expand').textContent = allCells ? 'Collapse' : 'Show all ' + cells.length;
     $('cell-expand').setAttribute('aria-expanded', String(allCells));
     $('cell-filter-box').hidden = !allCells;
     $('cell-scroll').classList.toggle('expanded', allCells);
   }
+  function signedTerms(parts, unicode) {
+    return parts.map((p, i) => {
+      const neg = p.w < -1e-12, mag = fracW(Math.abs(p.w), unicode);
+      const coefficient = p.dropOne && mag === '1' ? '' : mag + p.join;
+      const text = (i ? (neg ? ' − ' : ' + ') : (neg ? '−' : '')) + coefficient + p.value;
+      return neg ? '<span class="negative">' + text + '</span>' : text;
+    }).join('');
+  }
+  function renderBridge() {
+    const box = $('bridge');
+    if (!result.valid || kind === 'panel') { box.hidden = true; return; }
+    const row = (left, right) => '<div>' + left + '</div><div class="num">' + right + '</div>';
+    if (kind === 'two') {
+      const tg = config.groups.findIndex(g => g.adopt), cg = 1 - tg, yv = (gi, t) => result.cells[gi * config.T + t - 1].y, cell = result.cells[tg * config.T + 1];
+      box.hidden = false;
+      $('bridge-title').textContent = 'TWFE in the 2 × 2 case';
+      $('bridge-body').innerHTML = row('β̂<sub>fe</sub> = (Y<sub>T,2</sub> − Y<sub>T,1</sub>) − (Y<sub>C,2</sub> − Y<sub>C,1</sub>)', '= (' + numP(yv(tg, 2), 2) + ' − ' + numP(yv(tg, 1), 2) + ') − (' + numP(yv(cg, 2), 2) + ' − ' + numP(yv(cg, 1), 2) + ') = ' + aFmt(result.beta)) + row('= ' + D('T', 2), '= ' + num(cell.tau, 2));
+      $('bridge-copy').innerHTML = 'Group effects remove the level difference; period effects remove the common trend. There is one comparison, with weight 1, and one treated cell, with W = 1. <a href="' + NOTE + '#sec-note-canonical" target="_top">The 2×2 starting point in the note →</a>';
+      return;
+    }
+    const early = result.comparisons.find(c => c.type === 'early'), late = result.comparisons.find(c => c.type === 'late');
+    if (!early || !late) { box.hidden = true; return; }
+    box.hidden = false;
+    const k2 = result.cells[1], k3 = result.cells[2], l3 = result.cells[5], s1 = fracU(early.weight), s2 = fracU(late.weight), n1 = fracW(early.weight), n2 = fracW(late.weight);
+    $('bridge-title').textContent = 'Where the negative weight comes from';
+    $('bridge-body').innerHTML =
+      row('β̂<sub>fe</sub> = ' + s1 + ' DID<sub>1</sub> + ' + s2 + ' DID<sub>2</sub>', '= ' + n1 + ' · ' + numP(early.dd) + ' + ' + n2 + ' · ' + numP(late.dd) + ' = ' + aFmt(result.beta)) +
+      row('= ' + s1 + ' ' + D('k', 2) + ' + ' + s2 + ' [' + D('ℓ', 3) + ' − (' + D('k', 3) + ' − ' + D('k', 2) + ')]', '= ' + n1 + ' · ' + numP(k2.tau, 2) + ' + ' + n2 + ' · [' + numP(l3.tau, 2) + ' − (' + numP(k3.tau, 2) + ' − ' + numP(k2.tau, 2) + ')]') +
+      row('= ' + signedTerms([{ w: k2.w, join: ' ', value: D('k', 2), dropOne: true }, { w: k3.w, join: ' ', value: D('k', 3), dropOne: true }, { w: l3.w, join: ' ', value: D('ℓ', 3), dropOne: true }], true), '= ' + signedTerms([{ w: k2.w, join: ' · ', value: numP(k2.tau, 2) }, { w: k3.w, join: ' · ', value: numP(k3.tau, 2) }, { w: l3.w, join: ' · ', value: numP(l3.tau, 2) }], false) + ' = ' + aFmt(result.dcdh));
+    $('bridge-copy').innerHTML = 'The first line is Goodman-Bacon’s decomposition; the last is dCDH’s. DID<sub>2</sub>, the forbidden comparison, subtracts the early group’s effect change. Expanding it puts <span class="negative">' + fracU(k3.w) + '</span> on ' + D('k', 3) + ', and the coefficients on ' + D('k', 2) + ' from the two DiDs add up to ' + fracU(k2.w) + '. <a href="' + NOTE + '#one-coefficient-two-views" target="_top">Equation (6) in the note →</a>';
+  }
+  function renderDiagnostics() {
+    if (!result.valid) { $('diag-bacon').innerHTML = '<p class="empty">Undefined in this design.</p>'; $('diag-dcdh').innerHTML = ''; return; }
+    $('diag-bacon').innerHTML = result.types.filter(t => t.count).map(t => '<div class="diag-row"><div><span class="' + (t.type === 'late' ? 'forbidden-name' : '') + '">' + typeRows[t.type] + '</span><small>' + t.count + (t.count > 1 ? ' comparisons' : ' comparison') + ' · R: “' + rLabels[t.type] + '”</small></div><div class="diag-bar" aria-hidden="true"><i class="' + (t.type === 'late' ? 'late' : '') + '" style="width:' + Math.min(100, t.weight * 100) + '%"></i></div><div class="diag-num">' + num(t.weight * 100, 1) + '%<small>avg DiD ' + num(t.contribution / t.weight) + '</small></div></div>').join('');
+    const neg = result.treated.filter(c => c.w < -1e-12), pos = result.treated.filter(c => c.w > 1e-12);
+    $('diag-dcdh').innerHTML = '<div class="diag-stat"><span>Negative W</span><strong class="' + (neg.length ? 'negative' : '') + '">' + neg.length + ' of ' + result.treated.length + '</strong></div><div class="diag-stat"><span>Sum of negative W</span><strong>' + sumFmt(sum(neg.map(c => c.w))) + '</strong></div><div class="diag-stat"><span>Sum of positive W</span><strong>' + sumFmt(sum(pos.map(c => c.w))) + '</strong></div>';
+  }
   function comparisonWeightSymbol(co) {
-    if (co.type === 'never') return '<i>s</i><sub>kU</sub>';
-    return '<i>s</i><sup>' + (co.type === 'early' ? 'k' : 'ℓ') + '</sup><sub>kℓ</sub>';
+    if (co.type === 'never') return '<span class="wsym"><i>s</i><sub>kU</sub></span>';
+    return '<span class="wsym"><i>s</i><span class="ss"><span>' + (co.type === 'early' ? 'k' : 'ℓ') + '</span><span>kℓ</span></span></span>';
   }
   function renderTrace() {
     if (!$('trace-details').open) return;
@@ -365,51 +688,61 @@
     const co = currentComparison();
     if (co) {
       const coefficientsOpen = !!$('trace-content').querySelector('.coefficient-details[open]');
-      const m = co.means;
-      const pre = co.type === 'late' ? 'MID(k, ℓ)' : 'PRE(k)';
-      const post = co.type === 'early' ? 'MID(k, ℓ)' : co.type === 'late' ? 'POST(ℓ)' : 'POST(k)';
-      const tr = co.type === 'late' ? 'ℓ' : 'k';
-      const ct = co.type === 'never' ? 'U' : co.type === 'early' ? 'ℓ' : 'k';
-      $('trace-summary').textContent = 'Inspect comparison: ' + co.tr.label + ' vs. ' + co.ct.label;
-      const rows = co.terms.map(t => '<tr><td><button class="text-button" type="button" data-inspect-cell="' + t.k + '">' + t.gid + ' · t=' + t.t + '</button></td><td class="' + (t.w < 0 ? 'negative' : '') + '">' + num(t.w, 5) + '</td><td>' + num(t.tau, 2) + '</td><td>' + num(t.contribution, 4) + '</td></tr>').join('');
-      $('trace-content').innerHTML = '<div class="trace-context"><div><strong>' + esc(co.tr.label + ' vs. ' + co.ct.label) + '</strong><p>' + typeNames[co.type] + ' · ' + pre + ': ' + periods(co.pre) + ' → ' + post + ': ' + periods(co.post) + '</p></div><span class="weight-badge">Comparison weight ' + comparisonWeightSymbol(co) + ' = ' + num(co.weight, 4) + '</span></div><div class="trace-grid"><table class="block-table" aria-label="Selected two by two comparison of observed means"><thead><tr><th>Observed means</th><th>' + pre + '<br>t=' + periods(co.pre) + '</th><th>' + post + '<br>t=' + periods(co.post) + '</th></tr></thead><tbody><tr><td>' + esc(co.tr.label) + ' (' + tr + ')</td><td class="pre"><span class="block-sign">−</span>' + num(m.tp, 2) + '</td><td class="post"><span class="block-sign">+</span>' + num(m.tq, 2) + '</td></tr><tr><td>' + esc(co.ct.label) + ' (' + ct + ')</td><td class="pre"><span class="block-sign">+</span>' + num(m.cp, 2) + '</td><td class="post"><span class="block-sign">−</span>' + num(m.cq, 2) + '</td></tr></tbody></table><div><div class="formula">DiD = ' + num(m.tq - m.tp, 2) + ' − (' + num(m.cq - m.cp, 2) + ') = ' + num(co.dd) + '<br>Weight × DiD = ' + num(co.contribution, 4) + '</div><p class="trace-copy">Average effect in the treatment group\'s post window: ' + num(co.target) + '. Control group\'s effect change: ' + num(co.contamination) + '. The DiD subtracts the latter from the former.</p></div></div><p class="trace-copy">The comparison weight applies to all four means together. The signs show how the means are combined.</p><details class="coefficient-details"><summary>Expand this weighted comparison into cell effects</summary><p class="trace-copy">Each coefficient includes this comparison\'s weight. Add a cell\'s coefficients over all comparisons to obtain its dCDH weight W.</p><div class="bounded table-scroll"><table class="detail-table"><thead><tr><th>Cell</th><th>Coefficient on effect</th><th>Δ</th><th>Contribution</th></tr></thead><tbody>' + rows + '</tbody></table></div></details>';
+      const m = co.means, simple = kind !== 'panel';
+      const pre = simple ? 't = ' + periods(co.pre) : (co.type === 'late' ? 'MID(k, ℓ)' : 'PRE(k)') + '<br>t=' + periods(co.pre);
+      const post = simple ? 't = ' + periods(co.post) : (co.type === 'early' ? 'MID(k, ℓ)' : co.type === 'late' ? 'POST(ℓ)' : 'POST(k)') + '<br>t=' + periods(co.post);
+      const tr = kind === 'two' ? 'T' : co.type === 'late' ? 'ℓ' : 'k';
+      const ct = kind === 'two' ? 'C' : co.type === 'never' ? 'U' : co.type === 'early' ? 'ℓ' : 'k';
+      $('trace-summary').textContent = 'Inspect comparison: ' + plain(comparisonName(co));
+      const explain = co.type === 'late'
+        ? '<strong>Forbidden comparison.</strong> The control group is already treated in both windows. DiD = treatment group’s average effect in its post window (' + num(co.target) + ') − control group’s effect change (' + num(co.contamination) + ') = ' + num(co.dd) + '.'
+        : 'The control group is untreated in both windows, so the DiD equals the treatment group’s average effect in its post window: ' + num(co.target) + '.';
+      const rows = co.terms.map(t => '<tr><td><button class="text-button" type="button" data-inspect-cell="' + t.k + '">' + cellName(result.cells[t.k]) + '</button></td><td class="' + (t.w < 0 ? 'negative' : '') + '">' + (simple ? fracW(t.w) : num(t.w, 5)) + '</td><td>' + num(t.tau, 2) + '</td><td>' + num(t.contribution, 4) + '</td></tr>').join('');
+      $('trace-content').innerHTML = '<div class="trace-context"><div><strong>' + comparisonName(co) + '</strong>' + forbiddenTag(co) + '<p>' + typeNames[co.type] + ' · ' + plain(pre.replace('<br>', ' ')) + ' → ' + plain(post.replace('<br>', ' ')) + '</p></div><span class="weight-badge">Comparison weight ' + comparisonWeightSymbol(co) + ' = ' + wFmt(co.weight).replace(/^\+/, '') + '</span></div><div class="trace-grid"><table class="block-table" aria-label="Selected two by two comparison of observed means"><thead><tr><th>Observed means</th><th>' + pre + '</th><th>' + post + '</th></tr></thead><tbody><tr><td>' + esc(co.tr.label) + ' (' + tr + ')</td><td class="pre"><span class="block-sign">−</span>' + num(m.tp, 2) + '</td><td class="post"><span class="block-sign">+</span>' + num(m.tq, 2) + '</td></tr><tr><td>' + esc(co.ct.label) + ' (' + ct + ')</td><td class="pre"><span class="block-sign">+</span>' + num(m.cp, 2) + '</td><td class="post"><span class="block-sign">−</span>' + num(m.cq, 2) + '</td></tr></tbody></table><div><div class="formula">DiD = ' + num(m.tq - m.tp, 2) + ' − (' + num(m.cq - m.cp, 2) + ') = ' + num(co.dd) + '<br>Weight × DiD = ' + num(co.contribution, 4) + '</div><p class="trace-copy">' + explain + '</p></div></div><p class="trace-copy">The comparison weight applies to all four means together. The signs show how the means are combined.</p><details class="coefficient-details"><summary>Expand this weighted comparison into cell effects</summary><p class="trace-copy">Each coefficient includes this comparison’s weight. Add a cell’s coefficients over all comparisons to obtain its dCDH weight W.</p><div class="bounded table-scroll"><table class="detail-table"><thead><tr><th>Cell</th><th>Coefficient on effect</th><th>Δ</th><th>Contribution</th></tr></thead><tbody>' + rows + '</tbody></table></div></details>';
       $('trace-content').querySelector('.coefficient-details').open = coefficientsOpen;
       return;
     }
     const c = currentCell();
     if (!c || !c.d) { $('trace-content').textContent = 'Select a treated cell to inspect its weight.'; return; }
-    const links = result.comparisons.map(co => ({ co, term: co.terms.find(t => t.k === cellKey(c)) })).filter(x => x.term);
-    $('trace-summary').textContent = 'Inspect cell: ' + c.gid + ' · t=' + c.t;
-    $('trace-content').innerHTML = '<div class="trace-context"><strong>' + c.gid + ' · t=' + c.t + '</strong><span class="weight-badge">dCDH weight W<sub>g,t</sub> = ' + num(c.w, 5) + '</span></div><p class="trace-copy">Sum of coefficients below = ' + num(sum(links.map(x => x.term.w)), 5) + '. With effect Δ = ' + num(c.tau, 2) + ', this cell contributes ' + num(c.contribution, 4) + ' to TWFE.</p><div class="bounded table-scroll"><table class="detail-table"><thead><tr><th>Comparison</th><th>Comparison weight</th><th>Coefficient on this effect</th></tr></thead><tbody>' + links.map(x => '<tr><td><button type="button" class="text-button" data-comparison="' + x.co.id + '">' + esc(x.co.tr.label + ' vs. ' + x.co.ct.label) + '</button></td><td>' + num(x.co.weight, 4) + '</td><td class="' + (x.term.w < 0 ? 'negative' : '') + '">' + num(x.term.w, 5) + '</td></tr>').join('') + '</tbody></table></div><p class="support">' + (!config.groups.some(g => !g.adopt || g.adopt > c.t) ? 'Everyone is treated at this date. The simulation sets this effect. Common trends and no anticipation alone cannot identify its level without further restrictions.' : 'Untreated units are available at this date. A causal interpretation also requires common trends and no anticipation.') + '</p>';
+    const links = result.comparisons.map(x => ({ co: x, term: x.terms.find(t => t.k === cellKey(c)) })).filter(x => x.term);
+    const simple = kind !== 'panel';
+    $('trace-summary').textContent = 'Inspect cell: ' + cellText(c);
+    $('trace-content').innerHTML = '<div class="trace-context"><strong>' + cellName(c) + '</strong><span class="weight-badge">dCDH weight W<sub>g,t</sub> = ' + (simple ? fracW(c.w) : num(c.w, 5)) + '</span></div><p class="trace-copy">Sum of the coefficients below = ' + (simple ? fracW(sum(links.map(x => x.term.w))) : num(sum(links.map(x => x.term.w)), 5)) + '. With effect Δ = ' + num(c.tau, 2) + ', this cell contributes ' + num(c.contribution, 4) + ' to TWFE.</p><div class="bounded table-scroll"><table class="detail-table"><thead><tr><th>Comparison</th><th>Comparison weight</th><th>Coefficient on this effect</th></tr></thead><tbody>' + links.map(x => '<tr><td><button type="button" class="text-button" data-comparison="' + x.co.id + '">' + comparisonName(x.co) + '</button>' + forbiddenTag(x.co) + '</td><td>' + (simple ? fracW(x.co.weight) : num(x.co.weight, 4)) + '</td><td class="' + (x.term.w < 0 ? 'negative' : '') + '">' + (simple ? fracW(x.term.w) : num(x.term.w, 5)) + '</td></tr>').join('') + '</tbody></table></div><p class="support">' + (!config.groups.some(g => !g.adopt || g.adopt > c.t) ? 'No group is untreated at this date. The simulation sets this effect; common trends and no anticipation alone cannot identify its level without further restrictions.' : 'Untreated units are available at this date. A causal interpretation also requires common trends and no anticipation.') + '</p>';
   }
   function renderEditor() {
     $('group-editor-body').innerHTML = config.groups.map((g, gi) => {
-      const input = (field, min, max, step, label) => '<input type="number" data-group="' + gi + '" data-field="' + field + '" min="' + min + '" max="' + max + '" step="' + step + '" value="' + g[field] + '" aria-label="' + g.id + ' ' + label + '"' + (!g.adopt && ['level', 'growth'].includes(field) ? ' disabled' : '') + '>';
+      const input = (field, min, max, stepSize, label) => '<input type="number" data-group="' + gi + '" data-field="' + field + '" min="' + min + '" max="' + max + '" step="' + stepSize + '" value="' + g[field] + '" aria-label="' + g.id + ' ' + label + '"' + (!g.adopt && ['level', 'growth'].includes(field) ? ' disabled' : '') + '>';
       return '<tr><td>' + g.id + '</td><td>' + input('n', 1, 500, 1, 'unit count') + '</td><td><select data-group="' + gi + '" data-field="adopt" aria-label="' + g.id + ' adoption period"><option value="0"' + (!g.adopt ? ' selected' : '') + '>Never</option>' + engine.range(2, config.T).map(t => '<option value="' + t + '"' + (g.adopt === t ? ' selected' : '') + '>' + t + '</option>').join('') + '</select></td><td>' + input('alpha', -10, 15, .1, 'baseline') + '</td><td>' + input('level', -10, 15, .1, 'initial effect') + '</td><td>' + input('growth', -3, 5, .1, 'effect growth') + '</td></tr>';
     }).join('');
   }
   function renderExtras(forceFields = false) {
-    output('twfe', result.beta); output('att', result.att); output('gap', result.gap);
-    $('weight-summary').textContent = result.valid ? 'Bacon: ' + result.types.map(t => ({ never: 'never-treated', early: 'not-yet-treated', late: 'already-treated' }[t.type]) + ' ' + num(t.weight * 100, 1) + '%').join(' · ') + '. dCDH: ' + result.negativeCount + '/' + result.treated.length + ' negative weights; sum of negative W ' + num(-result.negativeMass) + '.' : 'Weights are undefined in this design.';
+    const c = editedCell();
+    $('reset-cell').disabled = !c || !c.d || !c.manual;
     $('group-count').value = String(config.groups.length); $('period-count').value = String(config.T);
     if (forceFields || document.activeElement !== $('trend')) $('trend').value = config.trend;
     $('design-meta').textContent = config.groups.length + ' groups × ' + config.T + ' periods · ' + result.N + ' units · ' + result.cohorts.length + ' timing groups';
     $('row-count').textContent = '(' + result.cells.length + ' rows)';
     const header = ['group', 'period', 'N_g_t', 't_i', 'D', 'Y0', 'Delta', 'Y', 'epsilon', 'W', 'W_Delta'];
-    const rows = result.cells.map(c => [c.gid, c.t, c.n, c.adopt || 'never', c.d, c.y0, c.d ? c.tau : '', c.y, c.r, c.d && result.valid ? c.w : '', c.d && result.valid ? c.contribution : '']);
-    $('export-csv').href = 'data:text/csv;charset=utf-8,' + encodeURIComponent([header].concat(rows).map(row => row.join(',')).join('\r\n'));
-    $('raw-table-body').innerHTML = result.cells.map(c => '<tr><td>' + c.gid + '</td><td>' + c.t + '</td><td>' + c.n + '</td><td>' + (c.adopt || '∞') + '</td><td>' + c.d + '</td><td>' + num(c.y0, 2) + '</td><td>' + (c.d ? num(c.tau, 2) : '—') + '</td><td>' + num(c.y, 2) + '</td><td>' + num(c.r, 4) + '</td><td>' + (c.d && result.valid ? num(c.w, 5) : '—') + '</td><td>' + (c.d && result.valid ? num(c.contribution, 4) : '—') + '</td></tr>').join('');
+    const rows = result.cells.map(x => [x.gid, x.t, x.n, x.adopt || 'never', x.d, x.y0, x.d ? x.tau : '', x.y, x.r, x.d && result.valid ? x.w : '', x.d && result.valid ? x.contribution : '']);
+    $('export-csv').href = 'data:text/csv;charset=utf-8,' + encodeURIComponent([header].concat(rows).map(r => r.join(',')).join('\r\n'));
+    $('raw-table-body').innerHTML = result.cells.map(x => '<tr><td>' + x.gid + '</td><td>' + x.t + '</td><td>' + x.n + '</td><td>' + (x.adopt || '∞') + '</td><td>' + x.d + '</td><td>' + num(x.y0, 2) + '</td><td>' + (x.d ? num(x.tau, 2) : '—') + '</td><td>' + num(x.y, 2) + '</td><td>' + num(x.r, 4) + '</td><td>' + (x.d && result.valid ? num(x.w, 5) : '—') + '</td><td>' + (x.d && result.valid ? num(x.contribution, 4) : '—') + '</td></tr>').join('');
   }
-  function render(rebuildEditor = false, keepTypedEffect = false) {
-    result = engine.compute(config); ensureSelections();
-    $('invalid-design').hidden = result.valid; $('panel-metric').value = metric;
-    renderControls(keepTypedEffect); renderPanel(); setView(view, false); renderTerms(); renderTrace(); renderExtras(rebuildEditor);
+  function render(rebuildEditor = false) {
+    result = engine.compute(config); kind = designKind(config); ensureSelections();
+    $('invalid-design').hidden = result.valid; $('panel-metric').value = metric; $('show-counterfactual').checked = showCf;
+    renderMode(); renderGuide(); renderEffects(); renderStats(); renderSupport(); renderPanel(); setView(view, false); renderTerms(); renderBridge(); renderDiagnostics(); renderTrace(); renderExtras(rebuildEditor);
     if (rebuildEditor) renderEditor();
     remember();
   }
   function announce() {
     clearTimeout(liveTimer);
-    liveTimer = setTimeout(() => { $('live-result').textContent = result.valid ? 'Both decompositions equal TWFE ' + num(result.beta) + '.' : 'TWFE is not identified in this design.'; }, 200);
+    liveTimer = setTimeout(() => { $('live-result').textContent = result.valid ? 'Both decompositions equal TWFE ' + plain(aFmt(result.beta)) + '. ATT ' + plain(aFmt(result.att)) + '.' : 'TWFE is not identified in this design.'; }, 200);
+  }
+  function goToStep(i) { mode = 'guided'; loadStep(i); render(true); writeHash(); announce(); }
+  function setMode(next) {
+    if (next === mode) return;
+    if (next === 'guided') { goToStep(step); return; }
+    mode = 'free'; render(true); writeHash(); announce();
   }
   function selectCell(k, inspect) {
     const c = result.cells[Number(k)]; if (!c || !c.d) return;
@@ -425,41 +758,46 @@
     }
     selection = { kind: 'comparison', id }; $('trace-details').open = true; render();
   }
-  function changeEffect(event) {
-    const c = editedCell(), el = event.target;
+  function setEffect(c, el, event, keepTyped) {
     if (!c || !c.d) return;
     if (el.value === '' || !Number.isFinite(Number(el.value))) { if (event.type === 'change') el.value = String(c.tau); return; }
     const value = Math.round(Math.max(-100, Math.min(100, Number(el.value))) * 10) / 10;
     config.groups[c.gi].overrides[c.t] = value; scenario = 'custom';
-    if (event.type === 'change' || Number(el.value) !== value) el.value = String(value);
-    render(false, event.type === 'input' && el.id === 'effect-number'); announce();
-  }
-  function loadPreset(name) {
-    basePreset = name; scenario = name; config = engine.makePreset(name);
-    edit = { gi: 0, t: config.T }; selection = { kind: 'cell', gi: 0, t: config.T };
-    allBacon = allCells = false; $('comparison-filter').value = $('cell-filter').value = 'all';
-    $('trace-details').open = false; $('trace-summary').textContent = 'Inspect a comparison or cell';
-    $('trace-content').replaceChildren();
-    render(true); announce();
+    edit = { gi: c.gi, t: c.t };
+    if (event.type === 'change' || (!keepTyped && Number(el.value) !== value)) el.value = String(value);
+    render(); announce();
   }
   document.addEventListener('click', event => {
+    const stepButton = event.target.closest('[data-step]');
+    if (stepButton) { goToStep(Number(stepButton.dataset.step)); return; }
     const button = event.target.closest('[data-edit-cell],[data-inspect-cell],[data-comparison]');
     if (!button) return;
     if (button.hasAttribute('data-comparison')) selectComparison(button.dataset.comparison);
     else selectCell(button.dataset.inspectCell || button.dataset.editCell, button.hasAttribute('data-inspect-cell'));
   });
-  $('scenario').addEventListener('change', event => { if (presets.has(event.target.value)) loadPreset(event.target.value); });
-  $('reset-example').addEventListener('click', () => loadPreset(basePreset));
+  ['input', 'change'].forEach(type => $('effects-sliders').addEventListener(type, event => {
+    const el = event.target; if (!el.dataset || el.dataset.effect === undefined) return;
+    setEffect(result.cells[Number(el.dataset.effect)], el, event, el.type === 'number' && event.type === 'input');
+  }));
+  ['effect-number', 'effect-slider'].forEach(id => ['input', 'change'].forEach(type => $(id).addEventListener(type, event => setEffect(editedCell(), event.target, event, id === 'effect-number' && event.type === 'input'))));
   $('edit-cell').addEventListener('change', event => selectCell(event.target.value, false));
-  ['effect-number', 'effect-slider'].forEach(id => { $(id).addEventListener('input', changeEffect); $(id).addEventListener('change', changeEffect); });
-  ['raw', 'panel'].forEach(name => $('tab-' + name).addEventListener('click', () => setView(name)));
-  document.querySelector('.tabs').addEventListener('keydown', event => {
+  $('step-prev').addEventListener('click', () => goToStep(step - 1));
+  $('step-next').addEventListener('click', () => goToStep(step + 1));
+  $('step-reset').addEventListener('click', () => goToStep(step));
+  $('step-free').addEventListener('click', () => setMode('free'));
+  ['guided', 'free'].forEach(m => $('mode-' + m).addEventListener('click', () => setMode(m)));
+  document.querySelectorAll('.tabs').forEach(list => list.addEventListener('keydown', event => {
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-    event.preventDefault(); const next = event.key === 'Home' ? 'raw' : event.key === 'End' ? 'panel' : view === 'raw' ? 'panel' : 'raw';
-    setView(next); $('tab-' + next).focus();
-  });
+    event.preventDefault();
+    const tabs = [...list.querySelectorAll('[role=tab]')], current = tabs.findIndex(t => t.getAttribute('aria-selected') === 'true');
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (current + (event.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+    tabs[next].click(); tabs[next].focus();
+  }));
+  $('scenario').addEventListener('change', event => { if (designs[event.target.value]) { loadDesign(event.target.value); render(true); announce(); } });
+  $('reset-example').addEventListener('click', () => { loadDesign(basePreset); render(true); announce(); });
+  ['raw', 'panel'].forEach(name => $('tab-' + name).addEventListener('click', () => setView(name)));
   $('panel-metric').addEventListener('change', event => { metric = event.target.value; renderPanel(); remember(); });
-  $('show-counterfactual').addEventListener('change', renderPlot);
+  $('show-counterfactual').addEventListener('change', event => { showCf = event.target.checked; renderPlot(); remember(); });
   $('bacon-expand').addEventListener('click', () => { allBacon = !allBacon; if (!allBacon) $('comparison-filter').value = 'all'; renderTerms(); });
   $('cell-expand').addEventListener('click', () => { allCells = !allCells; if (!allCells) $('cell-filter').value = 'all'; renderTerms(); });
   $('comparison-filter').addEventListener('change', renderTerms); $('cell-filter').addEventListener('change', renderTerms);
@@ -497,11 +835,15 @@
   }
   $('trend').addEventListener('input', changeTrend); $('trend').addEventListener('change', changeTrend);
   $('reset-cell').addEventListener('click', () => { const c = editedCell(); if (!c || !c.d) return; delete config.groups[c.gi].overrides[c.t]; scenario = 'custom'; render(); announce(); });
+  window.addEventListener('hashchange', () => {
+    const h = parseHash(); if (!h) return;
+    if (h.step !== undefined) { if (mode !== 'guided' || step !== h.step) goToStep(h.step); }
+    else if (mode !== 'free') setMode('free');
+  });
   new ResizeObserver(renderPlot).observe($('raw-plot'));
-  window.DiDLabPanel = Object.freeze({ getState: () => engine.copy(config), getResult: () => result });
-  render(true);
+  window.DiDLabPanel = Object.freeze({ getState: () => engine.copy(config), getResult: () => result, getView: () => ({ mode, step, kind, scenario, view, metric }) });
+  render(true); writeHash();
 })();
-
 </script>
 </body>
 </html>

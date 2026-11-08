@@ -66,7 +66,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dcfacd346518898330b9945b764f9a87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-fc8b3bc77b00e7226743955df771595b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-bb70c3dfb07403f0136150b90124af40.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -167,7 +167,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">The two decompositions</span></a>
+ <span class="menu-text">From 2×2 DiD to staggered TWFE</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -321,6 +321,45 @@ Y_{g,t}=Y_{g,t}(0)+D_{g,t}\Delta_{g,t}.
 </table>
 <p>The coefficient equality applies to this note’s balanced panel without covariates. Units in a group have identical treatment paths, so using unit or group fixed effects gives the same treatment residual and treatment coefficient. The cell-effect correspondence holds with the treatment groups and design fixed. Goodman-Bacon defines <span class="math inline">\(ATT_k(\tau)\)</span> within a timing group. We use <span class="math inline">\(t\)</span> for this date throughout. dCDH makes the conditioning on <span class="math inline">\(\mathbf D\)</span> explicit.</p>
 <p>The papers also use <span class="math inline">\(N\)</span> differently. dCDH counts observations across all dates; Goodman-Bacon counts distinct panel units. We avoid using <span class="math inline">\(N\)</span> in the combined formulas below. Goodman-Bacon’s <span class="math inline">\(n_k\)</span> is a <strong>share</strong>, not a unit count.</p>
+</section>
+<section id="sec-original-notation" class="level3">
+<h3 class="anchored" data-anchor-id="sec-original-notation">Notation in the July 2024 notes</h3>
+<p>The original Chinese notes used simpler symbols for the same two-group example.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">July 2024 notes</th>
+<th style="text-align: left;">This note</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Groups <span class="math inline">\(G_1\)</span>, <span class="math inline">\(G_2\)</span></td>
+<td style="text-align: left;">Timing groups <span class="math inline">\(k\)</span>, <span class="math inline">\(\ell\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cell effects <span class="math inline">\(\beta_{12},\beta_{13},\beta_{23}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\widetilde\Delta_{k,2},\widetilde\Delta_{k,3},\widetilde\Delta_{\ell,3}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Comparisons <span class="math inline">\(DD_1\)</span>, <span class="math inline">\(DD_2\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(DID_1\)</span>, <span class="math inline">\(DID_2\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TWFE coefficient <span class="math inline">\(\beta^{DD}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\widehat\beta_{fe}\)</span>, or <span class="math inline">\(\widetilde\beta_{fe}\)</span> in expectation</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Equations (6) and (8)</td>
+<td style="text-align: left;">First and last lines of <a href="index.html#eq-short-bridge" class="quarto-xref">Equation&nbsp;<span>6</span></a></td>
+</tr>
+</tbody>
+</table>
+<p>The notes wrote both cell effects and the regression coefficient with <span class="math inline">\(\beta\)</span>. Here each effect has its own symbol, so that a treatment effect and a regression coefficient are not confused.</p>
 </section></section></details>
 <details class="book-detail">
 <summary>
@@ -388,15 +427,23 @@ W_{g,t}=\frac{N_{g,t}}{N_1}w_{g,t}.
 <p>Thus <span class="math inline">\(\sum_{D_{g,t}=1}W_{g,t}=1\)</span>. In general <span class="math inline">\(\sum_{D_{g,t}=1}w_{g,t}\)</span> is not one. Both weights have the sign of <span class="math inline">\(\varepsilon_{g,t}\)</span>. The uppercase notation is from dCDH’s introductory equation (1); the product above follows from its Theorem 1.</p>
 <p>The sample coefficient need not equal a weighted sum of expected effects in a realized dataset. The difference is the regression’s outcome noise. The lab sets that noise to zero.</p>
 </section>
-<section id="when-does-twfe-equal-the-att" class="level3">
-<h3 class="anchored" data-anchor-id="when-does-twfe-equal-the-att">When does TWFE equal the ATT?</h3>
+<section id="sec-twfe-att" class="level3">
+<h3 class="anchored" data-anchor-id="sec-twfe-att">When does TWFE equal the ATT?</h3>
 <p>Subtracting the two averages yields</p>
 <p><span id="eq-note-target-gap"><span class="math display">\[
 \widetilde\beta_{fe}-\widetilde\Delta^{TR}
 =\sum_{(g,t):D_{g,t}=1}\frac{N_{g,t}}{N_1}
     (w_{g,t}-1)\widetilde\Delta_{g,t}.
 \tag{A.12}\]</span></span></p>
-<p>Because the weighted mean of <span class="math inline">\(w_{g,t}\)</span> is one, we may replace <span class="math inline">\(\widetilde\Delta_{g,t}\)</span> on the right by <span class="math inline">\(\widetilde\Delta_{g,t}-\widetilde\Delta^{TR}\)</span>. This expresses the difference as a weighted covariance. If it is zero for the fixed design, the two conditional averages agree. dCDH’s Assumption 7 imposes the corresponding zero-covariance condition in expectation; Corollary 2 then gives <span class="math inline">\(\beta_{fe}=\delta^{TR}\)</span>.</p>
+<p>Because the weighted mean of <span class="math inline">\(w_{g,t}\)</span> is one, we may replace <span class="math inline">\(\widetilde\Delta_{g,t}\)</span> on the right by <span class="math inline">\(\widetilde\Delta_{g,t}-\widetilde\Delta^{TR}\)</span>. This expresses the difference as a weighted covariance. If it is zero for the fixed design, the two conditional averages agree.</p>
+<p>In the two-group example of the main note, the difference is</p>
+<p><span id="eq-note-cancellation"><span class="math display">\[
+\widetilde\beta_{fe}-\widetilde\Delta^{TR}
+=\frac{4\widetilde\Delta_{k,2}-5\widetilde\Delta_{k,3}
+          +\widetilde\Delta_{\ell,3}}6.
+\tag{A.13}\]</span></span></p>
+<p>At <span class="math inline">\((1,2,6)\)</span> the numerator is <span class="math inline">\(4-10+6=0\)</span>, so TWFE equals the ATT although the early effect grows. At <span class="math inline">\((1,1,3)\)</span> it is <span class="math inline">\(2\)</span>, giving the gap <span class="math inline">\(1/3\)</span> between TWFE <span class="math inline">\(2\)</span> and ATT <span class="math inline">\(5/3\)</span>. Equality at one set of effects says nothing about another.</p>
+<p>dCDH’s Assumption 7 imposes the corresponding zero-covariance condition in expectation; Corollary 2 then gives <span class="math inline">\(\beta_{fe}=\delta^{TR}\)</span>. This is a sufficient condition that allows effects to change over time.</p>
 </section>
 <section id="sec-app-proof" class="level3">
 <h3 class="anchored" data-anchor-id="sec-app-proof">Direct verification of the example</h3>
@@ -405,7 +452,7 @@ W_{g,t}=\frac{N_{g,t}}{N_1}w_{g,t}.
 D=\begin{pmatrix}0&amp;1&amp;1\\0&amp;0&amp;1\end{pmatrix},
 \qquad
 \varepsilon=\frac16\begin{pmatrix}-1&amp;2&amp;-1\\1&amp;-2&amp;1\end{pmatrix}.
-\tag{A.13}\]</span></span></p>
+\tag{A.14}\]</span></span></p>
 <p>For equal group sizes, the coefficients on the six observed means in <a href="#eq-fwl" class="quarto-xref">Equation&nbsp;<span>A.9</span></a> are <span class="math inline">\(3\varepsilon_{g,t}\)</span>. Hence</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -473,7 +520,7 @@ Multi-group calculations and verification
 \mathrm{MID}(k,\ell)&amp;=\{k,\ldots,\ell-1\},\\
 \mathrm{POST}(\ell)&amp;=\{\ell,\ldots,T\}.
 \end{aligned}
-\tag{A.14}\]</span></span></p>
+\tag{A.15}\]</span></span></p>
 <p>Early versus late compares PRE with MID. Late versus early compares MID with POST. For treated versus never treated, use the treated group’s own PRE and POST. Every window mean averages all dates in that window.</p>
 </section>
 <section id="comparison-weights" class="level3">
@@ -485,11 +532,11 @@ Multi-group calculations and verification
 \widehat V^D
 =\frac{\sum_{g,t}N_{g,t}\varepsilon_{g,t}^{\,2}}
        {\sum_{g,t}N_{g,t}}.
-\tag{A.15}\]</span></span></p>
+\tag{A.16}\]</span></span></p>
 <p>Canceling factors in Goodman-Bacon’s equations (10e)–(10g) gives</p>
 <p><span id="eq-engine-bacon-never"><span class="math display">\[
 s_{kU}=\frac{n_kn_U\bar D_k(1-\bar D_k)}{\widehat V^D},
-\tag{A.16}\]</span></span></p>
+\tag{A.17}\]</span></span></p>
 <p><span id="eq-engine-bacon-pair"><span class="math display">\[
 \begin{aligned}
 s^k_{k\ell}
@@ -497,7 +544,7 @@ s^k_{k\ell}
 s^\ell_{k\ell}
 &amp;=\frac{n_kn_\ell\bar D_\ell(\bar D_k-\bar D_\ell)}{\widehat V^D}.
 \end{aligned}
-\tag{A.17}\]</span></span></p>
+\tag{A.18}\]</span></span></p>
 <p>These are algebraic simplifications of the paper’s weights, with the same notation. They equal the values shown by the lab. The weights of all comparisons present sum to one when <span class="math inline">\(\widehat V^D&gt;0\)</span>.</p>
 </section>
 <section id="from-a-comparison-to-a-cell-effect" class="level3">
@@ -509,7 +556,7 @@ s^\ell_{k\ell}
 <h3 class="anchored" data-anchor-id="verification">Verification</h3>
 <p>The calculation engine was checked against a separate weighted least-squares regression of cell outcomes on treatment and fixed effects. Cell weights are <span class="math inline">\(N_{g,t}\)</span>. The checks cover unequal sizes, shared treatment dates, never-treated groups, changing effects, and individual effect edits.</p>
 <p>Across 684 estimable designs, the largest difference from the independent regression was below <span class="math inline">\(2\times10^{-12}\)</span>. The checks also verified both decompositions and each cell’s coefficient summed over comparisons. A further 24 designs with no residual treatment variation were correctly reported as unidentified.</p>
-<p>In the starting example, the lab gives TWFE <span class="math inline">\(-1\)</span>, ATT <span class="math inline">\(7/3\)</span>, comparison weights <span class="math inline">\((1/2,1/2)\)</span>, and cell weights <span class="math inline">\(W=(1,-1/2,1/2)\)</span>. These checks concern the implementation. They do not test common trends in any application.</p>
+<p>In lab step 1, the note’s two-group example, the lab gives TWFE <span class="math inline">\(-1\)</span>, ATT <span class="math inline">\(7/3\)</span>, comparison weights <span class="math inline">\((1/2,1/2)\)</span>, and cell weights <span class="math inline">\(W=(1,-1/2,1/2)\)</span>. These checks concern the implementation. They do not test common trends in any application.</p>
 </section></section></details>
 <details class="book-detail">
 <summary>
@@ -571,7 +618,8 @@ Where to find the results in the papers
 </table>
 <p>Goodman-Bacon’s <span class="math inline">\(\beta^{DD}\)</span> in equation (15) is a probability limit. dCDH’s <span class="math inline">\(\widetilde\beta_{fe}\)</span> is a conditional expectation. The note uses the latter for its finite-design calculations. It does not equate a finite-sample conditional expectation with an asymptotic limit. Both papers explain the same subtraction of changing effects in already-treated controls.</p>
 <p>The lab reports the count of negative <span class="math inline">\(W_{g,t}\)</span> and their sum. In the small example, one of three weights is negative and the negative weights sum to <span class="math inline">\(-1/2\)</span>. Neither number alone establishes a violation of common trends or gives the size of the treatment effects.</p>
-<p>The core argument uses the two papers above. The following references provide optional background; they introduce no additional notation into this note:</p>
+<p>The term <em>forbidden comparison</em>, for a DiD that uses already-treated units as controls, comes from <span class="citation" data-cites="borusyak2024">Borusyak et al. (<a href="references.html#ref-borusyak2024" role="doc-biblioref">2024</a>)</span>.</p>
+<p>The core argument uses the two papers above. The <a href="./index.html#sec-note-practice">practical section</a> of the main note points to the following estimators and survey. They introduce no additional notation into this note:</p>
 <ul>
 <li><span class="citation" data-cites="callaway2021">Callaway and Sant’Anna (<a href="references.html#ref-callaway2021" role="doc-biblioref">2021</a>)</span>, <em>Difference-in-Differences with Multiple Time Periods</em>.</li>
 <li><span class="citation" data-cites="sun2021">Sun and Abraham (<a href="references.html#ref-sun2021" role="doc-biblioref">2021</a>)</span>, <em>Estimating Dynamic Treatment Effects in Event Studies with Heterogeneous Treatment Effects</em>.</li>

@@ -67,7 +67,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dcfacd346518898330b9945b764f9a87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-fc8b3bc77b00e7226743955df771595b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-bb70c3dfb07403f0136150b90124af40.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -137,7 +137,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">The two decompositions</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">From 2×2 DiD to staggered TWFE</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -168,7 +168,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">The two decompositions</span></a>
+ <span class="menu-text">From 2×2 DiD to staggered TWFE</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -210,20 +210,21 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-note" id="toc-sec-note" class="nav-link active" data-scroll-target="#sec-note">The two decompositions</a>
+  <li><a href="#sec-note" id="toc-sec-note" class="nav-link active" data-scroll-target="#sec-note">From 2×2 DiD to staggered TWFE</a>
   <ul class="collapse">
-  <li><a href="#sec-note-setup" id="toc-sec-note-setup" class="nav-link" data-scroll-target="#sec-note-setup">Setup and notation</a></li>
+  <li><a href="#sec-note-canonical" id="toc-sec-note-canonical" class="nav-link" data-scroll-target="#sec-note-canonical">The 2×2 starting point</a></li>
   <li><a href="#sec-example-brief" id="toc-sec-example-brief" class="nav-link" data-scroll-target="#sec-example-brief">A two-group, three-period example</a></li>
   <li><a href="#one-coefficient-two-views" id="toc-one-coefficient-two-views" class="nav-link" data-scroll-target="#one-coefficient-two-views">One coefficient, two decompositions</a></li>
+  <li><a href="#sec-note-setup" id="toc-sec-note-setup" class="nav-link" data-scroll-target="#sec-note-setup">What the example assumes</a></li>
   <li><a href="#sec-note-general" id="toc-sec-note-general" class="nav-link" data-scroll-target="#sec-note-general">From the example to a larger panel</a></li>
   <li><a href="#sec-note-effects" id="toc-sec-note-effects" class="nav-link" data-scroll-target="#sec-note-effects">When effects do not change over time</a>
   <ul class="collapse">
-  <li><a href="#first-define-the-att" id="toc-first-define-the-att" class="nav-link" data-scroll-target="#first-define-the-att">First define the ATT</a></li>
-  <li><a href="#the-same-effect-in-every-treated-cell" id="toc-the-same-effect-in-every-treated-cell" class="nav-link" data-scroll-target="#the-same-effect-in-every-treated-cell">The same effect in every treated cell</a></li>
-  <li><a href="#effects-differ-across-groups-but-stay-constant-over-time" id="toc-effects-differ-across-groups-but-stay-constant-over-time" class="nav-link" data-scroll-target="#effects-differ-across-groups-but-stay-constant-over-time">Effects differ across groups but stay constant over time</a></li>
-  <li><a href="#changing-effects-can-also-give-the-same-att" id="toc-changing-effects-can-also-give-the-same-att" class="nav-link" data-scroll-target="#changing-effects-can-also-give-the-same-att">Changing effects can also give the same ATT</a></li>
+  <li><a href="#sec-note-att" id="toc-sec-note-att" class="nav-link" data-scroll-target="#sec-note-att">First define the ATT</a></li>
+  <li><a href="#sec-note-constant" id="toc-sec-note-constant" class="nav-link" data-scroll-target="#sec-note-constant">Constant effects remove the subtraction, not the weighting</a></li>
+  <li><a href="#sec-note-only-when" id="toc-sec-note-only-when" class="nav-link" data-scroll-target="#sec-note-only-when">“Only when” is too strong</a></li>
   </ul></li>
   <li><a href="#sec-note-support" id="toc-sec-note-support" class="nav-link" data-scroll-target="#sec-note-support">When every group is treated</a></li>
+  <li><a href="#sec-note-practice" id="toc-sec-note-practice" class="nav-link" data-scroll-target="#sec-note-practice">What to do in practice</a></li>
   <li><a href="#use-the-interactive-lab" id="toc-use-the-interactive-lab" class="nav-link" data-scroll-target="#use-the-interactive-lab">Use the interactive lab</a></li>
   </ul></li>
   </ul>
@@ -265,25 +266,61 @@ window.Quarto = {
 
 
 <section id="sec-note" class="level1 unnumbered">
-<h1 class="unnumbered">The two decompositions</h1>
+<h1 class="unnumbered">From 2×2 DiD to staggered TWFE</h1>
+<div class="book-kicker">
+<p>Adapted and expanded from the author’s Chinese notes, July 2024</p>
+</div>
 <p>Why can two-way fixed effects (TWFE) put negative weights on treatment effects when the Goodman-Bacon weights are positive? <strong>The two decompositions average different things.</strong> Goodman-Bacon averages <span class="math inline">\(2\times2\)</span> difference-in-differences (DiD) estimators. De Chaisemartin–D’Haultfœuille (dCDH) weights treatment effects in treated group-period cells. A DiD can subtract an effect even when the weight on that DiD is positive. <span class="citation" data-cites="goodmanbacon2021 dcdh2020">(<a href="references.html#ref-goodmanbacon2021" role="doc-biblioref">Goodman-Bacon 2021</a>; <a href="references.html#ref-dcdh2020" role="doc-biblioref"><span class="nocase">de Chaisemartin and D’Haultfœuille</span> 2020</a>)</span></p>
-<p>One example shows how the two results fit together. It also separates two questions. Does a comparison subtract a control group’s changing treatment effect? Does TWFE equal the ATT we want to report? Removing the first problem need not resolve the second.</p>
-<section id="sec-note-setup" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="sec-note-setup">Setup and notation</h2>
-<p>Consider groups <span class="math inline">\(g\)</span> observed in periods <span class="math inline">\(t=1,\ldots,T\)</span>. Each group’s size, <span class="math inline">\(N_{g,t}\)</span>, stays constant over time. All units in a group have the same binary treatment, <span class="math inline">\(D_{g,t}\)</span>. Once treated, they remain treated. No group starts treatment in period 1; some groups may never start. The regression includes group and period fixed effects, with no other covariates.</p>
-<p>We use dCDH’s notation. <span class="math inline">\(Y_{g,t}\)</span> is the observed mean outcome in a cell: one group in one period. <span class="math inline">\(\Delta_{g,t}\)</span> is that cell’s average treatment effect (ATE). The sample regression coefficient is <span class="math inline">\(\widehat\beta_{fe}\)</span>. Let <span class="math inline">\(\mathbf D\)</span> collect all treatment indicators. Following dCDH’s conditional notation, write</p>
-<p><span id="eq-note-means"><span class="math display">\[
-\widetilde\Delta_{g,t}=\mathbb E[\Delta_{g,t}\mid\mathbf D],
-\qquad
-\widetilde\beta_{fe}=\mathbb E[\widehat\beta_{fe}\mid\mathbf D].
+<p>The note follows the path of the original notes. It starts from the familiar <span class="math inline">\(2\times2\)</span> DiD and its regression. It then lets groups start treatment at different dates, and one example yields both decompositions. It ends by making the original conclusion precise and by stating what to do in practice.</p>
+<p>Two questions stay separate throughout. Does a comparison subtract a control group’s changing treatment effect? Does TWFE equal the ATT we want to report? Removing the first problem need not resolve the second.</p>
+<section id="sec-note-canonical" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-note-canonical">The 2×2 starting point</h2>
+<p>Start with two groups and two periods. One group is treated in period 2; the other stays untreated.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Treatment status</th>
+<th style="text-align: center;">Period 1</th>
+<th style="text-align: center;">Period 2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Treated group <span class="math inline">\(T\)</span></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Comparison group <span class="math inline">\(C\)</span></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<p>Let <span class="math inline">\(Y_{g,t}\)</span> be the mean outcome of group <span class="math inline">\(g\)</span> in period <span class="math inline">\(t\)</span>, and <span class="math inline">\(\Delta_{g,t}\)</span> the average treatment effect (ATE) in that cell. The DiD is</p>
+<p><span id="eq-note-canonical"><span class="math display">\[
+DID=(Y_{T,2}-Y_{T,1})-(Y_{C,2}-Y_{C,1}).
 \tag{1}\]</span></span></p>
-<p>The tilde means that we hold the treatment design fixed and average over outcome uncertainty. In a treated cell, every unit is treated, so its ATE is also its ATT. The lab has no sampling noise: its assigned <span class="math inline">\(\Delta_{g,t}\)</span> equals <span class="math inline">\(\widetilde\Delta_{g,t}\)</span>.</p>
-<p>For causal interpretation, assume common trends in outcomes without treatment, conditional on the treatment design. Also assume no anticipation: treatment has no effect before it begins. The potential outcomes rule out effects of other units’ treatment. These assumptions allow treatment effects to differ across groups and to change after treatment. Common trends does <strong>not</strong> require observed treated outcomes to follow parallel paths. The <a href="./details.html#sec-foundations">appendix</a> states the assumptions and connects the papers’ potential-outcome notation.</p>
-<p>An exact identity for the sample coefficient and a statement about expected treatment effects are different results. Goodman-Bacon provides the first. dCDH provides the second under the outcome assumptions. Sampling error still affects an estimate from real data.</p>
+<p>Assume common trends: without treatment, both groups’ expected outcomes would change by the same amount. Assume also no anticipation: treatment has no effect before it starts. Then the expected DiD equals the expected effect in the one treated cell, <span class="math inline">\(\mathbb E[\Delta_{T,2}]\)</span>. This is the ATT for that cell, not an average effect for the whole population.</p>
+<p>With sample means, the same number comes from an OLS regression on individual observations <span class="math inline">\(i\)</span>:</p>
+<p><span id="eq-note-treatpost"><span class="math display">\[
+\begin{aligned}
+Y_{i,g,t}={}&amp;\beta_0+\beta_1\,\mathrm{Treat}_g+\beta_2\,\mathrm{Post}_t\\
+&amp;+\beta_3\,\mathrm{Treat}_g\times\mathrm{Post}_t+u_{i,g,t}.
+\end{aligned}
+\tag{2}\]</span></span></p>
+<p><span class="math inline">\(\mathrm{Treat}_g\)</span> marks the treated group and <span class="math inline">\(\mathrm{Post}_t\)</span> marks period 2. The estimate of <span class="math inline">\(\beta_3\)</span> equals the DiD in <a href="#eq-note-canonical" class="quarto-xref">Equation&nbsp;<span>1</span></a>.</p>
+<p>Applied work has more units and more dates. Units such as states differ in their permanent levels, and each date can have its own common shock. The regression therefore replaces <span class="math inline">\(\mathrm{Treat}_g\)</span> and <span class="math inline">\(\mathrm{Post}_t\)</span> with group fixed effects <span class="math inline">\(\alpha_g\)</span> and period fixed effects <span class="math inline">\(\lambda_t\)</span>:</p>
+<p><span id="eq-note-twfe"><span class="math display">\[
+Y_{i,g,t}=\alpha_g+\lambda_t+\beta_{fe}D_{g,t}+u_{i,g,t}.
+\tag{3}\]</span></span></p>
+<p><span class="math inline">\(D_{g,t}\)</span> is the treatment indicator. This is the TWFE regression; <span class="math inline">\(\widehat\beta_{fe}\)</span> denotes its OLS estimate. In the <span class="math inline">\(2\times2\)</span> case it is the same regression as <a href="#eq-note-treatpost" class="quarto-xref">Equation&nbsp;<span>2</span></a>, so <span class="math inline">\(\widehat\beta_{fe}\)</span> equals the DiD. Unit or state fixed effects give the same treatment coefficient in the designs considered here.</p>
+<p>Adding fixed effects is not the problem. The problem appears when groups start treatment at different dates. TWFE then combines several DiDs, and some of them use already-treated groups as controls.</p>
+<p><a href="./lab-panel.html#step=0" class="lab-link">Lab step 0: the 2×2 case →</a></p>
 </section>
 <section id="sec-example-brief" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-example-brief">A two-group, three-period example</h2>
-<p>Use Goodman-Bacon’s labels: <span class="math inline">\(k\)</span> is the early timing group and <span class="math inline">\(\ell\)</span> the late timing group. Here <span class="math inline">\(k=2\)</span> and <span class="math inline">\(\ell=3\)</span> are their treatment dates. The groups have equal sizes.</p>
+<p>Now let treatment start at different dates. Use Goodman-Bacon’s labels: <span class="math inline">\(k\)</span> is the early timing group and <span class="math inline">\(\ell\)</span> the late timing group. Here <span class="math inline">\(k=2\)</span> and <span class="math inline">\(\ell=3\)</span> are their treatment dates. The groups have equal sizes. Once treated, they remain treated.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -308,15 +345,15 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>There are three treated effects: <span class="math inline">\(\widetilde\Delta_{k,2}\)</span>, <span class="math inline">\(\widetilde\Delta_{k,3}\)</span>, and <span class="math inline">\(\widetilde\Delta_{\ell,3}\)</span>. As in dCDH’s two-group illustration, call the two expected DiD comparisons <span class="math inline">\(DID_1\)</span> and <span class="math inline">\(DID_2\)</span>.</p>
-<p><strong>Early versus late, periods 1–2.</strong> The late group is untreated at both dates. Under common trends,</p>
+<p>A tilde marks an expectation that holds the treatment design fixed; <a href="#sec-note-setup">the assumptions below</a> define it. There are three treated effects: <span class="math inline">\(\widetilde\Delta_{k,2}\)</span>, <span class="math inline">\(\widetilde\Delta_{k,3}\)</span>, and <span class="math inline">\(\widetilde\Delta_{\ell,3}\)</span>. As in dCDH’s two-group illustration, call the two expected DiD comparisons <span class="math inline">\(DID_1\)</span> and <span class="math inline">\(DID_2\)</span>.</p>
+<p><strong>Early versus late, periods 1–2.</strong> The late group is untreated at both dates, so this is a standard DiD. Under common trends,</p>
 <p><span id="eq-note-dd1"><span class="math display">\[
 \begin{aligned}
 DID_1
 &amp;=\mathbb E[(Y_{k,2}-Y_{k,1})-(Y_{\ell,2}-Y_{\ell,1})\mid\mathbf D]\\
 &amp;=\widetilde\Delta_{k,2}.
 \end{aligned}
-\tag{2}\]</span></span></p>
+\tag{4}\]</span></span></p>
 <p><strong>Late versus early, periods 2–3.</strong> The late group enters treatment. The early group is already treated at both dates:</p>
 <p><span id="eq-short-comparisons"><span class="math display">\[
 \begin{aligned}
@@ -325,8 +362,9 @@ DID_2
 &amp;=\widetilde\Delta_{\ell,3}
   -(\widetilde\Delta_{k,3}-\widetilde\Delta_{k,2}).
 \end{aligned}
-\tag{3}\]</span></span></p>
-<p>Both comparisons remove the common untreated trend. The second also subtracts the change in the early group’s treatment effect. If that effect grows, <span class="math inline">\(DID_2\)</span> understates the late group’s effect. Common trends can hold exactly and this subtraction still occurs. If the early effect does not change, the extra term is zero. <span class="citation" data-cites="dcdh2020 goodmanbacon2021">(<a href="references.html#ref-dcdh2020" role="doc-biblioref"><span class="nocase">de Chaisemartin and D’Haultfœuille</span> 2020, sec. II.A</a>; <a href="references.html#ref-goodmanbacon2021" role="doc-biblioref">Goodman-Bacon 2021</a>, equation (14c))</span></p>
+\tag{5}\]</span></span></p>
+<p>Both comparisons remove the common untreated trend. The second also subtracts the change in the early group’s treatment effect. If that effect grows, <span class="math inline">\(DID_2\)</span> understates the late group’s effect. Common trends can hold exactly and this subtraction still occurs. <span class="citation" data-cites="dcdh2020 goodmanbacon2021">(<a href="references.html#ref-dcdh2020" role="doc-biblioref"><span class="nocase">de Chaisemartin and D’Haultfœuille</span> 2020, sec. II.A</a>; <a href="references.html#ref-goodmanbacon2021" role="doc-biblioref">Goodman-Bacon 2021</a>, equation (14c))</span></p>
+<p>Comparisons that use already-treated units as controls are called <strong>forbidden comparisons</strong> <span class="citation" data-cites="borusyak2024">(<a href="references.html#ref-borusyak2024" role="doc-biblioref">Borusyak et al. 2024</a>)</span>. The July 2024 notes used this name for <span class="math inline">\(DID_2\)</span>. The name points to the subtracted effect change, not to a failure of common trends. Suppose the early effect does not change: it jumps once when treatment starts and then stays at that level. Then the extra term is zero and <span class="math inline">\(DID_2=\widetilde\Delta_{\ell,3}\)</span>. The outcome itself can keep trending; only the effect must stay fixed.</p>
 </section>
 <section id="one-coefficient-two-views" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="one-coefficient-two-views">One coefficient, two decompositions</h2>
@@ -342,8 +380,8 @@ DID_2
    -\tfrac12\widetilde\Delta_{k,3}
    +\tfrac12\widetilde\Delta_{\ell,3}.
 \end{aligned}
-\tag{4}\]</span></span></p>
-<p>The first line averages DiDs. The last averages effects. The weight on the early group’s period-3 effect is negative because <span class="math inline">\(DID_2\)</span> subtracts that effect.</p>
+\tag{6}\]</span></span></p>
+<p>The first line is Goodman-Bacon’s decomposition. It averages DiDs, and both weights are positive. The last line is dCDH’s decomposition. It averages effects, and the early group’s period-3 effect receives weight <span class="math inline">\(-1/2\)</span>. This negative weight does not come from a negative weight on a DiD. It comes from inside <span class="math inline">\(DID_2\)</span>, the forbidden comparison, which subtracts that effect.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -373,80 +411,83 @@ DID_2
 <td style="text-align: left;">Which comparisons enter TWFE</td>
 <td style="text-align: left;">Which effects receive negative weights</td>
 </tr>
+<tr class="even">
+<td style="text-align: left;">Software</td>
+<td style="text-align: left;"><code>bacondecomp</code> (Stata, R)</td>
+<td style="text-align: left;"><code>twowayfeweights</code> (Stata, R)</td>
+</tr>
 </tbody>
 </table>
+<p>Both decompositions are available in standard software. <code>bacondecomp</code> lists each comparison with its weight; the R version labels the type of <span class="math inline">\(DID_1\)</span> “Earlier vs Later Treated” and the type of <span class="math inline">\(DID_2\)</span> “Later vs Earlier Treated.” dCDH’s <code>twowayfeweights</code> reports the weight on each treated cell’s effect, together with the number and sum of negative weights. In this example, one of the three cell weights is negative, and the negative weights sum to <span class="math inline">\(-1/2\)</span>.</p>
 <p>For the lab’s starting values, set the three effects to <span class="math inline">\((1,5,1)\)</span> and untreated outcomes to zero. Then <span class="math inline">\(DID_1=1\)</span> and <span class="math inline">\(DID_2=1-(5-1)=-3\)</span>. <strong>TWFE equals <span class="math inline">\(-1\)</span>, although all three effects are positive.</strong> The ATT across treated observations is <span class="math inline">\(7/3\)</span>.</p>
 <p>Both groups can have the same effect pattern: 1 when treatment begins and 5 one period later. The negative coefficient needs neither a violation of common trends nor sampling noise. The numerical values illustrate the decomposition; the weights <span class="math inline">\(1/2\)</span> apply to this particular design.</p>
+<p><a href="./lab-panel.html#step=1" class="lab-link">Lab step 1: move the three effects and watch both decompositions update →</a></p>
+</section>
+<section id="sec-note-setup" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-note-setup">What the example assumes</h2>
+<p>The note narrows dCDH’s setting. Groups <span class="math inline">\(g\)</span> are observed in periods <span class="math inline">\(t=1,\ldots,T\)</span>. Each group’s size, <span class="math inline">\(N_{g,t}\)</span>, stays constant over time. All units in a group have the same binary treatment, <span class="math inline">\(D_{g,t}\)</span>. Once treated, they remain treated. No group starts treatment in period 1; some groups may never start. The regression <a href="#eq-note-twfe" class="quarto-xref">Equation&nbsp;<span>3</span></a> has no other covariates.</p>
+<p>Let <span class="math inline">\(\mathbf D\)</span> collect all treatment indicators. Following dCDH’s conditional notation, write</p>
+<p><span id="eq-note-means"><span class="math display">\[
+\widetilde\Delta_{g,t}=\mathbb E[\Delta_{g,t}\mid\mathbf D],
+\qquad
+\widetilde\beta_{fe}=\mathbb E[\widehat\beta_{fe}\mid\mathbf D].
+\tag{7}\]</span></span></p>
+<p>The tilde means that we hold the treatment design fixed and average over outcome uncertainty. In a treated cell, every unit is treated, so its ATE is also its ATT. The lab has no sampling noise: its assigned <span class="math inline">\(\Delta_{g,t}\)</span> equals <span class="math inline">\(\widetilde\Delta_{g,t}\)</span>.</p>
+<p>For causal interpretation, assume common trends in outcomes without treatment, conditional on the treatment design, and no anticipation. The potential outcomes rule out effects of other units’ treatment. These assumptions allow treatment effects to differ across groups and to change after treatment. Common trends does <strong>not</strong> require observed treated outcomes to follow parallel paths. The <a href="./details.html#sec-foundations">appendix</a> states the assumptions and connects the papers’ potential-outcome notation.</p>
+<p>An exact identity for the sample coefficient and a statement about expected treatment effects are different results. Goodman-Bacon provides the first. dCDH provides the second under the outcome assumptions. Sampling error still affects an estimate from real data.</p>
 </section>
 <section id="sec-note-general" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-note-general">From the example to a larger panel</h2>
 <p>Goodman-Bacon groups units by treatment date. A <span class="math inline">\(2\times2\)</span> DiD compares two timing groups across two time windows. A window may contain several periods. Its mean uses all those periods, rather than a selected pair of dates.</p>
-<p>There are three types of comparisons: treated versus never treated; early versus late before late treatment; and late versus early after early treatment. The last type uses an already-treated group as the control. The comparison weights are positive and sum to one. They depend on timing and group sizes, not on outcome or effect values. The sample identity itself does not require common trends. <span class="citation" data-cites="goodmanbacon2021">(<a href="references.html#ref-goodmanbacon2021" role="doc-biblioref">Goodman-Bacon 2021</a>, Theorem 1)</span></p>
+<p>There are three types of comparisons: treated versus never treated; early versus late before late treatment; and late versus early after early treatment. The last type uses an already-treated group as the control; it is the forbidden comparison of the example. The comparison weights are positive and sum to one. They depend on timing and group sizes, not on outcome or effect values. The sample identity itself does not require common trends. <span class="citation" data-cites="goodmanbacon2021">(<a href="references.html#ref-goodmanbacon2021" role="doc-biblioref">Goodman-Bacon 2021</a>, Theorem 1)</span></p>
 <p>dCDH instead writes the expected coefficient as</p>
 <p><span id="eq-note-dcdh"><span class="math display">\[
 \widetilde\beta_{fe}
 =\sum_{(g,t):D_{g,t}=1}W_{g,t}\widetilde\Delta_{g,t},
 \qquad
 \sum_{(g,t):D_{g,t}=1}W_{g,t}=1.
-\tag{5}\]</span></span></p>
+\tag{8}\]</span></span></p>
 <p><span class="math inline">\(W_{g,t}\)</span> follows the notation in dCDH’s introduction. It is the coefficient multiplying a cell’s effect. In Theorem 1, the authors write it as <span class="math inline">\((N_{g,t}/N_1)w_{g,t}\)</span>, where <span class="math inline">\(N_1\)</span> counts treated observations. Thus <strong><span class="math inline">\(W_{g,t}\)</span> includes the cell’s share of treated observations; <span class="math inline">\(w_{g,t}\)</span> does not</strong>. The lab displays <span class="math inline">\(W\)</span>, using this same convention.</p>
 <p>A treated cell has a negative <span class="math inline">\(W_{g,t}\)</span> when its treatment residual, <span class="math inline">\(\varepsilon_{g,t}\)</span>, is negative. This residual comes from regressing treatment on the fixed effects. Early groups are treated in many periods. Late periods contain many treated units. Together, these features can produce a negative residual in an early group’s later periods. Not every staggered design has negative weights. <span class="citation" data-cites="dcdh2020">(<a href="references.html#ref-dcdh2020" role="doc-biblioref"><span class="nocase">de Chaisemartin and D’Haultfœuille</span> 2020</a>, Theorem 1 and Proposition 1)</span></p>
 <p>To connect the decompositions, expand each weighted DiD into its outcome means. Under the outcome assumptions, untreated trends cancel. The coefficients left on a treated cell’s effect sum to <span class="math inline">\(W_{g,t}\)</span>. A Goodman-Bacon weight applies to the whole comparison, rather than to any single cell. The <a href="./details.html#sec-general">appendix</a> gives the formulas and their notation in each paper.</p>
+<p><a href="./lab-panel.html#step=5" class="lab-link">Lab step 5: where negative weights appear in an 8 × 12 panel →</a></p>
 </section>
 <section id="sec-note-effects" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-note-effects">When effects do not change over time</h2>
 <p><span id="two-qualifications"></span></p>
-<section id="first-define-the-att" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="first-define-the-att">First define the ATT</h3>
+<p>The July 2024 notes concluded that TWFE is free of this bias only when treatment effects do not change over time, and that such effects are uncommon in practice. The example confirms the mechanism: if each group’s effect stays constant after treatment, the forbidden comparison subtracts nothing. Two refinements make the conclusion precise.</p>
+<section id="sec-note-att" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="sec-note-att">First define the ATT</h3>
 <p>Use dCDH’s ATT, conditional on the treatment design:</p>
 <p><span id="eq-note-target"><span class="math display">\[
 \widetilde\Delta^{TR}
 =\sum_{(g,t):D_{g,t}=1}\frac{N_{g,t}}{N_1}\widetilde\Delta_{g,t},
 \qquad
 N_1=\sum_{g,t}N_{g,t}D_{g,t}.
-\tag{6}\]</span></span></p>
-<p>This averages effects across treated observations. A unit observed in two treated periods contributes twice. The lab uses this ATT. Other averages can give equal weight to timing groups or to time since treatment; they answer different questions.</p>
-<p>Goodman-Bacon defines <strong>VWATT</strong>, the <em>variance-weighted average treatment effect on the treated</em>. It averages the treatment group’s ATT in each DiD’s post window, using positive weights. His equation (15) uses the population limits of the comparison weights. It separates VWATT, differences in untreated trends, and changes in already-treated controls’ effects. VWATT need not equal dCDH’s ATT. Goodman-Bacon discusses this distinction explicitly in Section 3.1.1.</p>
+\tag{9}\]</span></span></p>
+<p>It averages effects across treated observations, so a unit observed in two treated periods contributes twice. The lab uses this ATT. Goodman-Bacon’s parameter is instead <strong>VWATT</strong>, the <em>variance-weighted average treatment effect on the treated</em>. It averages the treatment group’s ATT in each DiD’s post window, using the regression’s positive comparison weights. The two need not agree. <span class="citation" data-cites="goodmanbacon2021">(<a href="references.html#ref-goodmanbacon2021" role="doc-biblioref">Goodman-Bacon 2021</a>, equation (15) and Section 3.1.1)</span></p>
 </section>
-<section id="the-same-effect-in-every-treated-cell" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="the-same-effect-in-every-treated-cell">The same effect in every treated cell</h3>
-<p>If all treated effects are equal, TWFE, VWATT, and the ATT are equal. The weights on individual cell effects can still be negative. They sum to one, so they recover the common effect. Negative weights alone do not prove bias for a given set of effects.</p>
-</section>
-<section id="effects-differ-across-groups-but-stay-constant-over-time" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="effects-differ-across-groups-but-stay-constant-over-time">Effects differ across groups but stay constant over time</h3>
-<p>Suppose the early group’s effect is constant after treatment, and the late group’s effect may differ. In Goodman-Bacon’s notation, these effects are <span class="math inline">\(ATT_k\)</span> and <span class="math inline">\(ATT_\ell\)</span>:</p>
+<section id="sec-note-constant" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="sec-note-constant">Constant effects remove the subtraction, not the weighting</h3>
+<p>If every treated effect is equal, TWFE, VWATT, and the ATT coincide, even if some cell weights are negative. Negative weights alone do not prove bias.</p>
+<p>Now let effects differ across groups but stay constant over time. In Goodman-Bacon’s notation, these effects are <span class="math inline">\(ATT_k\)</span> and <span class="math inline">\(ATT_\ell\)</span>:</p>
 <p><span class="math display">\[
 \widetilde\Delta_{k,2}=\widetilde\Delta_{k,3}=ATT_k,
 \qquad \widetilde\Delta_{\ell,3}=ATT_\ell.
 \]</span></p>
-<p>The early control’s effect change is zero. We obtain <span class="math inline">\(DID_1=ATT_k\)</span> and <span class="math inline">\(DID_2=ATT_\ell\)</span>. Yet</p>
+<p>Then <span class="math inline">\(DID_1=ATT_k\)</span> and <span class="math inline">\(DID_2=ATT_\ell\)</span>. Yet</p>
 <p><span id="eq-note-static"><span class="math display">\[
 \widetilde\beta_{fe}=\frac{ATT_k+ATT_\ell}{2},
-\qquad
+\quad
 \widetilde\Delta^{TR}=\frac{2ATT_k+ATT_\ell}{3}.
-\tag{7}\]</span></span></p>
-<p>TWFE gives each group half the weight. This is the weighting in Goodman-Bacon’s time-constant case, whose population parameter is VWATT. The ATT gives the early group two-thirds because it has two treated periods. If <span class="math inline">\((ATT_k,ATT_\ell)=(1,3)\)</span>, TWFE is <span class="math inline">\(2\)</span> and the ATT is <span class="math inline">\(5/3\)</span>. Neither DiD subtracts a changing treatment effect. The difference arises from how the two averages weight groups.</p>
-<p>The early group’s cell weights, <span class="math inline">\(1\)</span> and <span class="math inline">\(-1/2\)</span>, now multiply the same effect. They combine to <span class="math inline">\(1/2\)</span>. Thus negative weights on separate cell effects can coexist with positive weights on time-constant group effects. This is the sense in which Goodman-Bacon obtains positive weights when effects do not change over time. The cell weights themselves do not change when we change effect values.</p>
-<p>A constant effect does not require a flat observed outcome path. Outcomes can rise with a common untreated trend while the treatment effect stays fixed. With longer windows, the relevant subtraction is the difference between the control’s average effects in those windows. Time-constant effects are sufficient to make that difference zero.</p>
+\tag{10}\]</span></span></p>
+<p>TWFE gives each group half the weight, which here equals VWATT. The ATT gives the early group two-thirds because it has two treated periods. At <span class="math inline">\((ATT_k,ATT_\ell)=(1,3)\)</span>, TWFE is <span class="math inline">\(2\)</span> and the ATT is <span class="math inline">\(5/3\)</span>. The gap comes from how the averages weight groups, not from any subtraction. The early group’s cell weights, <span class="math inline">\(1\)</span> and <span class="math inline">\(-1/2\)</span>, multiply the same effect and combine to <span class="math inline">\(1/2\)</span>. That is how negative cell weights coexist with Goodman-Bacon’s positive weights.</p>
 </section>
-<section id="changing-effects-can-also-give-the-same-att" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="changing-effects-can-also-give-the-same-att">Changing effects can also give the same ATT</h3>
-<p>Time-constant effects are not necessary for equality to a particular ATT. In the example,</p>
-<p><span id="eq-note-cancellation"><span class="math display">\[
-\widetilde\beta_{fe}-\widetilde\Delta^{TR}
-=\frac{4\widetilde\Delta_{k,2}-5\widetilde\Delta_{k,3}
-          +\widetilde\Delta_{\ell,3}}6.
-\tag{8}\]</span></span></p>
-<p>At <span class="math inline">\((1,2,6)\)</span>, the early effect grows, but TWFE and the ATT both equal <span class="math inline">\(3\)</span>. The second DiD still subtracts an effect change: <span class="math inline">\(DID_2=6-(2-1)=5\)</span>. The weights and effect values happen to give the same final average. Changing one effect can break that equality. It does not justify using TWFE for unknown, changing effects. dCDH’s Assumption 7 and Corollary 2 give a related sufficient condition: the regression weights are uncorrelated with treatment effects.</p>
+<section id="sec-note-only-when" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="sec-note-only-when">“Only when” is too strong</h3>
+<p>Time-constant effects are sufficient to remove the subtraction, but not necessary for TWFE to equal the ATT. At <span class="math inline">\((1,2,6)\)</span>, the early effect grows and <span class="math inline">\(DID_2=6-(2-1)=5\)</span> still subtracts a change. Yet TWFE and the ATT both equal <span class="math inline">\(3\)</span>. Changing one effect breaks this coincidence, so it does not justify TWFE when effects are unknown. The <a href="./details.html#sec-twfe-att">appendix</a> gives the general condition.</p>
 <div class="table-responsive">
 <table class="caption-top table">
-<colgroup>
-<col style="width: 15%">
-<col style="width: 21%">
-<col style="width: 21%">
-<col style="width: 21%">
-<col style="width: 21%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Effects</th>
@@ -454,6 +495,7 @@ N_1=\sum_{g,t}N_{g,t}D_{g,t}.
 <th style="text-align: center;">Early control’s effect change</th>
 <th style="text-align: center;">TWFE</th>
 <th style="text-align: center;">ATT</th>
+<th style="text-align: center;">Lab</th>
 </tr>
 </thead>
 <tbody>
@@ -463,6 +505,7 @@ N_1=\sum_{g,t}N_{g,t}D_{g,t}.
 <td style="text-align: center;"><span class="math inline">\(0\)</span></td>
 <td style="text-align: center;"><span class="math inline">\(2\)</span></td>
 <td style="text-align: center;"><span class="math inline">\(2\)</span></td>
+<td style="text-align: center;"><a href="./lab-panel.html#step=2">Step 2</a></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Constant within groups</td>
@@ -470,6 +513,7 @@ N_1=\sum_{g,t}N_{g,t}D_{g,t}.
 <td style="text-align: center;"><span class="math inline">\(0\)</span></td>
 <td style="text-align: center;"><span class="math inline">\(2\)</span></td>
 <td style="text-align: center;"><span class="math inline">\(5/3\)</span></td>
+<td style="text-align: center;"><a href="./lab-panel.html#step=3">Step 3</a></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Growing early effect</td>
@@ -477,6 +521,7 @@ N_1=\sum_{g,t}N_{g,t}D_{g,t}.
 <td style="text-align: center;"><span class="math inline">\(4\)</span></td>
 <td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
 <td style="text-align: center;"><span class="math inline">\(7/3\)</span></td>
+<td style="text-align: center;"><a href="./lab-panel.html#step=1">Step 1</a></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Changing effects, equal averages</td>
@@ -484,33 +529,58 @@ N_1=\sum_{g,t}N_{g,t}D_{g,t}.
 <td style="text-align: center;"><span class="math inline">\(1\)</span></td>
 <td style="text-align: center;"><span class="math inline">\(3\)</span></td>
 <td style="text-align: center;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: center;"><a href="./lab-panel.html#step=4">Step 4</a></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The claim “TWFE is unbiased only when effects do not change over time” is therefore too broad. <strong>State both the restriction on effects and the average of interest.</strong> Time-constant effects remove the control’s effect change and allow TWFE to recover VWATT under common trends. They need not make TWFE equal the ATT across treated observations. Some changing effects also yield equality, without providing a general guarantee.</p>
+<p><strong>State both the restriction on effects and the average of interest.</strong> Time-constant effects remove the forbidden comparison’s subtraction and let TWFE recover VWATT under common trends. They need not make TWFE equal the ATT. The original mechanism stands. Effects often build up or fade after treatment, so its practical advice stands too.</p>
 </section>
 </section>
 <section id="sec-note-support" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-note-support">When every group is treated</h2>
 <p>In period 3, neither group supplies an untreated observation. Common trends and no anticipation alone cannot identify both unrestricted period-3 effects. To see why, raise both untreated period-3 means by the same amount and lower both effects by that amount. Observed outcomes stay the same. TWFE also stays the same because its period-3 weights sum to zero. The ATT changes.</p>
 <p>Keeping only the first DiD identifies the early group’s period-2 effect. It does not identify the full ATT. Effects in later periods require an untreated comparison or an additional restriction, such as constant effects. A regression does not establish that restriction. This calculation illustrates the assumptions’ limits; it is not an additional decomposition theorem.</p>
+<p><a href="./lab-panel.html#step=6" class="lab-link">Lab step 6: a panel without a never-treated group →</a></p>
+</section>
+<section id="sec-note-practice" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-note-practice">What to do in practice</h2>
+<p>The July 2024 notes ended with practical advice. When treatment starts at different dates, do not rely on the TWFE coefficient alone. This applies to a single static coefficient and to an event study. The advice stands.</p>
+<ul>
+<li><strong>Diagnose the design.</strong> Goodman-Bacon’s decomposition shows how much weight goes to forbidden comparisons. dCDH’s weights show which cell effects receive negative weights, how many, and their sum. These diagnostics show how exposed TWFE is to changing effects. Neither proves bias in a particular application. <a href="./lab-panel.html#step=7">Lab step 7</a> shows both summaries for a simulated panel.</li>
+<li><strong>Name the target.</strong> Decide which average answers the question: the ATT across treated observations, an average by timing group, or effects by time since treatment.</li>
+<li><strong>Avoid forbidden comparisons.</strong> Heterogeneity-robust estimators compare treated units only with units that are not yet treated or never treated. <span class="citation" data-cites="callaway2021">Callaway and Sant’Anna (<a href="references.html#ref-callaway2021" role="doc-biblioref">2021</a>)</span> estimate an ATT for each timing group and date, then aggregate. <span class="citation" data-cites="borusyak2024">Borusyak et al. (<a href="references.html#ref-borusyak2024" role="doc-biblioref">2024</a>)</span> impute untreated outcomes using untreated observations. dCDH also propose an estimator that compares groups whose treatment changes with groups whose treatment does not <span class="citation" data-cites="dcdh2020">(<a href="references.html#ref-dcdh2020" role="doc-biblioref"><span class="nocase">de Chaisemartin and D’Haultfœuille</span> 2020</a>)</span>. Their later survey reviews these methods <span class="citation" data-cites="dcdh2023">(<a href="references.html#ref-dcdh2023" role="doc-biblioref"><span class="nocase">de Chaisemartin and D’Haultfœuille</span> 2023</a>)</span>.</li>
+<li><strong>Check event studies too.</strong> <span class="citation" data-cites="sun2021">Sun and Abraham (<a href="references.html#ref-sun2021" role="doc-biblioref">2021</a>)</span> show that a TWFE event-study coefficient for one period relative to treatment can mix in effects from other periods. Their estimator and those above avoid this.</li>
+</ul>
+<p>No estimator removes the limit in the previous section. Effects in periods without an untreated comparison still require an additional restriction.</p>
 </section>
 <section id="use-the-interactive-lab" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="use-the-interactive-lab">Use the interactive lab</h2>
-<p>Start with the three-effect example. Change an effect while keeping treatment dates and group sizes fixed. The weights stay fixed; the weighted effects change. Then try a larger panel or change treatment dates and sizes.</p>
-<p>In <strong>Panel View</strong>, <span class="math inline">\(\Delta\)</span> is the assigned cell effect, <span class="math inline">\(W\)</span> its dCDH weight, and <span class="math inline">\(W\Delta\)</span> their product. A negative product need not mean a negative weight if the effect is negative. Click a Goodman-Bacon comparison to see its four outcome means and its comparison weight. Click a dCDH term to see how the comparisons add up to its cell weight.</p>
+<p>The lab follows this note in eight steps. Step 0 is the <span class="math inline">\(2\times2\)</span> case. Steps 1–4 load the two-group example with the four sets of effects in the table above. Three sliders set the effects, and the lab writes out <a href="#eq-short-bridge" class="quarto-xref">Equation&nbsp;<span>6</span></a> with the current numbers. Steps 5–7 move to larger panels: where negative weights appear, what changes without a never-treated group, and what the diagnostics report. Each step links back to its section here. Free exploration loads any design and lets you edit effects, treatment dates, and group sizes.</p>
+<p>Moving an effect leaves the treatment design, and therefore every weight, unchanged. Only the weighted effects change. In <strong>Panel View</strong>, <span class="math inline">\(\Delta\)</span> is the assigned cell effect, <span class="math inline">\(W\)</span> its dCDH weight, and <span class="math inline">\(W\Delta\)</span> their product; a negative product need not mean a negative weight. Click a Goodman-Bacon comparison to see its four outcome means. Click a dCDH term to see how the comparisons add up to its cell weight.</p>
 <p>The lab generates outcomes without sampling noise. Its effects are known because the reader sets them. They are not estimates recovered from observed data. In particular, the simulated linear untreated trend does not supply an assumption for identifying late effects in real data.</p>
 <p><a href="./lab-panel.html" class="btn btn-primary">Open the interactive lab →</a></p>
-<p>The <a href="./details.html">technical appendix</a> contains the notation correspondence, proofs, and calculation formulas. The <a href="./references.html">references</a> include the two papers and optional further reading.</p>
+<p>The <a href="./details.html">technical appendix</a> contains the notation correspondence, proofs, and calculation formulas. The <a href="./references.html">references</a> include the two papers and the estimators named above.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-borusyak2024" class="csl-entry" role="listitem">
+Borusyak, Kirill, Xavier Jaravel, and Jann Spiess. 2024. <span>“Revisiting Event-Study Designs: Robust and Efficient Estimation.”</span> <em>The Review of Economic Studies</em> 91 (6): 3253–85. <a href="https://doi.org/10.1093/restud/rdae007">https://doi.org/10.1093/restud/rdae007</a>.
+</div>
+<div id="ref-callaway2021" class="csl-entry" role="listitem">
+Callaway, Brantly, and Pedro H. C. Sant’Anna. 2021. <span>“Difference-in-Differences with Multiple Time Periods.”</span> <em>Journal of Econometrics</em> 225 (2): 200–230. <a href="https://doi.org/10.1016/j.jeconom.2020.12.001">https://doi.org/10.1016/j.jeconom.2020.12.001</a>.
+</div>
 <div id="ref-dcdh2020" class="csl-entry" role="listitem">
 <span class="nocase">de Chaisemartin, Clément, and Xavier D’Haultfœuille</span>. 2020. <span>“Two-Way Fixed Effects Estimators with Heterogeneous Treatment Effects.”</span> <em>American Economic Review</em> 110 (9): 2964–96. <a href="https://doi.org/10.1257/aer.20181169">https://doi.org/10.1257/aer.20181169</a>.
 </div>
+<div id="ref-dcdh2023" class="csl-entry" role="listitem">
+<span class="nocase">de Chaisemartin, Clément, and Xavier D’Haultfœuille</span>. 2023. <span>“Two-Way Fixed Effects and Differences-in-Differences with Heterogeneous Treatment Effects: A Survey.”</span> <em>The Econometrics Journal</em> 26 (3): C1–30. <a href="https://doi.org/10.1093/ectj/utac017">https://doi.org/10.1093/ectj/utac017</a>.
+</div>
 <div id="ref-goodmanbacon2021" class="csl-entry" role="listitem">
 Goodman-Bacon, Andrew. 2021. <span>“Difference-in-Differences with Variation in Treatment Timing.”</span> <em>Journal of Econometrics</em> 225 (2): 254–77. <a href="https://doi.org/10.1016/j.jeconom.2021.03.014">https://doi.org/10.1016/j.jeconom.2021.03.014</a>.
+</div>
+<div id="ref-sun2021" class="csl-entry" role="listitem">
+Sun, Liyang, and Sarah Abraham. 2021. <span>“Estimating Dynamic Treatment Effects in Event Studies with Heterogeneous Treatment Effects.”</span> <em>Journal of Econometrics</em> 225 (2): 175–99. <a href="https://doi.org/10.1016/j.jeconom.2020.09.006">https://doi.org/10.1016/j.jeconom.2020.09.006</a>.
 </div>
 </div>
 </section>
