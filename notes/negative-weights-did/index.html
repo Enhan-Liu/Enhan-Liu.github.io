@@ -271,11 +271,10 @@ window.Quarto = {
 <p>Adapted and expanded from the author’s Chinese notes, July 2024</p>
 </div>
 <p>Why can two-way fixed effects (TWFE) put negative weights on treatment effects when the Goodman-Bacon weights are positive? <strong>The two decompositions average different things.</strong> Goodman-Bacon averages <span class="math inline">\(2\times2\)</span> difference-in-differences (DiD) estimators. De Chaisemartin–D’Haultfœuille (dCDH) weights treatment effects in treated group-period cells. A DiD can subtract an effect even when the weight on that DiD is positive. <span class="citation" data-cites="goodmanbacon2021 dcdh2020">(<a href="references.html#ref-goodmanbacon2021" role="doc-biblioref">Goodman-Bacon 2021</a>; <a href="references.html#ref-dcdh2020" role="doc-biblioref"><span class="nocase">de Chaisemartin and D’Haultfœuille</span> 2020</a>)</span></p>
-<p>The note follows the path of the original notes. It starts from the familiar <span class="math inline">\(2\times2\)</span> DiD and its regression. It then lets groups start treatment at different dates, and one example yields both decompositions. It ends by making the original conclusion precise and by stating what to do in practice.</p>
-<p>Two questions stay separate throughout. Does a comparison subtract a control group’s changing treatment effect? Does TWFE equal the ATT we want to report? Removing the first problem need not resolve the second.</p>
+<p>Following the original notes, we start from the familiar <span class="math inline">\(2\times2\)</span> DiD. Two questions stay separate: does a comparison subtract a control group’s changing treatment effect, and does TWFE equal the ATT we want to report? Answering the first need not settle the second.</p>
 <section id="sec-note-canonical" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-note-canonical">The 2×2 starting point</h2>
-<p>Start with two groups and two periods. One group is treated in period 2; the other stays untreated.</p>
+<p>Start with two groups and two periods; one group is treated in period 2.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -301,21 +300,18 @@ window.Quarto = {
 <p><span id="eq-note-canonical"><span class="math display">\[
 DID=(Y_{T,2}-Y_{T,1})-(Y_{C,2}-Y_{C,1}).
 \tag{1}\]</span></span></p>
-<p>Assume common trends: without treatment, both groups’ expected outcomes would change by the same amount. Assume also no anticipation: treatment has no effect before it starts. Then the expected DiD equals the expected effect in the one treated cell, <span class="math inline">\(\mathbb E[\Delta_{T,2}]\)</span>. This is the ATT for that cell, not an average effect for the whole population.</p>
-<p>With sample means, the same number comes from an OLS regression on individual observations <span class="math inline">\(i\)</span>:</p>
+<p>Under common trends and no anticipation, the expected DiD is the treated cell’s expected effect, <span class="math inline">\(\mathbb E[\Delta_{T,2}]\)</span>. With sample means, it is also the OLS estimate of <span class="math inline">\(\beta_3\)</span> below, where <span class="math inline">\(\mathrm{Treat}_g\)</span> marks the treated group and <span class="math inline">\(\mathrm{Post}_t\)</span> marks period 2:</p>
 <p><span id="eq-note-treatpost"><span class="math display">\[
 \begin{aligned}
 Y_{i,g,t}={}&amp;\beta_0+\beta_1\,\mathrm{Treat}_g+\beta_2\,\mathrm{Post}_t\\
 &amp;+\beta_3\,\mathrm{Treat}_g\times\mathrm{Post}_t+u_{i,g,t}.
 \end{aligned}
 \tag{2}\]</span></span></p>
-<p><span class="math inline">\(\mathrm{Treat}_g\)</span> marks the treated group and <span class="math inline">\(\mathrm{Post}_t\)</span> marks period 2. The estimate of <span class="math inline">\(\beta_3\)</span> equals the DiD in <a href="#eq-note-canonical" class="quarto-xref">Equation&nbsp;<span>1</span></a>.</p>
-<p>Applied work has more units and more dates. Units such as states differ in their permanent levels, and each date can have its own common shock. The regression therefore replaces <span class="math inline">\(\mathrm{Treat}_g\)</span> and <span class="math inline">\(\mathrm{Post}_t\)</span> with group fixed effects <span class="math inline">\(\alpha_g\)</span> and period fixed effects <span class="math inline">\(\lambda_t\)</span>:</p>
+<p>With more units and dates, group fixed effects <span class="math inline">\(\alpha_g\)</span> and period fixed effects <span class="math inline">\(\lambda_t\)</span> replace <span class="math inline">\(\mathrm{Treat}_g\)</span> and <span class="math inline">\(\mathrm{Post}_t\)</span>, and the treatment indicator <span class="math inline">\(D_{g,t}\)</span> replaces their product. This is the TWFE regression, with OLS estimate <span class="math inline">\(\widehat\beta_{fe}\)</span>:</p>
 <p><span id="eq-note-twfe"><span class="math display">\[
 Y_{i,g,t}=\alpha_g+\lambda_t+\beta_{fe}D_{g,t}+u_{i,g,t}.
 \tag{3}\]</span></span></p>
-<p><span class="math inline">\(D_{g,t}\)</span> is the treatment indicator. This is the TWFE regression; <span class="math inline">\(\widehat\beta_{fe}\)</span> denotes its OLS estimate. In the <span class="math inline">\(2\times2\)</span> case it is the same regression as <a href="#eq-note-treatpost" class="quarto-xref">Equation&nbsp;<span>2</span></a>, so <span class="math inline">\(\widehat\beta_{fe}\)</span> equals the DiD. Unit or state fixed effects give the same treatment coefficient in the designs considered here.</p>
-<p>Adding fixed effects is not the problem. The problem appears when groups start treatment at different dates. TWFE then combines several DiDs, and some of them use already-treated groups as controls.</p>
+<p>In the <span class="math inline">\(2\times2\)</span> case it still equals the DiD. Fixed effects are not the problem; the problem appears when groups start treatment at different dates. TWFE then combines several DiDs, and some use already-treated groups as controls.</p>
 <p><a href="./lab-panel.html#step=0" class="lab-link">Lab step 0: the 2×2 case →</a></p>
 </section>
 <section id="sec-example-brief" class="level2 unnumbered">
@@ -425,16 +421,13 @@ DID_2
 </section>
 <section id="sec-note-setup" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-note-setup">What the example assumes</h2>
-<p>The note narrows dCDH’s setting. Groups <span class="math inline">\(g\)</span> are observed in periods <span class="math inline">\(t=1,\ldots,T\)</span>. Each group’s size, <span class="math inline">\(N_{g,t}\)</span>, stays constant over time. All units in a group have the same binary treatment, <span class="math inline">\(D_{g,t}\)</span>. Once treated, they remain treated. No group starts treatment in period 1; some groups may never start. The regression <a href="#eq-note-twfe" class="quarto-xref">Equation&nbsp;<span>3</span></a> has no other covariates.</p>
-<p>Let <span class="math inline">\(\mathbf D\)</span> collect all treatment indicators. Following dCDH’s conditional notation, write</p>
+<p>The note uses a balanced panel: group sizes <span class="math inline">\(N_{g,t}\)</span> are constant over time, treatment <span class="math inline">\(D_{g,t}\)</span> is binary and stays on once it starts, no group is treated in period 1, some may never be, and there are no covariates. With <span class="math inline">\(\mathbf D\)</span> collecting all treatment indicators, a tilde denotes an expectation that holds the design fixed:</p>
 <p><span id="eq-note-means"><span class="math display">\[
 \widetilde\Delta_{g,t}=\mathbb E[\Delta_{g,t}\mid\mathbf D],
 \qquad
 \widetilde\beta_{fe}=\mathbb E[\widehat\beta_{fe}\mid\mathbf D].
 \tag{7}\]</span></span></p>
-<p>The tilde means that we hold the treatment design fixed and average over outcome uncertainty. In a treated cell, every unit is treated, so its ATE is also its ATT. The lab has no sampling noise: its assigned <span class="math inline">\(\Delta_{g,t}\)</span> equals <span class="math inline">\(\widetilde\Delta_{g,t}\)</span>.</p>
-<p>For causal interpretation, assume common trends in outcomes without treatment, conditional on the treatment design, and no anticipation. The potential outcomes rule out effects of other units’ treatment. These assumptions allow treatment effects to differ across groups and to change after treatment. Common trends does <strong>not</strong> require observed treated outcomes to follow parallel paths. The <a href="./details.html#sec-foundations">appendix</a> states the assumptions and connects the papers’ potential-outcome notation.</p>
-<p>An exact identity for the sample coefficient and a statement about expected treatment effects are different results. Goodman-Bacon provides the first. dCDH provides the second under the outcome assumptions. Sampling error still affects an estimate from real data.</p>
+<p>Causal statements assume common trends in untreated outcomes and no anticipation; effects may still differ across groups and change after treatment. Goodman-Bacon’s decomposition is an exact identity for the sample coefficient, while dCDH’s holds for its expectation under these assumptions. The lab has no sampling noise, so its <span class="math inline">\(\Delta_{g,t}\)</span> equals <span class="math inline">\(\widetilde\Delta_{g,t}\)</span>. The <a href="./details.html#sec-foundations">appendix</a> states the assumptions in full.</p>
 </section>
 <section id="sec-note-general" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-note-general">From the example to a larger panel</h2>
