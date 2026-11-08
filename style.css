@@ -196,17 +196,27 @@ h2 {
 
 .note-title { font-weight: 600; }
 
-/* One-line description and extra links under a note title */
-.note-desc,
+/* Under a note title, three layers:
+   1. note-summary: one sentence on what the item is about (serif, like body text)
+   2. note-meta: where it comes from, e.g. paper, course, earlier version (small gray sans)
+   3. note-links: links (small maroon sans) */
+.note-summary {
+    font-size: 1rem;
+    line-height: 1.55;
+    color: #3a3a3a;
+    margin-top: 0.2rem;
+}
+
+.note-meta,
 .note-links {
     font-family: var(--font-sans);
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     letter-spacing: 0.01em;
 }
 
-.note-desc {
-    color: var(--gray);
-    margin-top: 0.15rem;
+.note-meta {
+    color: #767676;
+    margin-top: 0.35rem;
 }
 
 .note-links {

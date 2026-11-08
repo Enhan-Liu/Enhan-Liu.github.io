@@ -11,7 +11,7 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- Bump ?v= whenever style.css changes, so browsers fetch the new version -->
-    <link rel="stylesheet" href="style.css?v=20261107c">
+    <link rel="stylesheet" href="style.css?v=20261107d">
 </head>
 <body>
 
@@ -37,7 +37,8 @@
            - note-title: the title (a link, or plain text when the
              links go in note-links below)
            - note-tag: short label (optional)
-           - note-desc: one-line description (optional)
+           - note-summary: one sentence on what the item is about
+           - note-meta: where it comes from, e.g. paper, course, earlier version (optional)
            - note-links: several links, e.g. CRAN + tutorial, or two versions (optional)
            - note-date: year
          Put single files in files/; put Quarto websites in notes/<name>/.
@@ -51,7 +52,8 @@
                     fdid: Factorial Difference-in-Differences
                     <span class="note-tag">R package</span>
                 </span>
-                <p class="note-desc">Implements factorial difference-in-differences for panel data where all units experience the same event but differ in a baseline factor.</p>
+                <p class="note-summary">Implements factorial difference-in-differences for panel data where all units experience the same event but differ in a baseline factor.</p>
+                <p class="note-meta">R package and tutorial for Yiqing Xu, Anqi Zhao, and Peng Ding (2026), <a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2026.2628343" target="_blank">&ldquo;Factorial Difference-in-Differences,&rdquo; Journal of the American Statistical Association</a>.</p>
                 <p class="note-links">
                     <a href="https://cran.r-project.org/package=fdid" target="_blank">CRAN</a>
                     <a href="https://yiqingxu.org/packages/fdid/" target="_blank">Tutorial</a>
@@ -69,7 +71,8 @@
         <div class="note-entry">
             <div>
                 <span class="note-title">Negative Weights in Staggered DiD: de Chaisemartin&ndash;D&rsquo;Haultf&oelig;uille vs. Goodman-Bacon</span>
-                <p class="note-desc">Updated in 2026 from my 2024 note (in Chinese). The new version is in English and adds an interactive lab.</p>
+                <p class="note-summary">How two influential staggered DiD papers decompose the same TWFE coefficient at different levels (2&times;2 comparisons vs. treated group&ndash;period cells), and why negative weights appear in only one.</p>
+                <p class="note-meta">Updated in 2026 from my 2024 note (in Chinese). The new version is in English and adds an interactive lab.</p>
                 <p class="note-links">
                     <a href="notes/negative-weights-did/">2026 version &middot; English, with interactive lab</a>
                     <a href="files/DID_understanding_note.pdf">2024 version &middot; Chinese, PDF</a>
@@ -84,7 +87,8 @@
                     <a href="files/[your-file.pdf]">[Note Title]</a>
                     <span class="note-tag">[Tag]</span>
                 </span>
-                <p class="note-desc">[Short description]</p>
+                <p class="note-summary">[One sentence on what it is about]</p>
+                <p class="note-meta">[Where it comes from]</p>
             </div>
             <span class="note-date">[Year]</span>
         </div> -->
@@ -101,7 +105,8 @@
                     <a href="notes/dsl-tutorial/">Design-Based Supervised Learning: A Tutorial</a>
                     <span class="note-tag">Course project</span>
                 </span>
-                <p class="note-desc">Final project for PLSC 40601: Advanced Topics in Causal Inference.</p>
+                <p class="note-summary">How to combine expert gold-standard labels, available only for a subsample, with imperfect LLM/ML labels to obtain valid downstream statistical inference.</p>
+                <p class="note-meta">Final project for PLSC 40601: Advanced Topics in Causal Inference.</p>
             </div>
             <span class="note-date">2026</span>
         </div>
