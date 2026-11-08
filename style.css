@@ -17,7 +17,7 @@
     --gray:        #5a5a5a;
     --light-gray:  #f7f7f7;
     --border:      #ddd;
-    --max-width:   820px;
+    --max-width:   51.25rem;  /* 820px at the default text size; grows with it */
     /* Body text: EB Garamond. Headings, navigation, and small gray text: Montserrat. */
     --font-serif:  'EB Garamond', Garamond, Georgia, serif;
     --font-sans:   'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -28,7 +28,7 @@ html { scroll-behavior: smooth; }
 
 body {
     font-family: var(--font-serif);
-    font-size: 18.5px;
+    font-size: 1.1875rem;
     line-height: 1.7;
     color: var(--dark);
     background: #fff;
@@ -65,7 +65,7 @@ header {
 
 header h1 {
     font-family: var(--font-sans);
-    font-size: 2rem;
+    font-size: 2.1rem;
     font-weight: 600;
     letter-spacing: 0.02em;
     color: var(--dark);
@@ -75,7 +75,7 @@ header .subtitle {
     margin-top: 0.25rem;
     color: var(--gray);
     font-family: var(--font-sans);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     letter-spacing: 0.01em;
 }
 
@@ -94,7 +94,7 @@ nav ul {
 
 nav a {
     color: var(--gray);
-    font-size: 0.97rem;
+    font-size: 1rem;
     letter-spacing: 0.04em;
     transition: color 0.18s;
     text-decoration: none;
@@ -120,7 +120,7 @@ section {
 /* ---------- Section Headings ---------- */
 h2 {
     font-family: var(--font-sans);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -141,7 +141,7 @@ h2 {
     gap: 1.2rem;
     margin-top: 0.4rem;
     font-family: var(--font-sans);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 .contact-row a,
@@ -164,7 +164,7 @@ h2 {
 .project-meta {
     color: var(--gray);
     font-family: var(--font-sans);
-    font-size: 0.78rem;
+    font-size: 0.85rem;
     letter-spacing: 0.01em;
     margin-top: 0.1rem;
 }
@@ -201,7 +201,7 @@ h2 {
    2. note-meta: where it comes from, e.g. paper, course, earlier version (small gray sans)
    3. note-links: links (small maroon sans) */
 .note-summary {
-    font-size: 1rem;
+    font-size: 1.0625rem;
     line-height: 1.55;
     color: #3a3a3a;
     margin-top: 0.2rem;
@@ -210,7 +210,7 @@ h2 {
 .note-meta,
 .note-links {
     font-family: var(--font-sans);
-    font-size: 0.76rem;
+    font-size: 0.85rem;
     letter-spacing: 0.01em;
 }
 
@@ -231,7 +231,7 @@ h2 {
 .note-tag {
     display: inline-block;
     font-family: var(--font-sans);
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     background: var(--light-gray);
     color: var(--gray);
     padding: 0.1em 0.5em;
@@ -242,7 +242,7 @@ h2 {
 .note-date {
     color: var(--gray);
     font-family: var(--font-sans);
-    font-size: 0.78rem;
+    font-size: 0.85rem;
     white-space: nowrap;
     flex-shrink: 0;
 }
@@ -253,7 +253,7 @@ footer {
     padding: 1.4rem 0;
     color: #999;
     font-family: var(--font-sans);
-    font-size: 0.78rem;
+    font-size: 0.82rem;
     border-top: 1px solid var(--border);
 }
 
@@ -261,8 +261,13 @@ footer a { color: #999; }
 footer a:hover { color: var(--maroon); }
 
 /* ---------- Responsive ---------- */
+/* Large screens: scale the whole page up about 20% (text and column width) */
+@media (min-width: 1200px) {
+    html { font-size: 120%; }
+}
+
 @media (max-width: 600px) {
-    body { font-size: 17px; }
+    body { font-size: 1.0625rem; }
     header h1 { font-size: 1.9rem; }
     nav ul { gap: 1.4rem; }
     .note-entry { flex-direction: column; gap: 0.2rem; }
