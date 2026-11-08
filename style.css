@@ -48,18 +48,18 @@ code {
     border-radius: 3px;
 }
 
-/* ---------- Layout Wrapper ---------- */
-.wrapper {
-    max-width: var(--max-width);
+/* ---------- Layout ---------- */
+/* Header, nav, and footer use the same column as the main text,
+   so every horizontal rule on the page lines up. */
+header, nav, footer {
+    width: calc(100% - 3rem);
+    max-width: calc(var(--max-width) - 3rem);
     margin: 0 auto;
-    padding: 0 1.5rem;
 }
 
 /* ---------- Header ---------- */
 header {
-    padding: 2.8rem 1.5rem 1.4rem;
-    max-width: var(--max-width);
-    margin: 0 auto;
+    padding: 2.8rem 0 1.4rem;
     border-bottom: 2px solid var(--maroon);
 }
 
@@ -81,9 +81,6 @@ header .subtitle {
 
 /* ---------- Navigation ---------- */
 nav {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 1.5rem;
     border-bottom: 1px solid var(--border);
     font-family: var(--font-sans);
 }
@@ -276,6 +273,26 @@ h2 {
 .note-entry:last-child { border-bottom: none; }
 
 .note-title { font-weight: 600; }
+
+/* One-line description and extra links under a note title */
+.note-desc,
+.note-links {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+}
+
+.note-desc {
+    color: var(--gray);
+    margin-top: 0.15rem;
+}
+
+.note-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 1.4rem;
+    margin-top: 0.3rem;
+}
 .note-title a { color: var(--dark); }
 .note-title a:hover { color: var(--maroon); }
 
@@ -301,7 +318,7 @@ h2 {
 /* ---------- Footer ---------- */
 footer {
     text-align: center;
-    padding: 1.4rem 1.5rem;
+    padding: 1.4rem 0;
     color: #999;
     font-family: var(--font-sans);
     font-size: 0.78rem;

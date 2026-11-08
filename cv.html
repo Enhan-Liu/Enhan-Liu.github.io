@@ -7,7 +7,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Bump ?v= whenever style.css changes, so browsers fetch the new version -->
+    <link rel="stylesheet" href="style.css?v=20261107">
 </head>
 <body>
 
@@ -72,7 +76,15 @@
          Fields: institution (bold) · role (italic/sub) · dates · bullet points
     ─────────────────────────────────────────────────────────── -->
     <section>
-        <h2>Research Assistant Position</h2>
+        <h2>Research Assistant Positions</h2>
+
+        <div class="cv-entry">
+            <div class="cv-row">
+                <strong>Department of Management, London School of Economics and Political Science</strong>
+                <span class="cv-date">Jul. 2026 &ndash;</span>
+            </div>
+            <div class="cv-sub">Research Assistant</div>
+        </div>
 
         <div class="cv-entry">
             <div class="cv-row">
@@ -91,14 +103,17 @@
 
     <section>
         <h2>Software</h2>
-        <dl class="cv-skills-grid">
-            <dd>R package: <a href="https://yiqingxu.org/packages/fdid/index.html" target="_blank"><code>fdid</code></a></dd>
-        </dl>
+        <div class="cv-entry">
+            <div class="cv-row">
+                <strong>fdid: Factorial Difference-in-Differences</strong>
+            </div>
+            <div class="cv-sub">R package &middot; <a href="https://cran.r-project.org/package=fdid" target="_blank">CRAN</a> &middot; <a href="https://yiqingxu.org/packages/fdid/" target="_blank">Tutorial</a></div>
+        </div>
     </section>
 </main>
 
 <footer>
-    <p>Last updated: August, 2026 &nbsp;&middot;&nbsp;
+    <p>Last updated: November 2026 &nbsp;&middot;&nbsp;
        <a href="mailto:enhan@uchicago.edu">enhan@uchicago.edu</a>
     </p>
 </footer>

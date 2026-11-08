@@ -7,7 +7,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Bump ?v= whenever style.css changes, so browsers fetch the new version -->
+    <link rel="stylesheet" href="style.css?v=20261107">
 </head>
 <body>
 
@@ -34,40 +38,29 @@
         <!-- <h2>Study Notes</h2>
         <p class="notes-intro">[Short description of this page.]</p> -->
 
-        <!-- ── Group 1 ───────────────────────────────────────
-             Change the <h2> to the topic/course name.
-             Each .note-entry is one note. Fields:
-               - note-title > <a href="...">: link to the file (PDF, HTML, etc.)
-                 Put files in the files/ folder, e.g. href="files/my-notes.pdf"
-               - note-tag: short label (e.g. "Causal Inference", "Micro")
-               - (optional) a short description line below the title
-               - note-date: year or semester
-             Duplicate a .note-entry block to add more notes.
-             Duplicate the whole <h2> + note block to add a new topic group.
+        <!-- ── Notes ─────────────────────────────────────────
+             Each .note-entry is one note, newest first. Fields:
+               - note-title: the title (a link, or plain text when the
+                 links go in note-links below)
+               - note-tag: short label (optional)
+               - note-desc: one-line description (optional)
+               - note-links: several links, e.g. different versions (optional)
+               - note-date: year
+             Put single files in files/; put Quarto websites in notes/<name>/.
         ─────────────────────────────────────────────────────── -->
-        <h2>Difference-in-Differences</h2>
+        <h2>Notes</h2>
 
         <!-- Quarto book: copy the whole _book folder into notes/negative-weights-did/ when updating -->
         <div class="note-entry">
             <div>
-                <span class="note-title">
-                    <a href="notes/negative-weights-did/">Negative Weights in Staggered DiD: de Chaisemartin&ndash;D&rsquo;Haultf&oelig;uille vs. Goodman-Bacon</a>
-                    <span class="note-tag">Note + Interactive Lab</span>
-                </span>
+                <span class="note-title">Negative Weights in Staggered DiD: de Chaisemartin&ndash;D&rsquo;Haultf&oelig;uille vs. Goodman-Bacon</span>
+                <p class="note-desc">Updated in 2026 from my 2024 note (in Chinese). The new version is in English and adds an interactive lab.</p>
+                <p class="note-links">
+                    <a href="notes/negative-weights-did/">2026 version &middot; English, with interactive lab</a>
+                    <a href="files/DID_understanding_note.pdf">2024 version &middot; Chinese, PDF</a>
+                </p>
             </div>
             <span class="note-date">2026</span>
-        </div>
-
-        <div class="note-entry">
-            <div>
-                <span class="note-title">
-                    <a href="files/DID_understanding_note.pdf">Understanding Negative Weight Problem in Staggered DiD Design</a>
-                    <span class="note-tag">in Chinese</span>
-                </span>
-                <!-- Optional: one-line description -->
-                <!-- <div style="font-size:0.92rem; color:#666; margin-top:0.1rem;">[Short description]</div> -->
-            </div>
-            <span class="note-date">2024</span>
         </div>
 
         <!-- <div class="note-entry">
@@ -76,29 +69,34 @@
                     <a href="files/[your-file.pdf]">[Note Title]</a>
                     <span class="note-tag">[Tag]</span>
                 </span>
-            </div>
-            <span class="note-date">[Year]</span>
-        </div> -->
-
-        <!-- ── Group 2 (copy this block to add more topics) ── -->
-        <!-- <h2 style="margin-top:2rem;">[Another Topic / Course Name]</h2>
-
-        <div class="note-entry">
-            <div>
-                <span class="note-title">
-                    <a href="files/[your-file.pdf]">[Note Title]</a>
-                    <span class="note-tag">[Tag]</span>
-                </span>
+                <p class="note-desc">[Short description]</p>
             </div>
             <span class="note-date">[Year]</span>
         </div> -->
 
     </section>
 
+    <section>
+        <h2>Tutorials</h2>
+
+        <!-- Single self-contained Quarto HTML, saved as notes/dsl-tutorial/index.html -->
+        <div class="note-entry">
+            <div>
+                <span class="note-title">
+                    <a href="notes/dsl-tutorial/">Design-Based Supervised Learning: A Tutorial</a>
+                    <span class="note-tag">Course project</span>
+                </span>
+                <p class="note-desc">Final project for PLSC 40601: Advanced Topics in Causal Inference.</p>
+            </div>
+            <span class="note-date">2026</span>
+        </div>
+
+    </section>
+
 </main>
 
 <footer>
-    <p>Last updated: August, 2026 &nbsp;&middot;&nbsp;
+    <p>Last updated: November 2026 &nbsp;&middot;&nbsp;
        <a href="mailto:enhan@uchicago.edu">enhan@uchicago.edu</a>
     </p>
 </footer>
